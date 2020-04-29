@@ -4,6 +4,7 @@ import telebot
 from telebot import types
 import re
 from user import User
+from userLikes import UserLikes
 
 TOKEN = '1187131516:AAFM9NyvopcDLFOEbvDW73K7thN3r7jph3M'
 
@@ -16,15 +17,7 @@ commands = {  # command description used in the "help" command
     'ayuda': 'Información sobre los comandos disponibles'
 }
 
-yesNoSelect = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-yesNoSelect.add('Si', 'No')
-
-amigosSolo = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-amigosSolo.add('Con amigos', 'Solo')
-
-genialOtro = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-genialOtro.add('¡Genial!', 'Mejor otra cosa')
-
+userLikes = UserLikes()
 hideBoard = types.ReplyKeyboardRemove()  # if sent as reply_markup, will hide the keyboard
 
 
@@ -86,7 +79,7 @@ def command_settings(m):
         user.set_step(1)
     else:
         bot.send_message(cid, "Tu código postal actual es: " + user.get_postal_code() + "\n¿Quieres cambiarlo?",
-                         reply_markup=yesNoSelect)
+                         reply_markup=userLikes.yes_no_select)
         user.set_step(2)
     print("")
 
@@ -146,14 +139,14 @@ def with_or_without_friends(m):
     if text == 'Con amigos':
         bot.send_location(cid, 41.41021, 2.137828, reply_markup=hideBoard)
         bot.send_message(cid, "¡Genial! ¿Que te parece este restaurante nuevo de comida Japonesa?\n"
-                              "https://goo.gl/maps/NiNRxBpZTB66c9Lt6", reply_markup=genialOtro)
+                              "https://goo.gl/maps/NiNRxBpZTB66c9Lt6", reply_markup=userLikes.genial_otro)
         user.set_step(4)
     elif text == 'Solo':
         photo = open('./tmp/el_hoyo.jpg', 'rb')
         bot.send_photo(cid, photo, reply_markup=hideBoard)
         bot.send_message(cid, "¡Genial! ¿Que te parece esta pelicula de Netflix?\n"
                               "https://www.netflix.com/title/81128579",
-                         reply_markup=genialOtro)
+                         reply_markup=userLikes.genial_otro)
 
         user.set_step(4)
     else:
@@ -202,9 +195,9 @@ def command_text_recommend(m):
     user = users.get(cid)
     if user.get_postal_code() is None:
         bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
-                              "Para hacerlo usa el comando /configurar", reply_markup=amigosSolo)
+                              "Para hacerlo usa el comando /configurar", reply_markup=userLikes.amigos_solo)
     else:
-        bot.send_message(cid, "Quieres un plan con más gente o solo?", reply_markup=amigosSolo)
+        bot.send_message(cid, "Quieres un plan con más gente o solo?", reply_markup=userLikes.amigos_solo)
     user.set_step(3)
 
 
