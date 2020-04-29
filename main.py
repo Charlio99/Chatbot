@@ -153,23 +153,27 @@ def with_or_without_friends(m):
         bot.send_message(cid, "Por favor, pulsa solo \"Con amigos\" o \"Solo\"")
 
 
+def final_decision(m, cid, next_step_ok, next_step_ko):
+    user = users.get(cid)
+    text = m.text
+    if text == '¡Genial!':
+        user.set_step(next_step_ok)
+        bot.send_message(cid, "¡Encantado de ayudarte! " + m.from_user.first_name, reply_markup=hideBoard)
+    elif text == 'Mejor otra cosa':
+        user.set_step(next_step_ko)
+        bot.send_message(cid, "Lo siento " + m.from_user.first_name + ",se me han acabado las recomendaciones, "
+                                                                      "pero sigo mejorando para tener más opciones",
+                         reply_markup=hideBoard)
+    else:
+        bot.send_message(cid, "Por favor, pulsa solo \"¡Genial!\" o \"Mejor otra cosa\"")
+
+
 @bot.message_handler(func=lambda message: users.get(message.chat.id).get_step() == 4)
 def this_or_that(m):
     cid = m.chat.id
-    user = users.get(cid)
-    text = m.text
-
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
-    if text == '¡Genial!':
-        user.set_step(0)
-        bot.send_message(cid, "¡Encantado de ayudarte! " + m.from_user.first_name, reply_markup=hideBoard)
-    elif text == 'Mejor otra cosa':
-        user.set_step(0)
-        bot.send_message(cid, "Lo siento " + m.from_user.first_name + ",se me han acabado las recomendaciones, "
-                              "pero sigo mejorando para tener más opciones", reply_markup=hideBoard)
-    else:
-        bot.send_message(cid, "Por favor, pulsa solo \"¡Genial!\" o \"Mejor otra cosa\"")
+    final_decision(m, cid, 0, 0)
 
 
 def what_now(m):
