@@ -2,7 +2,6 @@ import time
 
 from telebot import types
 from singletonBot import Bot
-from user import User
 
 import re
 
