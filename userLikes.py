@@ -112,7 +112,7 @@ def with_or_without_friends(m):
     elif text == 'Solo':
 
         bot.send_message(cid, "¿Te apetece salir de casa?\n", reply_markup=userLikes.outside_inside)
-        user.set_step(4)
+        user.set_step(5)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Con amigos\" o \"Solo\"")
 
@@ -137,6 +137,24 @@ def this_or_that(m):
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"¡Genial!\" o \"Mejor otra cosa\"")
 
+
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 5)
+def inside_outside(m):
+    cid = m.chat.id
+    user = Bot.getInstance().users.get(cid)
+    text = m.text
+
+    bot.send_chat_action(cid, 'typing')
+    time.sleep(2)
+    if text == 'Salir de casa':
+        bot.send_message(cid, "Así que en casa eee..... ¿Te apetece relajarte?\n", reply_markup=userLikes.house_relax)
+        user.set_step(4)
+    elif text == 'Estoy vago, mejor en casa':
+
+        bot.send_message(cid, "¿Te apetece salir de casa?\n", reply_markup=userLikes.outside_inside)
+        user.set_step(4)
+    else:
+        bot.send_message(cid, "Por favor, pulsa solo \"Salir de casa\" o \"Estoy vago, mejor en casa\"")
 
 # filter on a specific message
 @bot.message_handler(func=lambda message: message.text.lower() == ("recomiendame algo"))
