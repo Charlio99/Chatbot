@@ -16,6 +16,7 @@ class UserLikes:
         self.outside_inside = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.house_relax = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.sure_inside = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+        self.read = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.replay_all_keyboard_makeup()
         Bot.getInstance().setHideBoard(types)
 
@@ -26,6 +27,7 @@ class UserLikes:
         self.outside_inside.add('Salir de casa', 'Estoy vago, mejor en casa')
         self.house_relax.add('Me apetece relajarme', 'Si me relajo me duermo')
         self.sure_inside.add('Que si pesado', 'Bueno... ¿Qué me propones hacer?')
+        self.read.add('Buena idea, me voy a leer', 'No es lo que más me apetece')
 
 
 userLikes = UserLikes()
@@ -101,7 +103,6 @@ def with_or_without_friends(m):
     user = Bot.getInstance().users.get(cid)
     text = m.text
 
-    markup = types.ForceReply(selective=False)
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
     if text == 'Con amigos':
@@ -130,10 +131,15 @@ def this_or_that(m):
         bot.send_message(cid, "¡Encantado de ayudarte! " + m.from_user.first_name,
                          reply_markup=Bot.getInstance().hideBoard)
     elif text == 'Mejor otra cosa':
-        user.set_step(0)
-        bot.send_message(cid, "Lo siento " + m.from_user.first_name + ",se me han acabado las recomendaciones, "
-                                                                      "pero sigo mejorando para tener más opciones",
-                         reply_markup=Bot.getInstance().hideBoard)
+        if user.lastStep == 6:
+            user.set_step(7)
+            bot.send_message(cid, "Mucha gente encuentra la lectura relajante",
+                             reply_markup=userLikes.read)
+        else:
+            user.set_step(0)
+            bot.send_message(cid, "Lo siento " + m.from_user.first_name + ",se me han acabado las recomendaciones, "
+                                                                          "pero sigo mejorando para tener más opciones",
+                             reply_markup=Bot.getInstance().hideBoard)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"¡Genial!\" o \"Mejor otra cosa\"")
 
@@ -146,18 +152,58 @@ def inside_outside(m):
 
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
-    if text == 'Salir de casa':
+    if text == 'Estoy vago, mejor en casa':
         bot.send_message(cid, "Así que en casa eee..... ¿Te apetece relajarte?\n", reply_markup=userLikes.house_relax)
-        user.set_step(4)
-    elif text == 'Estoy vago, mejor en casa':
+        user.set_step(6)
 
+    elif text == 'Salir de casa ':
         bot.send_message(cid, "¿Te apetece salir de casa?\n", reply_markup=userLikes.outside_inside)
         user.set_step(4)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Salir de casa\" o \"Estoy vago, mejor en casa\"")
 
+
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 6)
+def inside_outside(m):
+    cid = m.chat.id
+    user = Bot.getInstance().users.get(cid)
+    text = m.text
+
+    bot.send_chat_action(cid, 'typing')
+    time.sleep(2)
+    if text == 'Me apetece relajarme':
+        bot.send_message(cid, "¿Quieres que busque alguna película?\n", reply_markup=userLikes.genial_otro)
+        user.set_step(4)
+    elif text == 'Si me relajo me duermo':
+
+        bot.send_message(cid, "Hay muchas actividades divertidas para hacer en casa... ¿Has probado de cocinar?\n",
+                         reply_markup=userLikes.genial_otro)
+        user.set_step(4)
+    else:
+        bot.send_message(cid, "Por favor, pulsa solo \"Me apetece relajarme\" o \"Si me relajo me duermo\"")
+
+
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 7)
+def inside_outside(m):
+    cid = m.chat.id
+    user = Bot.getInstance().users.get(cid)
+    text = m.text
+
+    bot.send_chat_action(cid, 'typing')
+    time.sleep(2)
+    if text == 'Buena idea, me voy a leer':
+        bot.send_message(cid, "Me alegra haberte ayudado" + m.from_user.first_name + "\n", reply_markup=userLikes.genial_otro)
+        user.set_step(0)
+    elif text == 'No es lo que más me apetece':
+        bot.send_message(cid, "Siempre puedes cocinar\n", reply_markup=userLikes.genial_otro)
+        user.set_step(0)
+    else:
+        bot.send_message(cid, "Por favor, pulsa solo \"Buena idea, me voy a leer\" o \"No es lo que más me apetece\"")
+
+
+
 # filter on a specific message
-@bot.message_handler(func=lambda message: message.text.lower() == ("recomiendame algo"))
+@bot.message_handler(func=lambda message: message.text.lower() == "recomiendame algo")
 def command_text_recommend(m):
     cid = m.chat.id
     user = Bot.getInstance().users.get(cid)
