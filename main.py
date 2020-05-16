@@ -1,14 +1,12 @@
 import time
 
-import telebot
 from telebot import types
 import re
+
+from singletonBot import Bot
 from user import User
 from userLikes import UserLikes
 
-TOKEN = '1187131516:AAFM9NyvopcDLFOEbvDW73K7thN3r7jph3M'
-
-users = {}
 knownUsers = []  # todo: save these in a file,
 userStep = {}  # so they won't reset every time the bot restarts
 
@@ -18,31 +16,17 @@ commands = {  # command description used in the "help" command
 }
 
 userLikes = UserLikes()
-hideBoard = types.ReplyKeyboardRemove()  # if sent as reply_markup, will hide the keyboard
 
-
-# only used for console output now
-def listener(messages):
-    """
-    When new messages arrive TeleBot will call this function.
-    """
-    for m in messages:
-        if m.content_type == 'text':
-            # print the sent message to the console
-            print(str(m.chat.first_name) + " [" + str(m.chat.id) + "]: " + m.text)
-
-
-bot = telebot.TeleBot(TOKEN)
-bot.set_update_listener(listener)  # register listener
+bot = Bot.getInstance().bot
 
 
 # handle the "/start" command
 @bot.message_handler(commands=['start'])
 def command_start(m):
     cid = m.chat.id
-    user = users.get(cid)
+    user = Bot.getInstance().users.get(cid)
     if user is None:  # if user hasn't used the "/start" command yet:
-        users[cid] = User(cid)
+        Bot.getInstance().users[cid] = User(cid)
         bot.send_message(cid, "¡Hola! Soy Pilus, un bot recomendador de planes")
         command_help(m)
         bot.send_message(cid, "Antes de nada, vamos a configurar tu perfil para perfeccionar mis recomendaciones")
@@ -55,7 +39,7 @@ def command_start(m):
 @bot.message_handler(commands=['ayuda'])
 def command_help(m):
     cid = m.chat.id
-    user = users.get(cid)
+    user = Bot.getInstance().users.get(cid)
     help_text = "Los comandos disponibles son los siguientes: \n"
     for key in commands:  # generate help text out of the commands dictionary defined at the top
         help_text += "/" + key + ": "
@@ -68,7 +52,7 @@ def command_help(m):
 @bot.message_handler(commands=['configurar'])
 def command_settings(m):
     cid = m.chat.id
-    user = users.get(cid)
+    user = Bot.getInstance().users.get(cid)
     markup = types.ForceReply(selective=False)
     bot.send_chat_action(cid, 'typing')
     time.sleep(1)
@@ -85,10 +69,10 @@ def command_settings(m):
 
 
 # if the user has issued the "/configure" command, process the answer
-@bot.message_handler(func=lambda message: users.get(message.chat.id).get_step() == 1)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 1)
 def cp_reply(m):
     cid = m.chat.id
-    user = users.get(cid)
+    user = Bot.getInstance().users.get(cid)
     text = m.text
 
     bot.send_chat_action(cid, 'typing')
@@ -108,10 +92,10 @@ def cp_reply(m):
             bot.send_message(cid, "Código postal no válido, por favor, intentelo de nuevo", reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: users.get(message.chat.id).get_step() == 2)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 2)
 def new_cp_reply(m):
     cid = m.chat.id
-    user = users.get(cid)
+    user = Bot.getInstance().users.get(cid)
     text = m.text
 
     markup = types.ForceReply(selective=False)
@@ -122,58 +106,9 @@ def new_cp_reply(m):
         user.set_step(1)
     elif text == 'No':
         user.set_step(3)
-        bot.send_message(cid, "¡De acuerdo!", reply_markup=hideBoard)
+        bot.send_message(cid, "¡De acuerdo!", reply_markup=Bot.getInstance().hideBoard)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Si\" o \"No\"")
-
-
-@bot.message_handler(func=lambda message: users.get(message.chat.id).get_step() == 3)
-def with_or_without_friends(m):
-    cid = m.chat.id
-    user = users.get(cid)
-    text = m.text
-
-    markup = types.ForceReply(selective=False)
-    bot.send_chat_action(cid, 'typing')
-    time.sleep(2)
-    if text == 'Con amigos':
-        bot.send_location(cid, 41.41021, 2.137828, reply_markup=hideBoard)
-        bot.send_message(cid, "¡Genial! ¿Que te parece este restaurante nuevo de comida Japonesa?\n"
-                              "https://goo.gl/maps/NiNRxBpZTB66c9Lt6", reply_markup=userLikes.genial_otro)
-        user.set_step(4)
-    elif text == 'Solo':
-        photo = open('./tmp/el_hoyo.jpg', 'rb')
-        bot.send_photo(cid, photo, reply_markup=hideBoard)
-        bot.send_message(cid, "¡Genial! ¿Que te parece esta pelicula de Netflix?\n"
-                              "https://www.netflix.com/title/81128579",
-                         reply_markup=userLikes.genial_otro)
-
-        user.set_step(4)
-    else:
-        bot.send_message(cid, "Por favor, pulsa solo \"Con amigos\" o \"Solo\"")
-
-
-def final_decision(m, cid, next_step_ok, next_step_ko):
-    user = users.get(cid)
-    text = m.text
-    if text == '¡Genial!':
-        user.set_step(next_step_ok)
-        bot.send_message(cid, "¡Encantado de ayudarte! " + m.from_user.first_name, reply_markup=hideBoard)
-    elif text == 'Mejor otra cosa':
-        user.set_step(next_step_ko)
-        bot.send_message(cid, "Lo siento " + m.from_user.first_name + ",se me han acabado las recomendaciones, "
-                                                                      "pero sigo mejorando para tener más opciones",
-                         reply_markup=hideBoard)
-    else:
-        bot.send_message(cid, "Por favor, pulsa solo \"¡Genial!\" o \"Mejor otra cosa\"")
-
-
-@bot.message_handler(func=lambda message: users.get(message.chat.id).get_step() == 4)
-def this_or_that(m):
-    cid = m.chat.id
-    bot.send_chat_action(cid, 'typing')
-    time.sleep(2)
-    final_decision(m, cid, 0, 0)
 
 
 def what_now(m):
@@ -196,7 +131,7 @@ def command_text_help(m):
 @bot.message_handler(func=lambda message: message.text.lower() == ("recomiendame algo"))
 def command_text_recommend(m):
     cid = m.chat.id
-    user = users.get(cid)
+    user = Bot.getInstance().users.get(cid)
     if user.get_postal_code() is None:
         bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
                               "Para hacerlo usa el comando /configurar", reply_markup=userLikes.amigos_solo)
@@ -210,6 +145,5 @@ def command_text_recommend(m):
 def command_default(m):
     # this is the standard reply to a normal message
     bot.send_message(m.chat.id, "No entiendo \"" + m.text + "\"\nPuede que la página de ayuda te ayude /ayuda")
-
 
 bot.polling()
