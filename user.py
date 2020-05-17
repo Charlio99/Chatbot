@@ -1,4 +1,5 @@
 class User:
+
     def __init__(self, cid, step=0, cp=None):
         self.chatId = cid
         self.step = step

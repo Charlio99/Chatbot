@@ -6,6 +6,15 @@ from singletonBot import Bot
 
 import re
 
+START = 0
+POSTAL_CODE = 1
+NEW_POSTAL_CODE = 2
+ALONE_FRIENDS = 3
+END = 4
+OUTSIDE_HOME = 5
+RELAX = 6
+READ = 7
+
 
 class UserLikes:
 
@@ -38,50 +47,51 @@ bot = Bot.getInstance().bot
 @bot.message_handler(commands=['configurar'])
 def command_settings(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
+    user_id = Bot.getInstance().users.get(cid)
     markup = types.ForceReply(selective=False)
     bot.send_chat_action(cid, 'typing')
     time.sleep(1)
-    if user.get_postal_code() is None:
+    if user_id.get_postal_code() is None:
         # ForceReply: forces a user to reply to a message
         # Takes an optional selective argument (True/False, default False)
         bot.send_message(cid, "¿Cuál es tu código postal?", reply_markup=markup)
-        user.set_step(1)
+        user_id.set_step(POSTAL_CODE)
     else:
-        bot.send_message(cid, "Tu código postal actual es: " + user.get_postal_code() + "\n¿Quieres cambiarlo?",
+        bot.send_message(cid, "Tu código postal actual es: " + user_id.get_postal_code() + "\n¿Quieres cambiarlo?",
                          reply_markup=userLikes.yes_no_select)
-        user.set_step(2)
+        user_id.set_step(NEW_POSTAL_CODE)
     print("")
 
+
 # if the user has issued the "/configure" command, process the answer
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 1)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == POSTAL_CODE)
 def cp_reply(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
+    user_id = Bot.getInstance().users.get(cid)
     text = m.text
 
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
     if re.match("^08\d{3}$", text, flags=0):
-        user.set_postal_code(text)
+        user_id.set_postal_code(text)
         bot.send_message(cid, "Código postal guardado con éxito!")
-        user.set_step(0)
+        user_id.set_step(START)
         what_now(m)
     else:
         if re.match("^\d{5}$", text, flags=0):
             bot.send_message(cid,
                              "¡Todavía no operamos fuera de Barcelona, pero en breves operaremos en toda España "
                              "también!")
-            user.set_step(0)
+            user_id.set_step(START)
         else:
             markup = types.ForceReply(selective=False)
             bot.send_message(cid, "Código postal no válido, por favor, intentelo de nuevo", reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 2)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == NEW_POSTAL_CODE)
 def new_cp_reply(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
+    user_id = Bot.getInstance().users.get(cid)
     text = m.text
 
     markup = types.ForceReply(selective=False)
@@ -89,18 +99,18 @@ def new_cp_reply(m):
     time.sleep(2)
     if text == 'Si':
         bot.send_message(cid, "¿Cuál es tu nuevo código postal?", reply_markup=markup)
-        user.set_step(1)
+        user_id.set_step(POSTAL_CODE)
     elif text == 'No':
-        user.set_step(3)
+        user_id.set_step(ALONE_FRIENDS)
         bot.send_message(cid, "¡De acuerdo!", reply_markup=Bot.getInstance().hideBoard)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Si\" o \"No\"")
 
 
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 3)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == ALONE_FRIENDS)
 def with_or_without_friends(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
+    user_id = Bot.getInstance().users.get(cid)
     text = m.text
 
     bot.send_chat_action(cid, 'typing')
@@ -109,34 +119,34 @@ def with_or_without_friends(m):
         bot.send_location(cid, 41.41021, 2.137828, reply_markup=Bot.getInstance().hideBoard)
         bot.send_message(cid, "¡Genial! ¿Que te parece este restaurante nuevo de comida Japonesa?\n"
                               "https://goo.gl/maps/NiNRxBpZTB66c9Lt6", reply_markup=userLikes.genial_otro)
-        user.set_step(4)
+        user_id.set_step(END)
     elif text == 'Solo':
 
         bot.send_message(cid, "¿Te apetece salir de casa?\n", reply_markup=userLikes.outside_inside)
-        user.set_step(5)
+        user_id.set_step(OUTSIDE_HOME)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Con amigos\" o \"Solo\"")
 
 
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 4)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == END)
 def this_or_that(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
+    user_id = Bot.getInstance().users.get(cid)
     text = m.text
 
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
     if text == '¡Genial!':
-        user.set_step(0)
+        user_id.set_step(START)
         bot.send_message(cid, "¡Encantado de ayudarte! " + m.from_user.first_name,
                          reply_markup=Bot.getInstance().hideBoard)
     elif text == 'Mejor otra cosa':
-        if user.lastStep == 6:
-            user.set_step(7)
+        if user_id.lastStep == RELAX:
+            user_id.set_step(READ)
             bot.send_message(cid, "Mucha gente encuentra la lectura relajante",
                              reply_markup=userLikes.read)
         else:
-            user.set_step(0)
+            user_id.set_step(START)
             bot.send_message(cid, "Lo siento " + m.from_user.first_name + ",se me han acabado las recomendaciones, "
                                                                           "pero sigo mejorando para tener más opciones",
                              reply_markup=Bot.getInstance().hideBoard)
@@ -144,75 +154,76 @@ def this_or_that(m):
         bot.send_message(cid, "Por favor, pulsa solo \"¡Genial!\" o \"Mejor otra cosa\"")
 
 
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 5)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == OUTSIDE_HOME)
 def inside_outside(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
+    user_id = Bot.getInstance().users.get(cid)
     text = m.text
 
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
     if text == 'Estoy vago, mejor en casa':
         bot.send_message(cid, "Así que en casa eee..... ¿Te apetece relajarte?\n", reply_markup=userLikes.house_relax)
-        user.set_step(6)
+        user_id.set_step(RELAX)
 
     elif text == 'Salir de casa ':
         bot.send_message(cid, "¿Te apetece salir de casa?\n", reply_markup=userLikes.outside_inside)
-        user.set_step(4)
+        user_id.set_step(END)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Salir de casa\" o \"Estoy vago, mejor en casa\"")
 
 
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 6)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == RELAX)
 def inside_outside(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
+    user_id = Bot.getInstance().users.get(cid)
     text = m.text
 
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
     if text == 'Me apetece relajarme':
         bot.send_message(cid, "¿Quieres que busque alguna película?\n", reply_markup=userLikes.genial_otro)
-        user.set_step(4)
+        user_id.set_step(END)
     elif text == 'Si me relajo me duermo':
 
         bot.send_message(cid, "Hay muchas actividades divertidas para hacer en casa... ¿Has probado de cocinar?\n",
                          reply_markup=userLikes.genial_otro)
-        user.set_step(4)
+        user_id.set_step(END)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Me apetece relajarme\" o \"Si me relajo me duermo\"")
 
 
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == 7)
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == READ)
 def inside_outside(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
+    user_id = Bot.getInstance().users.get(cid)
     text = m.text
 
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
     if text == 'Buena idea, me voy a leer':
-        bot.send_message(cid, "Me alegra haberte ayudado" + m.from_user.first_name + "\n", reply_markup=userLikes.genial_otro)
-        user.set_step(0)
+        bot.send_message(cid, "Me alegra haberte ayudado" + m.from_user.first_name + "\n",
+                         reply_markup=userLikes.genial_otro)
+        user_id.set_step(START)
     elif text == 'No es lo que más me apetece':
         bot.send_message(cid, "Siempre puedes cocinar\n", reply_markup=userLikes.genial_otro)
-        user.set_step(0)
+        user_id.set_step(START)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Buena idea, me voy a leer\" o \"No es lo que más me apetece\"")
-
 
 
 # filter on a specific message
 @bot.message_handler(func=lambda message: message.text.lower() == "recomiendame algo")
 def command_text_recommend(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
-    if user.get_postal_code() is None:
+    user_id = Bot.getInstance().users.get(cid)
+    if user_id.get_postal_code() is None:
         bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
                               "Para hacerlo usa el comando /configurar", reply_markup=userLikes.amigos_solo)
     else:
         bot.send_message(cid, "Quieres un plan con más gente o solo?", reply_markup=userLikes.amigos_solo)
-    user.set_step(3)
+    user_id.set_step(ALONE_FRIENDS)
+
 
 # default handler for every other text
 @bot.message_handler(func=lambda message: True, content_types=['text'])
