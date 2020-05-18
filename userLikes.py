@@ -70,13 +70,23 @@ def cp_reply(m):
     time.sleep(2)
 
     if text == user_id.get_node().get_left_name():
-        user_id.set_node(user_id.get_node().get_left_next_step())
 
-        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
+        if user_id.get_node().get_left_end() != 0:
+            endDecision(m, user_id.get_node().get_right_end())
+
+        else:
+            user_id.set_node(user_id.get_node().get_left_next_step())
+
+            bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
 
     elif text == user_id.get_node().get_right_name():
-        user_id.set_node(user_id.get_node().get_right_next_step())
-        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
+
+        if user_id.get_node().get_right_end() != 0:
+            endDecision(m, user_id.get_node().get_right_end())
+
+        else:
+            user_id.set_node(user_id.get_node().get_right_next_step())
+            bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
 
     else:
         bot.send_message(cid, 'Por favor, pulsa solo \"' + user_id.get_node().get_left_name() + '\" o \"' +
@@ -161,3 +171,12 @@ def command_text_help(m):
 
 def what_now(m):
     bot.send_message(m.chat.id, "¿Que quieres hacer ahora?\n(Prueba con: _recomiendame algo_)", parse_mode="Markdown")
+
+
+def endDecision(m, found):
+    if found == 1:
+        bot.send_message(m.chat.id, "Me alegro haberte ayudado", parse_mode="Markdown")
+
+    else:
+        bot.send_message(m.chat.id, "Lo siento, no se me oocurren mas planes, yo de ti me iría a dormir",
+                         parse_mode="Markdown")

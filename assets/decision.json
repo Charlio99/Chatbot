@@ -1,0 +1,106 @@
+{
+    "nodes": [
+
+        {
+            "num": 0,
+            "question": "¿Quieres un plan con más gente o solo?",
+            "left": {
+                "name": "Con amigos",
+                "next_step": 0,
+                "end": -1
+            },
+            "right": {
+                "name": "Solo",
+                "next_step": 1,
+                "end": 0
+            }
+        },
+        {
+            "num": 1,
+            "question": "¿Te apetece salir de casa?",
+            "left": {
+                "name": "Estoy vago, mejor en casa",
+                "next_step": 2,
+                "end": 0
+            },
+            "right": {
+                "name": "Salir de casa",
+                "next_step": 0,
+                "end": -1
+            }
+        },
+
+        {
+            "num": 2,
+            "question": "¿Te apetece relajarte?",
+            "left": {
+                "name": "Si me relajo me duermoo",
+                "next_step": 4,
+                "end": 0
+            },
+            "right": {
+                "name": "No me iría mal",
+                "next_step": 3,
+                "end": 0
+            }
+        },
+
+        {
+            "num": 3,
+            "question": "¿Quieres ver una película o una serie?",
+            "left": {
+                "name": "Muy buena idea",
+                "next_step": 0,
+                "end": 1
+            },
+            "right": {
+                "name": "No se yo ...",
+                "next_step": 4,
+                "end": 0
+            }
+        },
+
+        {
+            "num": 4,
+            "question": "¿Y cocinar, es una muy buena forma de entretenerte?",
+            "left": {
+                "name": "Cocinar no es mi fuerte",
+                "next_step": 5,
+                "end": 0
+            },
+            "right": {
+                "name": "Jajaja, venga me has convecido",
+                "next_step": 0,
+                "end": 1
+            }
+        },
+        {
+            "num": 5,
+            "question": "A mi me encanta jugar a videojuegos, ¿A ti?",
+            "left": {
+                "name": "Tengo un juego que aún no he acabado. Buena idea Pilus",
+                "next_step": 0,
+                "end": 1
+            },
+            "right": {
+                "name": "No soy muy fan de los videojuegos la verdad",
+                "next_step": 6,
+                "end": 0
+            }
+        },
+        {
+            "num": 6,
+            "question": "¿Seguro que te quieres quedar en casa?",
+            "left": {
+                "name": "Que si pesado",
+                "next_step": 1,
+                "end": -1
+            },
+            "right": {
+                "name": "Yo que se, estoy muy perdid@",
+                "next_step": 0,
+                "end": -1
+            }
+        }
+    ]
+}

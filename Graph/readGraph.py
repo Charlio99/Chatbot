@@ -25,30 +25,26 @@ class Decision:
 
     def readJson(self):
         # Opening JSON file
-        json_file = open('decision.json')
+        json_file = open('assets/decision.json')
 
         # returns JSON object as
         # a dictionary
         data = json.load(json_file)
 
         # Iterating through the json
-        # list
         for node in data['nodes']:
-            # def __init__(self, num, question, left_name, left_next_step, right_name, right_next_step):
+
             node_graph = NodeGraph(
                 node['num'],
                 node['question'],
                 node['left']['name'],
                 node['left']['next_step'],
+                node['left']['end'],
                 node['right']['name'],
                 node['right']['next_step'],
+                node['right']['end']
             )
-
-            print("*******************")
-            print(node_graph)
             self.graph.add_node(node_graph.num, node=node_graph)
-
-        print(list(Decision.getInstance().graph.nodes))
 
         for node_graph in list(self.graph.nodes):
             node = self.graph.nodes[node_graph]['node']
