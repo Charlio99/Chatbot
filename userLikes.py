@@ -21,7 +21,7 @@ class UserLikes:
 
         self.yes_no_select = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 
-        for aux in range(2):
+        for aux in list(Decision.getInstance().graph.nodes):
             self.option.insert(aux, types.ReplyKeyboardMarkup(one_time_keyboard=True))
 
         self.replay_all_keyboard_makeup()
