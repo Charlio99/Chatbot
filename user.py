@@ -36,7 +36,7 @@ class User:
         self.aux_node = aux
 
     def get_node(self):
-        return Decision.getInstance().graph.nodes[self.aux_node]
+        return Decision.getInstance().graph.nodes[self.aux_node]['node']
 
     def __eq__(self, other):
         return self.chatId == other.chatId

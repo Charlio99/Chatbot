@@ -30,11 +30,9 @@ class UserLikes:
     def replay_all_keyboard_makeup(self):
 
         self.yes_no_select.add('Si', 'No')
-        print(list(Decision.getInstance().graph.nodes))
-        nodes = list(Decision.getInstance().graph.nodes)
-        for aux in range(2):
-            node_graph = nodes[aux]
-            self.option[aux].add(node_graph.get_left_name(), node_graph.get_right_name())
+        for node_graph in list(Decision.getInstance().graph.nodes):
+            node = Decision.getInstance().graph.nodes[node_graph]['node']
+            self.option[node_graph].add(node.get_left_name(), node.get_right_name())
 
 
 userLikes = UserLikes()
@@ -71,18 +69,18 @@ def cp_reply(m):
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
 
-    if text == user_id.node.get_left_name():
-        user_id.set_node(user_id.node.get_left_next_step())
+    if text == user_id.get_node().get_left_name():
+        user_id.set_node(user_id.get_node().get_left_next_step())
 
-        bot.send_message(cid, user_id.node.question, reply_markup=userLikes.option[user_id.node.name])
+        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
 
-    elif text == user_id.node.get_right_name:
-        user_id.set_node(user_id.node.get_right_next_step)
-        bot.send_message(cid, user_id.node.question, reply_markup=userLikes.option[user_id.node.name])
+    elif text == user_id.get_node().get_right_name():
+        user_id.set_node(user_id.get_node().get_right_next_step())
+        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
 
     else:
-        bot.send_message(cid, 'Por favor, pulsa solo \"' + user_id.node.get_left_name() + '\" o \"' +
-                         user_id.node.get_right_name + '\"')
+        bot.send_message(cid, 'Por favor, pulsa solo \"' + user_id.get_node().get_left_name() + '\" o \"' +
+                         user_id.get_node().get_right_name() + '\"')
 
 
 # if the user has issued the "/configure" command, process the answer
@@ -138,9 +136,7 @@ def command_text_recommend(m):
         bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
                               "Para hacerlo usa el comando /configurar")
     else:
-        question = user_id.get_node().question
-        name = user_id.get_node().name
-        bot.send_message(cid, user_id.node.question, reply_markup=userLikes.option[user_id.node.name])
+        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
         user_id.set_step(NEXT_DECISION)
 
 
