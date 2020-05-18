@@ -1,0 +1,30 @@
+{
+    "nodes": [
+
+        {
+            "num": 0,
+            "question": "Quieres un plan con más gente o solo?",
+            "left": {
+                "name": "Con amigos",
+                "next_step": 1
+            },
+            "right": {
+                "name": "Solo",
+                "next_step": 0
+            }
+
+        },
+        {
+            "num": 1,
+            "question": "¿Te apetece salir de casa?",
+            "left": {
+                "name": "Estoy vago, mejor en casa",
+                "next_step": 1
+            },
+            "right": {
+                "name": "Salir de casa",
+                "next_step": 0
+            }
+        }
+    ]
+}
