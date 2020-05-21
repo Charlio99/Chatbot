@@ -2,7 +2,10 @@ class User:
     def __init__(self, cid, step=0, cp=None):
         self.chatId = cid
         self.step = step
-        self.cp = cp
+        self.cp = '08024'
+        self.city = 'Barcelona'
+        self.email = 'pilus@salle.url.edu'
+        self.name = 'Pilus'
 
     def get_chat_id(self):
         return self.chatId
@@ -24,3 +27,12 @@ class User:
 
     def __eq__(self, other):
         return self.chatId == other.chatId
+
+    def get_city(self):
+        return self.city
+
+    def get_email(self):
+        return self.email
+
+    def get_name(self):
+        return self.name
