@@ -6,8 +6,8 @@
             "question": "¿Quieres un plan con más gente o solo?",
             "left": {
                 "name": "Con amigos",
-                "next_step": 0,
-                "end": -1
+                "next_step": 7,
+                "end": 0
             },
             "right": {
                 "name": "Solo",
@@ -25,7 +25,7 @@
             },
             "right": {
                 "name": "Salir de casa",
-                "next_step": 0,
+                "next_step": 7,
                 "end": -1
             }
         },
@@ -62,7 +62,7 @@
 
         {
             "num": 4,
-            "question": "¿Y cocinar, es una muy buena forma de entretenerte?",
+            "question": "¿Y cocinar, es una muy buena forma de entretenerte?\nTengo un amigo que se llama Chefbot que te puede  ayuda",
             "left": {
                 "name": "Cocinar no es mi fuerte",
                 "next_step": 5,
@@ -93,6 +93,34 @@
             "question": "¿Seguro que te quieres quedar en casa?",
             "left": {
                 "name": "Que si pesado",
+                "next_step": 1,
+                "end": -1
+            },
+            "right": {
+                "name": "Yo que se, estoy muy perdid@",
+                "next_step": 7,
+                "end": 0
+            }
+        },
+        {
+            "num": 7,
+            "question": "¿Te importaría gastarte dinero?",
+            "left": {
+                "name": "Hoy quiero ahorrar",
+                "next_step": 1,
+                "end": -1
+            },
+            "right": {
+                "name": "¿Para que está el dinero si no es para gastarlo?",
+                "next_step": 0,
+                "end": -1
+            }
+        },
+        {
+            "num": 8,
+            "question": "¿El deporte nunca va mal?\nVes en bici, a correr o a jugar a futbol o basquet",
+            "left": {
+                "name": "No me conoces en absoluto",
                 "next_step": 1,
                 "end": -1
             },

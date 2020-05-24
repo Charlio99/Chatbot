@@ -69,10 +69,10 @@ def cp_reply(m):
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
 
-    if text == user_id.get_node().get_left_name():
+    if text == user_id.get_node().get_left_name() or 'no' in text:
 
         if user_id.get_node().get_left_end() != 0:
-            endDecision(m, user_id.get_node().get_right_end())
+            endDecision(m, user_id.get_node().get_left_end())
 
         else:
             user_id.set_node(user_id.get_node().get_left_next_step())
@@ -173,10 +173,26 @@ def what_now(m):
     bot.send_message(m.chat.id, "¿Que quieres hacer ahora?\n(Prueba con: _recomiendame algo_)", parse_mode="Markdown")
 
 
+def showDecision(m, decision, user_id):
+    if decision.end != 0:
+        endDecision(m, decision.end)
+
+    else:
+        user_id.set_node(decision.next_step)
+
+        bot.send_message(m.chat.id, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
+
+
 def endDecision(m, found):
     if found == 1:
         bot.send_message(m.chat.id, "Me alegro haberte ayudado", parse_mode="Markdown")
 
     else:
-        bot.send_message(m.chat.id, "Lo siento, no se me oocurren mas planes, yo de ti me iría a dormir",
+        bot.send_message(m.chat.id, "Lo siento, no se me ocurre mas planes, yo de ti me iría a dormir",
                          parse_mode="Markdown")
+        bot.send_message(m.chat.id, "🥺",
+                         parse_mode="Markdown")
+        ''''
+        bot.send_photo(m.chat.id, 'https://i.pinimg.com/originals/55/70/09/557009e7812880a314833c600ccba5bb.png',
+                       reply_markup=Bot.getInstance().hideBoard)
+        '''
