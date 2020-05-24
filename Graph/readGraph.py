@@ -37,16 +37,15 @@ class Decision:
             node_graph = NodeGraph(
                 node['num'],
                 node['question'],
+                node['photo'],
                 node['left']['name'],
                 node['left']['next_step'],
                 node['left']['end'],
                 node['left']['key'],
-                node['left']['photo'],
                 node['right']['name'],
                 node['right']['next_step'],
                 node['right']['end'],
                 node['right']['key'],
-                node['right']['photo']
             )
             self.graph.add_node(node_graph.num, node=node_graph)
 

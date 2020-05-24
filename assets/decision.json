@@ -4,99 +4,95 @@
         {
             "num": 0,
             "question": "¿Quieres un plan con más gente o solo?",
+            "photo": "",
             "left": {
                 "name": "Con amigos",
                 "next_step": 7,
                 "end": 0,
-                "key": "gente",
-                "photo": ""
+                "key": "gente"
             },
             "right": {
                 "name": "Solo",
                 "next_step": 1,
                 "end": 0,
-                "key": "solo",
-                "photo": ""
+                "key": "solo"
             }
         },
         {
             "num": 1,
             "question": "¿Te apetece salir de casa?",
+            "photo": "",
             "left": {
                 "name": "Estoy vago, mejor en casa",
                 "next_step": 2,
                 "end": 0,
-                "key": "no",
-                "photo": ""
+                "key": "no"
             },
             "right": {
                 "name": "Salir de casa",
                 "next_step": 7,
                 "end": -1,
-                "key": "si",
-                "photo": ""
+                "key": "si"
             }
         },
 
         {
             "num": 2,
             "question": "¿Te apetece relajarte?",
+            "photo": "https://www.intur.com/uploads/media/default/0001/02/5b49b691a4908a8fe3286ccb70d62e12c29439da.png",
             "left": {
                 "name": "Si me relajo me duermo",
                 "next_step": 4,
                 "end": 0,
-                "key": "no",
-                "photo": ""
+                "key": "no"
             },
             "right": {
                 "name": "No me iría mal",
                 "next_step": 3,
                 "end": 0,
-                "key": "si",
-                "photo": ""
+                "key": "si"
             }
         },
 
         {
             "num": 3,
             "question": "¿Quieres ver una película o una serie?",
+            "photo": "",
             "left": {
                 "name": "Muy buena idea",
                 "next_step": 0,
                 "end": 1,
-                "key": "si",
-                "photo": ""
+                "key": "si"
             },
             "right": {
                 "name": "No se yo ...",
                 "next_step": 4,
                 "end": 0,
-                "key": "no",
-                "photo": ""
+                "key": "no"
             }
         },
 
         {
             "num": 4,
             "question": "¿Y cocinar, es una muy buena forma de entretenerte?\nTengo un amigo que se llama Chefbot que te puede  ayuda",
+            "photo": "",
             "left": {
                 "name": "Cocinar no es mi fuerte",
                 "next_step": 5,
                 "end": 0,
-                "key": "no",
-                "photo": ""
+                "key": "no"
             },
             "right": {
                 "name": "Venga me has convecido",
                 "next_step": 0,
                 "end": 1,
-                "key": "si",
-                "photo": ""
+                "key": "si"
             }
         },
         {
             "num": 5,
             "question": "A mi me encanta jugar a videojuegos, ¿A ti?",
+            "photo": "",
             "left": {
                 "name": "Buena idea Pilus",
                 "next_step": 0,
@@ -108,62 +104,58 @@
                 "name": "No soy muy fan de los videojuegos la verdad",
                 "next_step": 6,
                 "end": 0,
-                "key": "no",
-                "photo": ""
+                "key": "no"
             }
         },
         {
             "num": 6,
             "question": "¿Seguro que te quieres quedar en casa?",
+            "photo": "",
             "left": {
                 "name": "Que si pesado",
                 "next_step": 1,
                 "end": -1,
-                "key": "si",
-                "photo": ""
+                "key": "si"
             },
             "right": {
                 "name": "Yo que se, estoy muy perdid@",
                 "next_step": 7,
                 "end": 0,
-                "key": "no",
-                "photo": ""
+                "key": "no"
             }
         },
         {
             "num": 7,
             "question": "¿Te importaría gastarte dinero?",
+            "photo": "",
             "left": {
                 "name": "Hoy quiero ahorrar",
                 "next_step": 1,
                 "end": -1,
-                "key": "si",
-                "photo": ""
+                "key": "si"
             },
             "right": {
                 "name": "¿Para que está el dinero si no es para gastarlo?",
                 "next_step": 0,
                 "end": -1,
-                "key": "no",
-                "photo": ""
+                "key": "no"
             }
         },
         {
             "num": 8,
             "question": "El deporte nunca va mal\nVes en bici, a correr o a jugar a futbol o basquet",
+            "photo": "",
             "left": {
                 "name": "No me conoces en absoluto",
                 "next_step": 1,
                 "end": -1,
-                "key": "no",
-                "photo": ""
+                "key": "no"
             },
             "right": {
                 "name": "Me iría bien hacer deporte",
                 "next_step": 0,
                 "end": -1,
-                "key": "si",
-                "photo": ""
+                "key": "si"
             }
         }
     ]

@@ -59,6 +59,41 @@ def command_settings(m):
         user_id.set_step(NEW_POSTAL_CODE)
     print("")
 
+# filter on a specific message
+@bot.message_handler(func=lambda message: message.text.lower() == "hola")
+def command_text_hi(m):
+    time.sleep(2)
+    bot.send_message(m.chat.id, "¡Hola! Si necesitas ayuda puedes usar /ayuda para ver la página de ayuda")
+
+
+# filter on a specific message
+@bot.message_handler(func=lambda message: message.text.lower() == "ayuda")
+def command_text_help(m):
+    bot.send_message(m.chat.id, "Para ver la página de ayuda puedes usar /ayuda")
+
+
+# filter on a specific message
+@bot.message_handler(func=lambda message: message.text.lower() == "adios")
+def command_text_hi(m):
+    time.sleep(2)
+    bot.send_message(m.chat.id, "Adiós, nos vemos pronto")
+    user_id = Bot.getInstance().users.get(m.chat.id)
+    user_id.set_step(START)
+    user_id.set_node(START)
+
+
+# filter on a specific message
+@bot.message_handler(func=lambda message: 0.8 <= SequenceMatcher(None, message.text.lower(), "recomiendame algo").ratio())
+def command_text_recommend(m):
+    cid = m.chat.id
+    user_id = Bot.getInstance().users.get(cid)
+    if user_id.get_postal_code() is None:
+        bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
+                              "Para hacerlo usa el comando /configurar")
+    else:
+        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
+        user_id.set_step(NEXT_DECISION)
+
 
 # if the user has issued the "/configure" command, process the answer
 @bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == NEXT_DECISION)
@@ -127,36 +162,11 @@ def new_cp_reply(m):
         bot.send_message(cid, "Por favor, pulsa solo \"Si\" o \"No\"")
 
 
-# filter on a specific message
-@bot.message_handler(func=lambda message: 0.8 <= SequenceMatcher(None, message.text.lower(), "recomiendame algo").ratio())
-def command_text_recommend(m):
-    cid = m.chat.id
-    user_id = Bot.getInstance().users.get(cid)
-    if user_id.get_postal_code() is None:
-        bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
-                              "Para hacerlo usa el comando /configurar")
-    else:
-        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
-        user_id.set_step(NEXT_DECISION)
-
-
 # default handler for every other text
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def command_default(m):
     # this is the standard reply to a normal message
     bot.send_message(m.chat.id, "No entiendo \"" + m.text + "\"\nPuede que la página de ayuda te ayude /ayuda")
-
-
-# filter on a specific message
-@bot.message_handler(func=lambda message: message.text.lower() == "hola")
-def command_text_hi(m):
-    bot.send_message(m.chat.id, "¡Hola! Si necesitas ayuda puedes usar /ayuda para ver la página de ayuda")
-
-
-# filter on a specific message
-@bot.message_handler(func=lambda message: message.text.lower() == "ayuda")
-def command_text_help(m):
-    bot.send_message(m.chat.id, "Para ver la página de ayuda puedes usar /ayuda")
 
 
 def what_now(m):
@@ -190,5 +200,5 @@ def showDecision(m, decision, user_id):
 
         bot.send_message(m.chat.id, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
 
-        if decision.photo is not None:
-            bot.send_photo(m.chat.id, decision.photo, reply_markup=Bot.getInstance().hideBoard)
+        if user_id.get_node().photo is not None:
+            bot.send_photo(m.chat.id, user_id.get_node().photo, reply_markup=userLikes.option[user_id.get_node().num])

@@ -1,29 +1,26 @@
 class Route:
 
-    def __init__(self, name, next_step, end, key, photo):
+    def __init__(self, name, next_step, end, key):
         self.name = name
         self.next_step = next_step
         self.end = end
         self.key = key
-        self.photo = photo
 
 
 class NodeGraph:
 
-    def __init__(self, num, question, left_name, left_next_step, left_end, left_key, left_photo, right_name,
-                 right_next_step, right_end, right_key, right_photo):
+    def __init__(self, num, question, photo, left_name, left_next_step, left_end, left_key, right_name,
+                 right_next_step, right_end, right_key):
 
         self.num = num
         self.question = question
 
-        if len(left_photo) == 0:
-            left_photo = None
+        if len(photo) == 0:
+            photo = None
 
-        if len(right_photo) == 0:
-            right_photo = None
-
-        self.left = Route(left_name, left_next_step, left_end, left_key, left_photo)
-        self.right = Route(right_name, right_next_step, right_end, right_key, right_photo)
+        self.photo = photo
+        self.left = Route(left_name, left_next_step, left_end, left_key)
+        self.right = Route(right_name, right_next_step, right_end, right_key)
 
     def get_left_name(self):
         return self.left.name
