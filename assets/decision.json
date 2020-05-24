@@ -7,12 +7,16 @@
             "left": {
                 "name": "Con amigos",
                 "next_step": 7,
-                "end": 0
+                "end": 0,
+                "key": "gente",
+                "photo": ""
             },
             "right": {
                 "name": "Solo",
                 "next_step": 1,
-                "end": 0
+                "end": 0,
+                "key": "solo",
+                "photo": ""
             }
         },
         {
@@ -21,12 +25,16 @@
             "left": {
                 "name": "Estoy vago, mejor en casa",
                 "next_step": 2,
-                "end": 0
+                "end": 0,
+                "key": "no",
+                "photo": ""
             },
             "right": {
                 "name": "Salir de casa",
                 "next_step": 7,
-                "end": -1
+                "end": -1,
+                "key": "si",
+                "photo": ""
             }
         },
 
@@ -36,12 +44,16 @@
             "left": {
                 "name": "Si me relajo me duermoo",
                 "next_step": 4,
-                "end": 0
+                "end": 0,
+                "key": "no",
+                "photo": ""
             },
             "right": {
                 "name": "No me iría mal",
                 "next_step": 3,
-                "end": 0
+                "end": 0,
+                "key": "si",
+                "photo": ""
             }
         },
 
@@ -51,12 +63,16 @@
             "left": {
                 "name": "Muy buena idea",
                 "next_step": 0,
-                "end": 1
+                "end": 1,
+                "key": "si",
+                "photo": ""
             },
             "right": {
                 "name": "No se yo ...",
                 "next_step": 4,
-                "end": 0
+                "end": 0,
+                "key": "no",
+                "photo": ""
             }
         },
 
@@ -66,26 +82,34 @@
             "left": {
                 "name": "Cocinar no es mi fuerte",
                 "next_step": 5,
-                "end": 0
+                "end": 0,
+                "key": "no",
+                "photo": ""
             },
             "right": {
-                "name": "Jajaja, venga me has convecido",
+                "name": "Venga me has convecido",
                 "next_step": 0,
-                "end": 1
+                "end": 1,
+                "key": "si",
+                "photo": ""
             }
         },
         {
             "num": 5,
             "question": "A mi me encanta jugar a videojuegos, ¿A ti?",
             "left": {
-                "name": "Tengo un juego que aún no he acabado. Buena idea Pilus",
+                "name": "Buena idea Pilus",
                 "next_step": 0,
-                "end": 1
+                "end": 1,
+                "key": "si",
+                "photo": ""
             },
             "right": {
                 "name": "No soy muy fan de los videojuegos la verdad",
                 "next_step": 6,
-                "end": 0
+                "end": 0,
+                "key": "no",
+                "photo": ""
             }
         },
         {
@@ -94,12 +118,16 @@
             "left": {
                 "name": "Que si pesado",
                 "next_step": 1,
-                "end": -1
+                "end": -1,
+                "key": "si",
+                "photo": ""
             },
             "right": {
                 "name": "Yo que se, estoy muy perdid@",
                 "next_step": 7,
-                "end": 0
+                "end": 0,
+                "key": "no",
+                "photo": ""
             }
         },
         {
@@ -108,26 +136,34 @@
             "left": {
                 "name": "Hoy quiero ahorrar",
                 "next_step": 1,
-                "end": -1
+                "end": -1,
+                "key": "si",
+                "photo": ""
             },
             "right": {
                 "name": "¿Para que está el dinero si no es para gastarlo?",
                 "next_step": 0,
-                "end": -1
+                "end": -1,
+                "key": "no",
+                "photo": ""
             }
         },
         {
             "num": 8,
-            "question": "¿El deporte nunca va mal?\nVes en bici, a correr o a jugar a futbol o basquet",
+            "question": "El deporte nunca va mal\nVes en bici, a correr o a jugar a futbol o basquet",
             "left": {
                 "name": "No me conoces en absoluto",
                 "next_step": 1,
-                "end": -1
+                "end": -1,
+                "key": "no",
+                "photo": ""
             },
             "right": {
-                "name": "Yo que se, estoy muy perdid@",
+                "name": "Me iría bien hacer deporte",
                 "next_step": 0,
-                "end": -1
+                "end": -1,
+                "key": "si",
+                "photo": ""
             }
         }
     ]

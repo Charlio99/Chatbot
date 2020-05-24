@@ -69,24 +69,13 @@ def cp_reply(m):
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
 
-    if text == user_id.get_node().get_left_name() or 'no' in text:
+    if text == user_id.get_node().get_left_name() or user_id.get_node().get_left_key().lower() in text.lower():
 
-        if user_id.get_node().get_left_end() != 0:
-            endDecision(m, user_id.get_node().get_left_end())
+        showDecision(m, user_id.get_node().left, user_id)
 
-        else:
-            user_id.set_node(user_id.get_node().get_left_next_step())
+    elif text == user_id.get_node().get_right_name() or user_id.get_node().get_right_key().lower() in text.lower():
 
-            bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
-
-    elif text == user_id.get_node().get_right_name():
-
-        if user_id.get_node().get_right_end() != 0:
-            endDecision(m, user_id.get_node().get_right_end())
-
-        else:
-            user_id.set_node(user_id.get_node().get_right_next_step())
-            bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
+        showDecision(m, user_id.get_node().right, user_id)
 
     else:
         bot.send_message(cid, 'Por favor, pulsa solo \"' + user_id.get_node().get_left_name() + '\" o \"' +
@@ -174,25 +163,20 @@ def what_now(m):
 
 
 def showDecision(m, decision, user_id):
-    if decision.end != 0:
-        endDecision(m, decision.end)
+    if decision.end == 1:
+        bot.send_message(m.chat.id, "Me alegra haberte ayudado", parse_mode="Markdown")
+        user_id.set_step(START)
+
+    elif decision.end == -1:
+        bot.send_message(m.chat.id, "Lo siento, no se me ocurre mas planes, yo de ti me iría a dormir",
+                         parse_mode="Markdown")
+        bot.send_message(m.chat.id, "🥺", parse_mode="Markdown")
+        user_id.set_step(START)
 
     else:
         user_id.set_node(decision.next_step)
 
         bot.send_message(m.chat.id, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
 
-
-def endDecision(m, found):
-    if found == 1:
-        bot.send_message(m.chat.id, "Me alegro haberte ayudado", parse_mode="Markdown")
-
-    else:
-        bot.send_message(m.chat.id, "Lo siento, no se me ocurre mas planes, yo de ti me iría a dormir",
-                         parse_mode="Markdown")
-        bot.send_message(m.chat.id, "🥺",
-                         parse_mode="Markdown")
-        ''''
-        bot.send_photo(m.chat.id, 'https://i.pinimg.com/originals/55/70/09/557009e7812880a314833c600ccba5bb.png',
-                       reply_markup=Bot.getInstance().hideBoard)
-        '''
+        if decision.photo is not None:
+            bot.send_photo(m.chat.id, decision.photo, reply_markup=Bot.getInstance().hideBoard)
