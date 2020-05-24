@@ -42,7 +42,7 @@
             "num": 2,
             "question": "¿Te apetece relajarte?",
             "left": {
-                "name": "Si me relajo me duermoo",
+                "name": "Si me relajo me duermo",
                 "next_step": 4,
                 "end": 0,
                 "key": "no",

@@ -1,4 +1,5 @@
 import time
+from difflib import SequenceMatcher
 
 from telebot import types
 
@@ -69,11 +70,11 @@ def cp_reply(m):
     bot.send_chat_action(cid, 'typing')
     time.sleep(2)
 
-    if text == user_id.get_node().get_left_name() or user_id.get_node().get_left_key().lower() in text.lower():
+    if chosenOption(text, user_id.get_node().get_left_name(), user_id.get_node().get_left_key()):
 
         showDecision(m, user_id.get_node().left, user_id)
 
-    elif text == user_id.get_node().get_right_name() or user_id.get_node().get_right_key().lower() in text.lower():
+    elif chosenOption(text, user_id.get_node().get_right_name(), user_id.get_node().get_right_key()):
 
         showDecision(m, user_id.get_node().right, user_id)
 
@@ -127,7 +128,7 @@ def new_cp_reply(m):
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: message.text.lower() == "recomiendame algo")
+@bot.message_handler(func=lambda message: 0.8 <= SequenceMatcher(None, message.text.lower(), "recomiendame algo").ratio())
 def command_text_recommend(m):
     cid = m.chat.id
     user_id = Bot.getInstance().users.get(cid)
@@ -162,15 +163,26 @@ def what_now(m):
     bot.send_message(m.chat.id, "¿Que quieres hacer ahora?\n(Prueba con: _recomiendame algo_)", parse_mode="Markdown")
 
 
+def chosenOption(text, name, key):
+    if SequenceMatcher(None, text, name).ratio() >= 0.8:
+        return True
+
+    if SequenceMatcher(None, text.lower(), key).ratio() >= 0.8:
+        return True
+
+    return False
+
+
 def showDecision(m, decision, user_id):
     if decision.end == 1:
         bot.send_message(m.chat.id, "Me alegra haberte ayudado", parse_mode="Markdown")
+        bot.send_message(m.chat.id, "🥰", parse_mode="Markdown")
         user_id.set_step(START)
 
     elif decision.end == -1:
         bot.send_message(m.chat.id, "Lo siento, no se me ocurre mas planes, yo de ti me iría a dormir",
                          parse_mode="Markdown")
-        bot.send_message(m.chat.id, "🥺", parse_mode="Markdown")
+        bot.send_message(m.chat.id, "😧", parse_mode="Markdown")
         user_id.set_step(START)
 
     else:
