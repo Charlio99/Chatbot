@@ -38,6 +38,7 @@ class Decision:
                 node['num'],
                 node['question'],
                 node['photo'],
+                node['gif'],
                 node['left']['name'],
                 node['left']['next_step'],
                 node['left']['end'],

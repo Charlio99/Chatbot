@@ -9,7 +9,7 @@ class Route:
 
 class NodeGraph:
 
-    def __init__(self, num, question, photo, left_name, left_next_step, left_end, left_key, right_name,
+    def __init__(self, num, question, photo, gif, left_name, left_next_step, left_end, left_key, right_name,
                  right_next_step, right_end, right_key):
 
         self.num = num
@@ -19,6 +19,11 @@ class NodeGraph:
             photo = None
 
         self.photo = photo
+
+        if len(gif) == 0:
+            gif = None
+
+        self.gif = gif
         self.left = Route(left_name, left_next_step, left_end, left_key)
         self.right = Route(right_name, right_next_step, right_end, right_key)
 

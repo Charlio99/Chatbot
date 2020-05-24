@@ -59,6 +59,7 @@ def command_settings(m):
         user_id.set_step(NEW_POSTAL_CODE)
     print("")
 
+
 # filter on a specific message
 @bot.message_handler(func=lambda message: message.text.lower() == "hola")
 def command_text_hi(m):
@@ -83,7 +84,8 @@ def command_text_hi(m):
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: 0.8 <= SequenceMatcher(None, message.text.lower(), "recomiendame algo").ratio())
+@bot.message_handler(
+    func=lambda message: 0.8 <= SequenceMatcher(None, message.text.lower(), "recomiendame algo").ratio())
 def command_text_recommend(m):
     cid = m.chat.id
     user_id = Bot.getInstance().users.get(cid)
@@ -202,3 +204,7 @@ def showDecision(m, decision, user_id):
 
         if user_id.get_node().photo is not None:
             bot.send_photo(m.chat.id, user_id.get_node().photo, reply_markup=userLikes.option[user_id.get_node().num])
+
+        if user_id.get_node().gif is not None:
+            bot.send_animation(m.chat.id, user_id.get_node().gif, duration=None, caption=None, reply_to_message_id=None,
+                               reply_markup=None, parse_mode=None, disable_notification=None, timeout=None)
