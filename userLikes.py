@@ -3,6 +3,7 @@ from difflib import SequenceMatcher
 
 from telebot import types
 
+from Graph.node import Response
 from Graph.readGraph import Decision
 from singletonBot import Bot
 
@@ -175,11 +176,35 @@ def what_now(m):
     bot.send_message(m.chat.id, "¿Que quieres hacer ahora?\n(Prueba con: _recomiendame algo_)", parse_mode="Markdown")
 
 
-def chosenOption(text, name, key):
-    if SequenceMatcher(None, text, name).ratio() >= 0.8:
+def chosenOption(text, option, key):
+
+    if check_similarity_percentage(text, option):
         return True
 
-    if SequenceMatcher(None, text.lower(), key).ratio() >= 0.8:
+    if check_similarity_percentage(text, key):
+        return True
+
+    if key == 'si':
+
+        for response in Response.getInstance().get_affirmative():
+            if check_similarity_percentage(text, response):
+                return True
+
+    elif key == 'no':
+
+        for response in Response.getInstance().get_negative():
+            if check_similarity_percentage(text, response):
+                return True
+
+    return False
+
+
+def check_similarity_percentage(text, option):
+
+    if SequenceMatcher(None, text, option).ratio() >= 0.8:
+        return True
+
+    if option in text:
         return True
 
     return False

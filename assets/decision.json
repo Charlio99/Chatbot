@@ -7,7 +7,7 @@
             "photo": "",
             "gif": "",
             "left": {
-                "name": "Con amigos",
+                "name": "Con amigos o familia",
                 "next_step": 7,
                 "end": 0,
                 "key": "gente"
@@ -133,20 +133,20 @@
         },
         {
             "num": 7,
-            "question": "¿Te importaría gastarte dinero?",
+            "question": "¿Quieres gastarte dinero?",
             "photo": "",
             "gif": "",
             "left": {
                 "name": "Hoy quiero ahorrar",
                 "next_step": 8,
                 "end": 0,
-                "key": "si"
+                "key": "no"
             },
             "right": {
                 "name": "¿Para que está el dinero si no es para gastarlo?",
                 "next_step": 11,
                 "end": 0,
-                "key": "no"
+                "key": "si"
             }
         },
         {

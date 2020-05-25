@@ -44,3 +44,40 @@ class NodeGraph:
 
     def get_right_key(self):
         return self.right.key
+
+
+class Response:
+
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        if Response.__instance is None:
+            Response()
+        return Response.__instance
+
+    def __init__(self):
+
+        Response.__instance = self
+
+        self.affirmative = [
+            'si',
+            'claro',
+            'me gusta',
+            'vale',
+            'venga',
+            'me parece bien',
+            'afirmativo'
+        ]
+
+        self.negative = [
+            'no',
+            'buff',
+            'negativo'
+        ]
+
+    def get_affirmative(self):
+        return self.affirmative
+
+    def get_negative(self):
+        return self.negative
