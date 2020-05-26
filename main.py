@@ -1,12 +1,13 @@
-# from commands import Commands
+from Graph.readGraph import Decision
 from commands import Commands
 from singletonBot import Bot
-from userLikes import UserLikes
 
 knownUsers = []  # todo: save these in a file,
 userStep = {}  # so they won't reset every time the bot restarts
 
+graph = Decision()
+graph.readJson()
+
 Commands()
-UserLikes()
 bot = Bot.getInstance().bot
 bot.polling()
