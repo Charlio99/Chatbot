@@ -62,23 +62,32 @@ def command_settings(m):
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: message.text.lower() == "hola")
+@bot.message_handler(func=lambda message: check_similarity_percentage(message.text, "hola"))
 def command_text_hi(m):
     time.sleep(2)
-    bot.send_message(m.chat.id, "¡Hola! Si necesitas ayuda puedes usar /ayuda para ver la página de ayuda")
+    bot.send_message(m.chat.id, "¡Hola!")
+    bot.send_animation(m.chat.id, 'https://i.pinimg.com/originals/2d/a5/cc/2da5cccdaa10e142846390f3851feb46.gif',
+                       duration=None, caption=None, reply_to_message_id=None, reply_markup=None, parse_mode=None,
+                       disable_notification=None, timeout=None)
+    bot.send_message(m.chat.id, "Si necesitas ayuda puedes usar /ayuda para ver la página de ayuda")
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: message.text.lower() == "ayuda")
+@bot.message_handler(func=lambda message: 0.8 <= SequenceMatcher(None, message.text.lower(), "ayuda").ratio())
 def command_text_help(m):
     bot.send_message(m.chat.id, "Para ver la página de ayuda puedes usar /ayuda")
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: message.text.lower() == "adios")
+@bot.message_handler(func=lambda message: check_similarity_percentage(message.text, "adiós"))
 def command_text_hi(m):
     time.sleep(2)
     bot.send_message(m.chat.id, "Adiós, nos vemos pronto")
+
+    bot.send_animation(m.chat.id, 'https://reygif.com/media/pocahontas-saludo-83409.gif',duration=None, caption=None,
+                       reply_to_message_id=None, reply_markup=None, parse_mode=None, disable_notification=None,
+                       timeout=None)
+
     user_id = Bot.getInstance().users.get(m.chat.id)
     user_id.set_step(START)
     user_id.set_node(START)
@@ -86,7 +95,7 @@ def command_text_hi(m):
 
 # filter on a specific message
 @bot.message_handler(
-    func=lambda message: 0.8 <= SequenceMatcher(None, message.text.lower(), "recomiendame algo").ratio())
+    func=lambda message: check_similarity_percentage(message.text, "recomiendame algo"))
 def command_text_recommend(m):
     cid = m.chat.id
     user_id = Bot.getInstance().users.get(cid)
@@ -201,10 +210,10 @@ def chosenOption(text, option, key):
 
 def check_similarity_percentage(text, option):
 
-    if SequenceMatcher(None, text, option).ratio() >= 0.8:
+    if SequenceMatcher(None, text.lower(), option.lower()).ratio() >= 0.8:
         return True
 
-    if option in text:
+    if option.lower() in text.lower():
         return True
 
     return False
