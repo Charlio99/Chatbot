@@ -15,6 +15,7 @@ class Commands:
 commandClass = Commands()
 bot = Bot.getInstance().bot
 
+
 # handle the "/start" command
 @bot.message_handler(commands=['start'])
 def command_start(m):
