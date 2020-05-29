@@ -8,8 +8,8 @@ from Graph.readGraph import Decision
 from singletonBot import Bot
 
 START = 0
-POSTAL_CODE = 1
-NEW_POSTAL_CODE = 2
+LOCATION = 1
+NEW_LOCATION = 2
 ALONE_FRIENDS = 3
 NEXT_DECISION = 4
 
@@ -51,13 +51,13 @@ def command_settings(m):
     if user_id.get_latitude() is None or user_id.get_longitude() is None:
         bot.send_message(cid, "Para poder ofrecerte resultados el bot necesita saber tu ubicación.\n"
                               "A continuación te aparecerá un botón para enviarla", reply_markup=userLikes.location)
-        user_id.set_step(POSTAL_CODE)
+        user_id.set_step(LOCATION)
     else:
         bot.send_message(cid, "Tu ubicación actual es: ")
         bot.send_location(cid, user_id.get_latitude(), user_id.get_longitude(),
                           reply_markup=Bot.getInstance().hideBoard)
         bot.send_message(cid, "\n¿Quieres cambiarla?", reply_markup=userLikes.yes_no_select)
-        user_id.set_step(NEW_POSTAL_CODE)
+        user_id.set_step(NEW_LOCATION)
 
 
 # filter on a specific message
@@ -129,7 +129,7 @@ def this_or_that(m):
 
 
 # if the user has issued the "/configure" command, process the answer
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == POSTAL_CODE,
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == LOCATION,
                      content_types=['location'])
 def configure_location(m):
     cid = m.chat.id
@@ -142,7 +142,7 @@ def configure_location(m):
 
 
 # if the user has issued the "/configure" command, process the answer
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == POSTAL_CODE,
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == LOCATION,
                      content_types=['text'])
 def configure_location_text(m):
     cid = m.chat.id
@@ -152,7 +152,7 @@ def configure_location_text(m):
     bot.send_message(cid, "Ubicación no válida, intentalo de nuevo.", reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == NEW_POSTAL_CODE,
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == NEW_LOCATION,
                      content_types=['text'])
 def configure_new_location(m):
     cid = m.chat.id
@@ -163,7 +163,7 @@ def configure_new_location(m):
     if text == 'Si':
         bot.send_message(cid, "A continuación te aparecerá un botón para enviar la ubicación",
                          reply_markup=userLikes.location)
-        user_id.set_step(POSTAL_CODE)
+        user_id.set_step(LOCATION)
     elif text == 'No':
         bot.send_message(cid, "¡De acuerdo!", reply_markup=Bot.getInstance().hideBoard)
         user_id.set_step(NEXT_DECISION)
