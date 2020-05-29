@@ -1,4 +1,3 @@
-# from commands import Commands
 from commands import Commands
 from singletonBot import Bot
 from userLikes import UserLikes

@@ -30,7 +30,6 @@ class Bot:
 
 # only used for console output now
 def listener(messages):
-
     # When new messages arrive TeleBot will call this function.
     for m in messages:
         if m.content_type == 'text':
