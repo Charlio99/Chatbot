@@ -1,0 +1,21 @@
+version: '2'
+
+networks:
+  neo4j-network:
+    driver: bridge
+
+services:
+  neo4j:
+    image: bitnami/neo4j:latest
+    networks:
+      - neo4j-network
+    ports:
+      - '7474:7474'
+      - '7473:7473'
+      - '7687:7687'
+    environment:
+      # Raise memory limits
+      - NEO4J_dbms_memory_pagecache_size=1G
+      - NEO4J_dbms.memory.heap.initial_size=1G
+      - NEO4J_dbms_memory_heap_max__size=1G
+      - NEO4J_dbms_default__database=neo4jDB

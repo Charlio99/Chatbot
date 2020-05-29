@@ -8,3 +8,7 @@ pyTelegramBotAPI==3.6.7
 requests==2.23.0
 six==1.14.0
 urllib3==1.25.8
+neo4j-driver==1.7.1
+python-dotenv~=0.13.0
+neomodel~=3.3.2
+py2neo==5.0b1
