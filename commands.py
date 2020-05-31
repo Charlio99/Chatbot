@@ -24,7 +24,7 @@ def command_start(m):
     if user is None:  # if user hasn't used the "/start" command yet:
         Bot.getInstance().users[cid] = User(cid)
         bot.send_message(cid, "¡Hola! Soy Pilus, un bot recomendador de planes")
-        command_help(m)
+        # command_help(m)
         bot.send_message(cid, "Antes de nada, vamos a configurar tu perfil para perfeccionar mis recomendaciones")
         from userLikes import command_settings
         command_settings(m)
@@ -36,10 +36,9 @@ def command_start(m):
 @bot.message_handler(commands=['ayuda'])
 def command_help(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
     help_text = "Los comandos disponibles son los siguientes: \n"
     for key in commandClass.commands:  # generate help text out of the commands dictionary defined at the top
         help_text += "/" + key + ": "
         help_text += commandClass.commands[key] + "\n"
-    help_text += "Si quieres que te recomiende algo simplemente di: _recomiendame algo_"
+    help_text += "Si quieres que te recomiende algo simplemente di: _recomiéndame algo_"
     bot.send_message(cid, help_text, parse_mode="Markdown")  # send the generated help page

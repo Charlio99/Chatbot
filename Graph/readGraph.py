@@ -25,11 +25,12 @@ class Decision:
 
     def read_json(self):
         # Opening JSON file
-        json_file = open('assets/decision.json')
+        json_file = open('assets/decision.json', encoding='utf-8')
 
         # returns JSON object as
         # a dictionary
-        data = json.load(json_file)
+        keys = json_file.read()
+        data = json.loads(keys)
 
         # Iterating through the json
         for node in data['nodes']:

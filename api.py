@@ -27,6 +27,6 @@ def nearby_places(lat, long, category, radius=None):
     if result is not None:
         loc = result.get('results')[0].get('geometry').get('location')
         location = (loc.get('lat'), loc.get('lng'))
-        return location
+        return result.get('results')
     else:
         return None
