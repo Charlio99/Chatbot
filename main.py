@@ -6,7 +6,7 @@ knownUsers = []  # todo: save these in a file,
 userStep = {}  # so they won't reset every time the bot restarts
 
 graph = Decision()
-graph.readJson()
+graph.read_json()
 
 Commands()
 bot = Bot.getInstance().bot

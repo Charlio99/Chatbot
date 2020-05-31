@@ -20,10 +20,13 @@ def places_nearby(
 """
 
 
-def nearby_places(lat, long, category, radius=1500):
-    result = gmaps.places_nearby(location=(lat, long), radius=radius, open_now=True, type=category.value,
-                                 rank_by='distance')
+def nearby_places(lat, long, category, radius=None):
+    rank_by = 'distance'
+    result = gmaps.places_nearby(location=(lat, long), radius=radius, open_now=True, type=category,
+                                     rank_by=rank_by)
     if result is not None:
-        return result.get('results')
+        loc = result.get('results')[0].get('geometry').get('location')
+        location = (loc.get('lat'), loc.get('lng'))
+        return location
     else:
         return None

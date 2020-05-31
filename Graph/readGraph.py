@@ -23,7 +23,7 @@ class Decision:
             self.graph = nx.DiGraph()
             self.nodes = {}
 
-    def readJson(self):
+    def read_json(self):
         # Opening JSON file
         json_file = open('assets/decision.json')
 
@@ -42,10 +42,12 @@ class Decision:
                 node['left']['name'],
                 node['left']['next_step'],
                 node['left']['end'],
+                node['left']['category'],
                 node['left']['key'],
                 node['right']['name'],
                 node['right']['next_step'],
                 node['right']['end'],
+                node['right']['category'],
                 node['right']['key'],
             )
             self.graph.add_node(node_graph.num, node=node_graph)
@@ -58,5 +60,5 @@ class Decision:
         # Closing file
         json_file.close()
 
-    def getFirstNode(self):
+    def get_first_node(self):
         return self.graph.nodes[0]

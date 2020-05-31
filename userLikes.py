@@ -1,4 +1,5 @@
 import time
+from api import nearby_places
 from difflib import SequenceMatcher
 
 from telebot import types
@@ -6,6 +7,7 @@ from telebot import types
 from Graph.node import Response
 from Graph.readGraph import Decision
 from singletonBot import Bot
+
 
 START = 0
 LOCATION = 1
@@ -139,6 +141,7 @@ def configure_location(m):
     user.set_longitude(m.location.longitude)
     bot.send_message(cid, "Ubicación guardada con éxito.")
     user.set_step(0)
+    what_now(m)
 
 
 # if the user has issued the "/configure" command, process the answer
@@ -190,12 +193,12 @@ def chosen_option(text, option, key):
         return True
 
     if key == 'si':
-        for response in Response.getInstance().get_affirmative():
+        for response in Response.get_instance().get_affirmative():
             if check_similarity_percentage(text, response):
                 return True
 
     elif key == 'no':
-        for response in Response.getInstance().get_negative():
+        for response in Response.get_instance().get_negative():
             if check_similarity_percentage(text, response):
                 return True
 
@@ -217,13 +220,20 @@ def check_similarity_percentage(text, option):
 
 def show_decision(m, decision, user_id):
     if decision.end == 1:
-        bot.send_message(m.chat.id, "Me alegra haberte ayudado", parse_mode="Markdown")
+        category = decision.category
+        if category is not None:
+            if category != 'chefbot':
+                (lat, lon) = nearby_places(user_id.get_latitude(), user_id.get_longitude(), category)
+                bot.send_location(m.chat.id, lat, lon)
+            elif category == 'chefbot':
+                bot.send_message(m.chat.id, "@NoteolvidesBot 👨‍🍳", parse_mode="Markdown")
+
+        bot.send_message(m.chat.id, "Me alegra haberte ayudado")
         bot.send_message(m.chat.id, "🥰", parse_mode="Markdown")
         user_id.set_step(START)
 
     elif decision.end == -1:
-        bot.send_message(m.chat.id, "Lo siento, no se me ocurre mas planes, yo de ti me iría a dormir",
-                         parse_mode="Markdown")
+        bot.send_message(m.chat.id, "Lo siento, no se me ocurren más planes")
         bot.send_message(m.chat.id, "😧", parse_mode="Markdown")
         user_id.set_step(START)
 
