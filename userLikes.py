@@ -44,11 +44,11 @@ class UserLikes:
         for aux in list(Decision.getInstance().graph.nodes):
             self.option.insert(aux, types.ReplyKeyboardMarkup(one_time_keyboard=True))
 
-        self.category_decision = Category_Decision()
-        self.category_decision.set_option(self.option)
-
         self.location = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.replay_all_keyboard_makeup()
+
+        Category_Decision.getInstance().set_option(self.option)
+
         Bot.getInstance().setHideBoard(types)
 
     def replay_all_keyboard_makeup(self):

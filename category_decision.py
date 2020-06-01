@@ -11,8 +11,17 @@ NEXT_DECISION = 4
 
 
 class Category_Decision:
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        if Category_Decision.__instance is None:
+            Category_Decision()
+        return Category_Decision.__instance
 
     def __init__(self):  # Declare the constructor with or without parameters
+
+        Category_Decision.__instance = self
 
         self.activity = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         index = 0
@@ -24,10 +33,14 @@ class Category_Decision:
 
     def set_option(self, option):
         self.option = option
+        pass
+
+    def get_option(self):
+        return self.option
 
 
 bot = Bot.getInstance().bot
-category_decision = Category_Decision()
+category_decision = Category_Decision.getInstance()
 
 
 @bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == CATEGORY,
@@ -44,8 +57,7 @@ def choose_category(m):
             user_id.set_node(category.node)
             correct = True
             user_id.set_step(NEXT_DECISION)
-            bot.send_message(cid, user_id.get_node().question,
-                             reply_markup=category_decision.option[user_id.get_node().num])
+            bot.send_message(cid, user_id.get_node().question, reply_markup=category_decision.get_option()[category.node])
             break
 
     if correct is False:
