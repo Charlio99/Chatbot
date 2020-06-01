@@ -8,6 +8,7 @@ from telebot import types
 from Graph.node import Response
 from Graph.readGraph import Decision
 from category.category_decision import Category_Decision, check_similarity_percentage, choose_category
+from places import Places
 from singletonBot import Bot
 
 START = 0
@@ -301,8 +302,8 @@ def next_recommendation(m, user_id):
     name = result[counter].get('name')
     address = result[counter].get('vicinity')
     bot.send_location(m.chat.id, loc.get('lat'), loc.get('lng'))
-    bot.send_message(m.chat.id, "He encontrado este restaurante cerca de ti, ¿Qué te parece?\n"
-                                "*" + name + "*\nDirección: _" + address + "_",
+    bot.send_message(m.chat.id, "He encontrado este " + Places.getInstance().get_place_name(cat) + " cerca de ti, "
+                                "¿Qué te parece?\n*" + name + "*\nDirección: _" + address + "_",
                      reply_markup=userLikes.recommendation_select, parse_mode="Markdown")
     counter += 1
     user_id.set_step(RECOMMENDATIONS)

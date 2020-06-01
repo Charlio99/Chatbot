@@ -7,6 +7,7 @@ NODE_NO_SE = 0
 
 
 class Category:
+
     def __init__(self, name, emoji, node):
         self.name = name
         self.emoji = emoji
@@ -26,12 +27,12 @@ class Categories:
     def __init__(self):
         Categories.__instance = self
         self.activities = []
-        self.activities.append(Category('Food', '🥪', NODE_FOOD))
-        self.activities.append(Category('Store', '🛍', NODE_STORE))
-        self.activities.append(Category('Entertainment', '🎞 🏋 🎳', NODE_ENTERTAINMENT))
-        self.activities.append(Category('Health', '🧖‍ ️🏞', NODE_HEALTH))
-        self.activities.append(Category('Tourism', '🗺', NODE_TOURISM))
-        self.activities.append(Category("I don't know", '🤷‍♂️', NODE_NO_SE))
+        self.activities.append(Category('Comida', '🥪', NODE_FOOD))
+        self.activities.append(Category('Tienda', '🛍', NODE_STORE))
+        self.activities.append(Category('Entretenimiento', '🎞 🏋 🎳', NODE_ENTERTAINMENT))
+        self.activities.append(Category('Salud', '🧖‍ ️🏞', NODE_HEALTH))
+        self.activities.append(Category('Turismo', '🗺', NODE_TOURISM))
+        self.activities.append(Category("No lo se", '🤷‍♂️', NODE_NO_SE))
         pass
 
     def get_node(self, name):
