@@ -29,6 +29,7 @@ class Entertainment(Enum):
     AQUARIUM = 'aquarium'
     ART_GALLERY = 'art_gallery'
     ZOO = 'zoo'
+    PARK = 'park'
 
 
 class Health(Enum):
