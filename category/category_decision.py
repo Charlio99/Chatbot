@@ -20,16 +20,18 @@ class Category_Decision:
         return Category_Decision.__instance
 
     def __init__(self):  # Declare the constructor with or without parameters
-
         Category_Decision.__instance = self
-
+        activities = Categories.getInstance().get_activities().copy()
         self.activity = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-        index = 0
         self.option = []
 
-        for activity in Categories.getInstance().get_activities():
-            self.activity.add(activity.name + " " + activity.emoji)
-            index += 1
+        while len(activities) > 0:
+            a1 = activities.pop(0)
+            if len(activities) == 0:
+                self.activity.add(a1.name + " " + a1.emoji)
+                break
+            a2 = activities.pop(0)
+            self.activity.add(a1.name + " " + a1.emoji, a2.name + " " + a2.emoji)
 
     def set_option(self, option):
         self.option = option
