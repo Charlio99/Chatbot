@@ -1,3 +1,4 @@
+from neo4jDB.Controllers.UserController import UserController
 from singletonBot import Bot
 from user import User
 
@@ -20,9 +21,8 @@ bot = Bot.getInstance().bot
 @bot.message_handler(commands=['start'])
 def command_start(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
-    if user is None:  # if user hasn't used the "/start" command yet:
-        Bot.getInstance().users[cid] = User(cid)
+    if UserController.getInstance().checkUserByIdIfExists(cid):  # if user hasn't used the "/start" command yet:
+        UserController.getInstance().storeUser(cid, m.chat.first_name, 0)
         bot.send_message(cid, "¡Hola! Soy Pilus, un bot recomendador de planes")
         # command_help(m)
         bot.send_message(cid, "Antes de nada, vamos a configurar tu perfil para perfeccionar mis recomendaciones")
@@ -36,7 +36,6 @@ def command_start(m):
 @bot.message_handler(commands=['ayuda'])
 def command_help(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
     help_text = "Los comandos disponibles son los siguientes: \n"
     for key in commandClass.commands:  # generate help text out of the commands dictionary defined at the top
         help_text += "/" + key + ": "

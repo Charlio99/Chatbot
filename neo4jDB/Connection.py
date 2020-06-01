@@ -12,13 +12,14 @@ class Connection:
         return Connection.__instance
 
     """Constructor"""
+
     def __init__(self):
         """ Virtually private constructor. """
         self._driver = None
         if Connection.__instance is not None:
             raise Exception("This class is a singleton!")
         else:
-            self.graph = Graph("bolt://localhost:7687", auth=('neo4j', "bitnami"))
+            self.graph = Graph("bolt://byted.duckdns.org:3333", auth=('neo4j', "covid19"))
             Connection.__instance = self
 
     def getConnection(self):

@@ -2,11 +2,12 @@ from Graph.readGraph import Decision
 
 
 class User:
-    def __init__(self, cid, step=0, city=None, email=None, name=None, aux_node=0, last_step=0, latitude=None,
+    def __init__(self, cid, step=0, cp=None, city=None, email=None, name=None, aux_node=0, latitude=None,
                  longitude=None):
         self.chatId = cid
         self.step = step
-        self.last_step = last_step
+        self.cp = cp
+
         self.latitude = latitude
         self.longitude = longitude
         self.aux_node = aux_node
@@ -23,12 +24,7 @@ class User:
     def get_step(self):
         return self.step
 
-    def get_last_step(self):
-        return self.last_step
-
     def set_step(self, step):
-        self.last_step = self.step
-        self.step = step
 
     def get_latitude(self):
         return self.latitude

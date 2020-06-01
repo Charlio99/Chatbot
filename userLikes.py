@@ -6,6 +6,7 @@ from telebot import types
 
 from Graph.node import Response
 from Graph.readGraph import Decision
+from neo4jDB.Controllers.UserController import UserController
 from singletonBot import Bot
 
 
@@ -41,32 +42,37 @@ class UserLikes:
 
 userLikes = UserLikes()
 bot = Bot.getInstance().bot
+users = UserController.getInstance()
 
 
 # config page
 @bot.message_handler(commands=['configurar'])
 def command_settings(m):
     cid = m.chat.id
-    user_id = Bot.getInstance().users.get(cid)
+    user_id = users.getUserById(cid)
+    loc = users.getUserLocationByUserID(cid)
+
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
-    if user_id.get_latitude() is None or user_id.get_longitude() is None:
+    time.sleep(1)
+
+    if loc.latitude is None or loc.longitude is None:
         bot.send_message(cid, "Para poder ofrecerte resultados el bot necesita saber tu ubicación.\n"
                               "A continuación te aparecerá un botón para enviarla", reply_markup=userLikes.location)
-        user_id.set_step(LOCATION)
+        users.storeStep(user_id, LOCATION)
     else:
         bot.send_message(cid, "Tu ubicación actual es: ")
-        bot.send_location(cid, user_id.get_latitude(), user_id.get_longitude(),
+        bot.send_location(cid, loc.latitude, loc.longitude,
                           reply_markup=Bot.getInstance().hideBoard)
         bot.send_message(cid, "\n¿Quieres cambiarla?", reply_markup=userLikes.yes_no_select)
-        user_id.set_step(NEW_LOCATION)
+        users.storeStep(user_id, NEW_LOCATION)
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(
-    message.chat.id).get_step() == START and check_similarity_percentage(message.text, "hola"), content_types=['text'])
+@bot.message_handler(
+    func=lambda message: users.getUserById(message.chat.id).step == START and
+                         check_similarity_percentage(message.text, "hola"), content_types=['text'])
 def command_text_hi(m):
-    time.sleep(2)
+    time.sleep(1)
     bot.send_message(m.chat.id, "¡Hola!")
     bot.send_animation(m.chat.id, 'https://i.pinimg.com/originals/2d/a5/cc/2da5cccdaa10e142846390f3851feb46.gif',
                        duration=None, caption=None, reply_to_message_id=None, reply_markup=None, parse_mode=None,
@@ -75,101 +81,113 @@ def command_text_hi(m):
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == START and 0.8 <= SequenceMatcher(None, message.text.lower(), "ayuda").ratio(),
-                     content_types=['text'])
+@bot.message_handler(
+    func=lambda message: users.getUserById(message.chat.id).step == START and 0.8 <= SequenceMatcher(
+        None, message.text.lower(), "ayuda").ratio(),
+    content_types=['text'])
 def command_text_help(m):
     bot.send_message(m.chat.id, "Para ver la página de ayuda puedes usar /ayuda")
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == START and check_similarity_percentage(message.text, "adiós"), content_types=['text'])
+@bot.message_handler(
+    func=lambda message: users.getUserById(message.chat.id).step == START and check_similarity_percentage(message.text,
+                                                                                                          "adiós"),
+    content_types=['text'])
 def command_text_hi(m):
-    time.sleep(2)
+    time.sleep(1)
     bot.send_message(m.chat.id, "Adiós, nos vemos pronto")
     bot.send_animation(m.chat.id, 'https://reygif.com/media/pocahontas-saludo-83409.gif', duration=None, caption=None,
                        reply_to_message_id=None, reply_markup=None, parse_mode=None, disable_notification=None,
                        timeout=None)
 
-    user_id = Bot.getInstance().users.get(m.chat.id)
-    user_id.set_step(START)
-    user_id.set_node(START)
+    user_id = users.getUserById(m.chat.id)
+    users.storeStep(user_id, START)
+    users.save_node(user_id, START)
 
 
 # filter on a specific message
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == START and check_similarity_percentage(message.text, "recomiendame algo"),
-                     content_types=['text'])
+@bot.message_handler(
+    func=lambda message: users.getUserById(message.chat.id).step == START and check_similarity_percentage(message.text,
+                                                                                                          "recomiendame algo"),
+    content_types=['text'])
 def command_text_recommend(m):
     cid = m.chat.id
-    user_id = Bot.getInstance().users.get(cid)
-    if user_id.get_longitude is None or user_id.get_latitude is None:
-        bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
+    user_id = users.getUserById(cid)
+    loc = users.getUserLocationByUserID(cid)
+
+    bot.send_chat_action(cid, 'typing')
+    time.sleep(1)
+
+    if loc.latitude is None or loc.longitude is None:
+        bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu localización.\n"
                               "Para hacerlo usa el comando /configurar")
     else:
-        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
-        user_id.set_step(NEXT_DECISION)
+        bot.send_message(cid, users.get_node(cid).question, reply_markup=userLikes.option[users.get_node(cid).num])
+        users.storeStep(user_id, NEXT_DECISION)
 
 
 # if the user has issued the "/configure" command, process the answer
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == NEXT_DECISION,
+@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == NEXT_DECISION,
                      content_types=['text'])
 def this_or_that(m):
     cid = m.chat.id
-    user_id = Bot.getInstance().users.get(cid)
+    user_id = users.getUserById(cid)
     text = m.text
 
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
+    time.sleep(1)
 
-    if chosen_option(text, user_id.get_node().get_left_name(), user_id.get_node().get_left_key()):
-        show_decision(m, user_id.get_node().left, user_id)
+    if chosen_option(text, users.get_node(cid).get_left_name(), users.get_node(cid).get_left_key()):
+        show_decision(m, users.get_node(cid).left, user_id)
 
-    elif chosen_option(text, user_id.get_node().get_right_name(), user_id.get_node().get_right_key()):
-        show_decision(m, user_id.get_node().right, user_id)
+    elif chosen_option(text, users.get_node(cid).get_right_name(), users.get_node(cid).get_right_key()):
+        show_decision(m, users.get_node(cid).right, user_id)
     else:
-        bot.send_message(cid, 'Por favor, pulsa solo \"' + user_id.get_node().get_left_name() + '\" o \"' +
-                         user_id.get_node().get_right_name() + '\"')
+        bot.send_message(cid, 'Por favor, pulsa solo \"' + users.get_node(cid).get_left_name() + '\" o \"' +
+                         users.get_node(cid).get_right_name() + '\"')
 
 
 # if the user has issued the "/configure" command, process the answer
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == LOCATION,
+@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == LOCATION,
                      content_types=['location'])
 def configure_location(m):
     cid = m.chat.id
-    user = Bot.getInstance().users.get(cid)
-    time.sleep(1.5)
-    user.set_latitude(m.location.latitude)
-    user.set_longitude(m.location.longitude)
+    user_id = users.getUserById(cid)
+    users.save_location(user_id, m.location.latitude, m.location.longitude)
+
+    time.sleep(1)
     bot.send_message(cid, "Ubicación guardada con éxito.")
-    user.set_step(0)
     what_now(m)
+    users.storeStep(user_id, START)
 
 
 # if the user has issued the "/configure" command, process the answer
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == LOCATION,
+@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == LOCATION,
                      content_types=['text'])
 def configure_location_text(m):
     cid = m.chat.id
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
+    time.sleep(1)
     markup = types.ForceReply(selective=False)
     bot.send_message(cid, "Ubicación no válida, intentalo de nuevo.", reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == NEW_LOCATION,
+@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == NEW_LOCATION,
                      content_types=['text'])
 def configure_new_location(m):
     cid = m.chat.id
-    user_id = Bot.getInstance().users.get(cid)
+    user_id = users.getUserById(cid)
     text = m.text
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
+    time.sleep(1)
     if text == 'Si':
         bot.send_message(cid, "A continuación te aparecerá un botón para enviar la ubicación",
                          reply_markup=userLikes.location)
-        user_id.set_step(LOCATION)
+        users.storeStep(user_id, LOCATION)
     elif text == 'No':
         bot.send_message(cid, "¡De acuerdo!", reply_markup=Bot.getInstance().hideBoard)
-        user_id.set_step(NEXT_DECISION)
+        users.storeStep(user_id, NEXT_DECISION)
     else:
         bot.send_message(cid, "Por favor, pulsa solo \"Si\" o \"No\"")
 
@@ -219,32 +237,34 @@ def check_similarity_percentage(text, option):
 
 
 def show_decision(m, decision, user_id):
+    cid = m.chat.id
     if decision.end == 1:
         category = decision.category
         if category is not None:
             if category != 'chefbot':
-                (lat, lon) = nearby_places(user_id.get_latitude(), user_id.get_longitude(), category)
-                bot.send_location(m.chat.id, lat, lon)
+                loc = users.getUserLocationByUserID(cid)
+                (lat, lon) = nearby_places(loc.latitude, loc.longitude, category)
+                bot.send_location(cid, lat, lon)
             elif category == 'chefbot':
-                bot.send_message(m.chat.id, "@NoteolvidesBot 👨‍🍳", parse_mode="Markdown")
+                bot.send_message(cid, "@NoteolvidesBot 👨‍🍳", parse_mode="Markdown")
 
-        bot.send_message(m.chat.id, "Me alegra haberte ayudado")
-        bot.send_message(m.chat.id, "🥰", parse_mode="Markdown")
-        user_id.set_step(START)
+        bot.send_message(cid, "Me alegra haberte ayudado")
+        bot.send_message(cid, "🥰", parse_mode="Markdown")
+        users.storeStep(user_id, START)
 
     elif decision.end == -1:
-        bot.send_message(m.chat.id, "Lo siento, no se me ocurren más planes")
-        bot.send_message(m.chat.id, "😧", parse_mode="Markdown")
-        user_id.set_step(START)
-
+        bot.send_message(cid, "Lo siento, no se me ocurren más planes")
+        bot.send_message(cid, "😧", parse_mode="Markdown")
+        users.storeStep(user_id, START)
+        
     else:
-        user_id.set_node(decision.next_step)
+        users.save_node(user_id, decision.next_step)
 
-        bot.send_message(m.chat.id, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
+        bot.send_message(cid, users.get_node(cid).question, reply_markup=userLikes.option[users.get_node(cid).num])
 
-        if user_id.get_node().photo is not None:
-            bot.send_photo(m.chat.id, user_id.get_node().photo, reply_markup=userLikes.option[user_id.get_node().num])
+        if users.get_node(cid).photo is not None:
+            bot.send_photo(cid, users.get_node(cid).photo, reply_markup=userLikes.option[users.get_node(cid).num])
 
-        if user_id.get_node().gif is not None:
-            bot.send_animation(m.chat.id, user_id.get_node().gif, duration=None, caption=None, reply_to_message_id=None,
+        if users.get_node(cid).gif is not None:
+            bot.send_animation(cid, users.get_node(cid).gif, duration=None, caption=None, reply_to_message_id=None,
                                reply_markup=None, parse_mode=None, disable_notification=None, timeout=None)

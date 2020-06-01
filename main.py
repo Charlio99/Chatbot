@@ -8,6 +8,6 @@ graph.read_json()
 
 Commands()
 bot = Bot.getInstance().bot
-bot.polling()
 dump = DumpDatabaseFile()
 dump.dumpDatabaseMenu()
+bot.polling()

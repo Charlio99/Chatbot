@@ -1,5 +1,6 @@
 from py2neo import Graph, NodeMatcher
 
+from Graph.readGraph import Decision
 from neo4jDB.Connection import Connection
 from neo4jDB.Models.models import User, Location
 
@@ -19,26 +20,30 @@ class UserController:
         self.nodes = NodeMatcher(self.graph)
         UserController.__instance = self
 
-    def storeUser(self, user):
+    def storeUser(self, cid, name, step, node=0):
         """
         Stores the user given a user.py class
-        :param user:
+        :param node:
+        :param step:
+        :param cid:
+        :param name:
         :return: The user neo4j class type
         """
         p = User()
-        p.name = user.get_name()
-        p.chatId = user.get_chat_id()
-        p.last_step = user.get_last_step()
-        l = Location()
-        l.latitude = user.get_longitude()
-        l.latitude = user.get_latitude()
-        p.lives(l)
+        p.name = name
+        p.chatId = cid
+        p.step = step
+        p.node = node
         self.graph.push(p)
         return p
 
     def getUserLocationByUserID(self, chatId):
         user = User.match(self.graph, chatId).first()
-        return user.lives._related_objects[0][0]
+        try:
+            loc = user.lives._related_objects[0][0]
+        except IndexError:
+                loc = Location()
+        return loc
 
     def getLocationByUserClass(self, user):
         return user.lives.related_class
@@ -50,5 +55,20 @@ class UserController:
         return User.match(self.graph, chatId).first() is None
 
     def storeStep(self, user, step):
-        user.last_step = step
+        user.step = step
+        self.graph.push(user)
+
+    def get_node(self, cid):
+        node = self.getInstance().getUserById(cid).node
+        return Decision.getInstance().graph.nodes[node]['node']
+
+    def save_node(self, user, node):
+        user.node = node
+        self.graph.push(user)
+
+    def save_location(self, user, lat, long):
+        loc = Location()
+        loc.longitude = long
+        loc.latitude = lat
+        user.lives.add(loc)
         self.graph.push(user)
