@@ -91,3 +91,33 @@ class Places:
             return self.names[key]
 
         return key
+
+    @staticmethod
+    def get_category(subcategory):
+        categories = []
+        try:
+            if Food(subcategory) is not None:
+                categories.append('Food')
+        except ValueError:
+            pass
+        try:
+            if Store(subcategory) is not None:
+                categories.append('Store')
+        except ValueError:
+            pass
+        try:
+            if Entertainment(subcategory) is not None:
+                categories.append('Entertainment')
+        except ValueError:
+            pass
+        try:
+            if Health(subcategory) is not None:
+                categories.append('Health')
+        except ValueError:
+            pass
+        try:
+            if Tourism(subcategory) is not None:
+                categories.append('Tourism')
+        except ValueError:
+            pass
+        return categories

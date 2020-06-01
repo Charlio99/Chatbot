@@ -4,6 +4,7 @@ from difflib import SequenceMatcher
 from telebot import types
 
 from category.category import Categories
+from neo4jDB.Controllers.PlacesController import PlacesController
 from neo4jDB.Controllers.UserController import UserController
 from singletonBot import Bot
 
@@ -61,6 +62,7 @@ def evaluate_category(m):
             user_id.node = category.node
             correct = True
             users.storeStep(user_id, NEXT_DECISION)
+            #PlacesController.getInstance().recomendation('bar')
             bot.send_message(cid, users.get_node(cid).question, reply_markup=category_decision.get_option()[category.node])
             break
 
