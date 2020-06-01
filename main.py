@@ -1,5 +1,6 @@
 from Graph.readGraph import Decision
 from commands import Commands
+from neo4jDB.DumpDatabaseFile import DumpDatabaseFile
 from singletonBot import Bot
 
 knownUsers = []  # todo: save these in a file,
@@ -11,3 +12,5 @@ graph.readJson()
 Commands()
 bot = Bot.getInstance().bot
 bot.polling()
+dump = DumpDatabaseFile()
+dump.dumpDatabaseMenu()
