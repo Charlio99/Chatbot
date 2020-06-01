@@ -21,7 +21,7 @@ class Category_Decision:
 
     def __init__(self):  # Declare the constructor with or without parameters
         Category_Decision.__instance = self
-        activities = Categories.getInstance().get_activities()
+        activities = Categories.getInstance().get_activities().copy()
         self.activity = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.option = []
 
