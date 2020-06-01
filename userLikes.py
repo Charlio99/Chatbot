@@ -218,7 +218,6 @@ def recommendations_yes_or_no(m):
     global cat, name, address, latitude, longitude
     cid = m.chat.id
     user_id = users.getUserById(cid)
-    location = users.getUserLocationByUserID(cid)
 
     text = m.text
     bot.send_chat_action(cid, 'typing')
@@ -367,7 +366,6 @@ def end_message(m, user_id):
     global cat, counter
     bot.send_message(m.chat.id, "Espero haberte ayudado")
     bot.send_sticker(m.chat.id, PEPE_CLAP, reply_markup=Bot.getInstance().hideBoard)
-    #cat = ''
     counter = 0
     users.storeStep(user_id, START)
 

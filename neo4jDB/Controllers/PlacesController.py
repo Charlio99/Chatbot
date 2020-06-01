@@ -41,7 +41,6 @@ class PlacesController:
         user.went.add(p, properties={'Date': neotime.DateTime.now()})
         self.graph.push(user)
 
-
     def recomendation(self, subcategory, user_id):
         results = []
         for user in list(User.match(self.graph).where(chatId=user_id)):
