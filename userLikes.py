@@ -1,5 +1,4 @@
 import time
-from itertools import count
 
 from api import nearby_places
 from difflib import SequenceMatcher
@@ -8,7 +7,7 @@ from telebot import types
 
 from Graph.node import Response
 from Graph.readGraph import Decision
-from category_decision import Category_Decision, check_similarity_percentage
+from category_decision import Category_Decision, check_similarity_percentage, choose_category
 from singletonBot import Bot
 
 START = 0
@@ -17,6 +16,8 @@ NEW_LOCATION = 2
 ALONE_FRIENDS = 3
 NEXT_DECISION = 4
 RECOMMENDATIONS = 5
+CATEGORY = 6
+
 cat = ''
 counter = 0
 
@@ -44,6 +45,8 @@ class UserLikes:
             self.option.insert(aux, types.ReplyKeyboardMarkup(one_time_keyboard=True))
 
         self.category_decision = Category_Decision()
+        self.category_decision.set_option(self.option)
+
         self.location = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.replay_all_keyboard_makeup()
         Bot.getInstance().setHideBoard(types)
@@ -96,7 +99,7 @@ def command_text_hi(m):
 # filter on a specific message
 @bot.message_handler(
     func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == START and 0.8 <= SequenceMatcher(
-        None, message.text.lower(), "ayuda").ratio(),
+        None, message.text, "ayuda").ratio(),
     content_types=['text'])
 def command_text_help(m):
     bot.send_message(m.chat.id, "Para ver la página de ayuda puedes usar /ayuda")
@@ -132,8 +135,8 @@ def command_text_recommend(m):
         bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
                               "Para hacerlo usa el comando /configurar")
     else:
-        bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
-        user_id.set_step(NEXT_DECISION)
+        #bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
+        choose_category(m)
 
 
 @bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == NEXT_DECISION,

@@ -1,3 +1,4 @@
+import time
 from difflib import SequenceMatcher
 
 from telebot import types
@@ -5,7 +6,8 @@ from telebot import types
 from category import Categories
 from singletonBot import Bot
 
-CATEGORY = 5
+CATEGORY = 6
+NEXT_DECISION = 4
 
 
 class Category_Decision:
@@ -13,23 +15,53 @@ class Category_Decision:
     def __init__(self):  # Declare the constructor with or without parameters
 
         self.activity = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-        options = []
         index = 0
+        self.option = []
+
         for activity in Categories.getInstance().get_activities():
-            options.append(activity.name + " " + activity.emoji)
-            self.activity.add(options[index])
+            self.activity.add(activity.name + " " + activity.emoji)
             index += 1
+
+    def set_option(self, option):
+        self.option = option
 
 
 bot = Bot.getInstance().bot
+category_decision = Category_Decision()
 
 
-# filter on a specific message
-@bot.message_handler(func=lambda message: Bot.getInstance().users.get(
-    message.chat.id).get_step() == CATEGORY and check_similarity_percentage(message.text, "recomiendame algo"),
+@bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == CATEGORY,
                      content_types=['text'])
 def choose_category(m):
-    pass
+    cid = m.chat.id
+    user_id = Bot.getInstance().users.get(cid)
+    bot.send_chat_action(cid, 'typing')
+    time.sleep(1.5)
+    correct = False
+
+    for category in Categories.getInstance().get_activities():
+        if check_similarity_percentage(m.text, category.name):
+            user_id.set_node(category.node)
+            correct = True
+            user_id.set_step(NEXT_DECISION)
+            bot.send_message(cid, user_id.get_node().question,
+                             reply_markup=category_decision.option[user_id.get_node().num])
+            break
+
+    if correct is False:
+        bot.send_message(m.chat.id, "Escoje entre las categorías que te ofrezco",
+                         reply_markup=category_decision.activity)
+
+
+def choose_category(m):
+    cid = m.chat.id
+    user_id = Bot.getInstance().users.get(cid)
+
+    bot.send_chat_action(cid, 'typing')
+    time.sleep(1.5)
+
+    bot.send_message(m.chat.id, "¿Cuál de estas categorias te atrae más?", reply_markup=category_decision.activity)
+    user_id.set_step(CATEGORY)
 
 
 def check_similarity_percentage(text, option):
