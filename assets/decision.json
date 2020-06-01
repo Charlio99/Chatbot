@@ -250,7 +250,7 @@
             "gif": "https://www.lavanguardia.com/r/GODO/LV/p0/WebSite/2013/11/22/Recortada/996-2588-oct-09-2013-17-55-469-355-20131122153635@LaVanguardia-Web.gif",
             "left": {
                 "name": "No quiero",
-                "next_step": 28,
+                "next_step": 14,
                 "end": 0,
                 "category": "",
                 "key": "no"
@@ -285,21 +285,21 @@
         },
         {
             "num": 14,
-            "question": "Por casualidad... ¿No será de noche no?",
-            "photo": "",
+            "question": "¡YA SE QUE ES LO QUE QUIERES! ¿Quieres que te busque alguna atracción turística?",
+            "photo": "https://www.vuelaviajes.com/wp-content/2019/10/parque-Guell-en-Barcelona.jpg",
             "gif": "",
             "left": {
-                "name": "No, es de día",
-                "next_step": 8,
+                "name": "Mejor que no",
+                "next_step": 28,
                 "end": 0,
                 "category": "",
                 "key": "no"
             },
             "right": {
-                "name": "Si que lo es",
-                "next_step": 43,
-                "end":0,
-                "category": "",
+                "name": "¿Qué me propones?",
+                "next_step": 0,
+                "end": 1,
+                "category": "tourist_attraction",
                 "key": "si"
             }
         },
@@ -556,7 +556,7 @@
                 "key": "si"
             },
             "right": {
-                "name": "No es lo que tenia en mente",
+                "name": "No es lo que tenía en mente",
                 "next_step": 0,
                 "end": -1,
                 "category": "",
@@ -576,7 +576,7 @@
                 "key": "si"
             },
             "right": {
-                "name": "No es lo que tenia en mente",
+                "name": "No es lo que tenía en mente",
                 "next_step": 31,
                 "end": 0,
                 "category": "",
@@ -585,7 +585,7 @@
         },
         {
             "num": 29,
-            "question": "¿Te aptece ir a un museo?",
+            "question": "¿Te apetece ir a un museo?",
             "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-o2SB7o-g4iXgVktbC7OF35hPLSPWiB6jhPlYuxvRYZ9lrRfA&usqp=CAU",
             "gif": "",
             "left": {
@@ -1060,6 +1060,126 @@
                 "next_step": 0,
                 "end": 1,
                 "category": "gym",
+                "key": "si"
+            }
+        },
+        {
+            "num": 53,
+            "question": "¿Queires visitar algún lugar cultural?",
+            "gif": "",
+            "photo": "https://2.bp.blogspot.com/-JjPIRQ-yd0M/Uuod048HsUI/AAAAAAAAUCs/vk_20T575HI/s1600/La+Sagrada+Familia+en+Barcelona.jpg",
+            "left": {
+                "name": "Sí, me aptece",
+                "next_step": 54,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            },
+            "right": {
+                "name": "No es lo que tenía en mente",
+                "next_step": 56,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+         {
+            "num": 54,
+            "question": "¿Te apetece ir a un museo?",
+            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-o2SB7o-g4iXgVktbC7OF35hPLSPWiB6jhPlYuxvRYZ9lrRfA&usqp=CAU",
+            "gif": "",
+            "left": {
+                "name": "No me veo",
+                "next_step": 55,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Sí, muy buena idea",
+                "next_step": 0,
+                "end": 1,
+                "category": "museum",
+                "key": "si"
+            }
+        },
+        {
+            "num": 55,
+            "question": "Museo no....\n¿Y una galería de arte?\nEn Barcelona hay de muy bonitas",
+            "photo": "https://www.escueladesarts.com/wp-content/uploads/galerias-de-arte.jpg",
+            "gif": "",
+            "left": {
+                "name": "No es lo que me apetece hacer",
+                "next_step": 56,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me gusta como piensas",
+                "next_step": 0,
+                "end": 1,
+                "category": "art_gallery",
+                "key": "si"
+            }
+        },
+        {
+            "num": 56,
+            "question": "¿Te apetece ir a dar un paseo por algún parque?",
+            "gif": "",
+            "photo": "https://kh7.es/wp-content/uploads/2013/06/salir-pasear.jpg",
+            "left": {
+                "name": "La verdad es que no",
+                "next_step": 57,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Si, puede estar bien",
+                "next_step": 0,
+                "end": 1,
+                "category": "park",
+                "key": "si"
+            }
+        },
+        {
+            "num": 57,
+            "question": "¿Te apetece ir al zoo?",
+            "photo": "https://como-reclamar.com/wp-content/uploads/2018/11/ZOO-Barcelona-800x400.jpg",
+            "gif": "",
+            "left": {
+                "name": "No mucho",
+                "next_step": 58,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me apetece",
+                "next_step": 0,
+                "end": 1,
+                "category": "zoo",
+                "key": "si"
+            }
+        },
+        {
+            "num": 58,
+            "question": "¡YA SE QUE ES LO QUE QUIERES! ¿Quieres que te busque alguna atracción turística?",
+            "photo": "https://www.vuelaviajes.com/wp-content/2019/10/parque-Guell-en-Barcelona.jpg",
+            "gif": "",
+            "left": {
+                "name": "Mejor que no",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "¿Qué me propones?",
+                "next_step": 0,
+                "end": 1,
+                "category": "tourist_attraction",
                 "key": "si"
             }
         }

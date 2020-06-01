@@ -311,15 +311,21 @@ def show_decision(m, decision, user_id):
 def next_recommendation(m, user_id):
     global cat, counter
     result = nearby_places(user_id.get_latitude(), user_id.get_longitude(), cat)
-    loc = result[counter].get('geometry').get('location')
-    name = result[counter].get('name')
-    address = result[counter].get('vicinity')
-    bot.send_location(m.chat.id, loc.get('lat'), loc.get('lng'))
-    bot.send_message(m.chat.id, "He encontrado este " + Places.getInstance().get_place_name(cat) + " cerca de ti, "
-                                                                                                   "¿Qué te parece?\n*" + name + "*\nDirección: _" + address + "_",
-                     reply_markup=userLikes.recommendation_select, parse_mode="Markdown")
-    counter += 1
-    user_id.set_step(RECOMMENDATIONS)
+
+    if result is None:
+        bot.send_message(m.chat.id, "Lo siento, cerca de tu localización no encuentro un "+Places.getInstance().
+                         get_place_name(cat))
+
+    else :
+        loc = result[counter].get('geometry').get('location')
+        name = result[counter].get('name')
+        address = result[counter].get('vicinity')
+        bot.send_location(m.chat.id, loc.get('lat'), loc.get('lng'))
+        bot.send_message(m.chat.id, "He encontrado este " + Places.getInstance().get_place_name(cat) + " cerca de ti, "
+                        "¿Qué te parece?\n*" + name + "*\nDirección: _" + address + "_",
+                         reply_markup=userLikes.recommendation_select, parse_mode="Markdown")
+        counter += 1
+        user_id.set_step(RECOMMENDATIONS)
 
 
 def end_message(m, user_id):
