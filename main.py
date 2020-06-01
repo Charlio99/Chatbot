@@ -3,7 +3,7 @@ from commands import Commands
 from neo4jDB.DumpDatabaseFile import DumpDatabaseFile
 from singletonBot import Bot
 
-graph = Decision()
+graph = Decision.getInstance()
 graph.read_json()
 
 Commands()

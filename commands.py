@@ -26,10 +26,16 @@ def command_start(m):
         bot.send_message(cid, "¡Hola! Soy Pilus, un bot recomendador de planes")
         # command_help(m)
         bot.send_message(cid, "Antes de nada, vamos a configurar tu perfil para perfeccionar mis recomendaciones")
-        from userLikes import command_settings
         command_settings(m)
     else:
         bot.send_message(cid, "Ya has iniciado el bot previamente, si necesitas ver los comandos, puedes usar /ayuda")
+
+
+# config page
+@bot.message_handler(commands=['configurar'])
+def command_settings(m):
+    from userLikes import settings
+    settings(m)
 
 
 # help page

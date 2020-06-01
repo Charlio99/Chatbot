@@ -9,7 +9,6 @@ from Graph.readGraph import Decision
 from neo4jDB.Controllers.UserController import UserController
 from singletonBot import Bot
 
-
 START = 0
 LOCATION = 1
 NEW_LOCATION = 2
@@ -45,9 +44,7 @@ bot = Bot.getInstance().bot
 users = UserController.getInstance()
 
 
-# config page
-@bot.message_handler(commands=['configurar'])
-def command_settings(m):
+def settings(m):
     cid = m.chat.id
     user_id = users.getUserById(cid)
     loc = users.getUserLocationByUserID(cid)
@@ -256,7 +253,7 @@ def show_decision(m, decision, user_id):
         bot.send_message(cid, "Lo siento, no se me ocurren más planes")
         bot.send_message(cid, "😧", parse_mode="Markdown")
         users.storeStep(user_id, START)
-        
+
     else:
         users.save_node(user_id, decision.next_step)
 
