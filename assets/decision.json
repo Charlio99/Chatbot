@@ -44,25 +44,24 @@
 
         {
             "num": 2,
-            "question": "¿Te apetece relajarte o hacer una actividad?",
+            "question": "¿Te apetece hacer una actividad tranquila?",
             "photo": "https://www.intur.com/uploads/media/default/0001/02/5b49b691a4908a8fe3286ccb70d62e12c29439da.png",
             "gif": "",
             "left": {
-                "name": "Si me relajo me duermo",
+                "name": "No, quiero moviemiento",
                 "next_step": 4,
                 "end": 0,
                 "category": "",
-                "key": "actividad"
+                "key": "no"
             },
             "right": {
-                "name": "No me iría mal relajarme",
+                "name": "No me iría mal descansar",
                 "next_step": 3,
                 "end": 0,
                 "category": "",
-                "key": "relajarme"
+                "key": "si"
             }
         },
-
         {
             "num": 3,
             "question": "¿Quieres ver una película o una serie?",
@@ -83,7 +82,6 @@
                 "key": "no"
             }
         },
-
         {
             "num": 4,
             "question": "¿Y cocinar, es una muy buena forma de entretenerte?\nTengo un amigo que se llama Chefbot que te puede ayudar",
@@ -159,7 +157,7 @@
             },
             "right": {
                 "name": "Me es indiferente",
-                "next_step": 11,
+                "next_step": 13,
                 "end": 0,
                 "category": "",
                 "key": "si"
@@ -267,19 +265,19 @@
         },
         {
             "num": 13,
-            "question": "¿Te apetece ir a algún lugar cultural?",
-            "photo": "https://www.observatoriturisme.barcelona/sites/default/files/styles/noticies_detall/public/2506.jpg?itok=nzfitKnb",
+            "question": "¿Te apetece cuidar tu curpo?",
+            "photo": "https://centroalba.com/wp-content/uploads/2018/02/cuidar-tu-cuerpo-970x570.jpg",
             "gif": "",
             "left": {
                 "name": "No me apetece",
-                "next_step": 13,
+                "next_step": 11,
                 "end": 0,
                 "category": "",
                 "key": "no"
             },
             "right": {
                 "name": "Me gusta mucho la idea",
-                "next_step": 0,
+                "next_step": 45,
                 "end": 0,
                 "category": "",
                 "key": "si"
@@ -882,6 +880,186 @@
                 "next_step": 0,
                 "end": 1,
                 "category": "night_club",
+                "key": "si"
+            }
+        },
+        {
+            "num": 44,
+            "question": "¿Quieres ver una película o una serie?",
+            "photo": "",
+            "gif": "https://www.yoamoloszapatos.com/wp-content/uploads/2018/02/giphy-7-18.gif",
+            "left": {
+                "name": "Muy buena idea",
+                "next_step": 0,
+                "end": 1,
+                "category": "netflix",
+                "key": "si"
+            },
+            "right": {
+                "name": "No se yo ...",
+                "next_step": 45,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 45,
+            "question": "¿Te apetece relajar-te?",
+            "photo": "",
+            "gif": "https://media.giphy.com/media/cwCBshoHs4nbW/giphy.gif",
+            "left": {
+                "name": "Tengo demasiada energía",
+                "next_step": 49,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Sí, quiero quiero que me mimen",
+                "next_step": 46,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            }
+        },
+        {
+            "num": 46,
+            "question": "¿Quieres ir a una peluquería?\nMe encanta cuando me hacen el masaje en la cabeza.\uD83E\uDD24\nTambién te puedes hacer una maincura o pedicura",
+            "photo": "https://st1.thehealthsite.com/wp-content/uploads/2015/07/sulfate-free-shampoo.jpg",
+            "gif": "",
+            "left": {
+                "name": "No quiero",
+                "next_step": 47,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Que buena idea",
+                "next_step": 0,
+                "end": 1,
+                "category": "hair_care",
+                "key": "si"
+            }
+        },
+        {
+            "num": 47,
+            "question": "Pensaba que te iba a convencer con la peluquería...\uD83D\uDE16\nA ver que piense...\n¡UN SALÓN DE BELLEZA!",
+            "photo": "https://www.salonsdirect.com/blog/wp-content/uploads/2017/08/Beauty-salon-marketing-towards-men.jpg",
+            "gif": "",
+            "left": {
+                "name": "Mmmm no se yo...",
+                "next_step": 48,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me encanta",
+                "next_step": 0,
+                "end": 1,
+                "category": "beauty_salon",
+                "key": "si"
+            }
+        },
+        {
+            "num": 48,
+            "question": "¡CÓMO NO SE ME HABÍA OCURRIDO?\n¿Qué te parece un spa?",
+            "photo": "https://www.hotelspaniwa.com/wp-content/uploads/2015/04/spa01-1024x683.jpg",
+            "gif": "",
+            "left": {
+                "name": "Mmmm no se yo...",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me encanta",
+                "next_step": 0,
+                "end": 1,
+                "category": "spa",
+                "key": "si"
+            }
+        },
+        {
+            "num": 49,
+            "question": "¿Y cocinar, es una muy buena forma de entretenerte?\nTengo un amigo que se llama Chefbot que te puede ayudar",
+            "gif": "https://thumbs.gfycat.com/ExhaustedSickIcelandgull-size_restricted.gif",
+            "photo": "",
+            "left": {
+                "name": "Cocinar no es mi fuerte",
+                "next_step": 50,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Venga me has convecido",
+                "next_step": 0,
+                "end": 1,
+                "category": "chefbot",
+                "key": "si"
+            }
+        },
+        {
+            "num": 50,
+            "question": "¿Cuánta energia tienes?",
+            "gif": "",
+            "photo": "",
+            "left": {
+                "name": "Poca",
+                "next_step": 51,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Mucha",
+                "next_step": 52,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            }
+        },
+        {
+            "num": 51,
+            "question": "¿Te apetece ir a dar un paseo por algún parque?",
+            "gif": "",
+            "photo": "https://kh7.es/wp-content/uploads/2013/06/salir-pasear.jpg",
+            "left": {
+                "name": "La verdad es que no",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Si, puede estar bien",
+                "next_step": 0,
+                "end": 1,
+                "category": "park",
+                "key": "si"
+            }
+        },
+        {
+            "num": 52,
+            "question": "¿Quieres ir al gimnasio?",
+            "gif": "https://www.lavanguardia.com/r/GODO/LV/p0/WebSite/2014/01/26/Recortada/12994-23753-tumblr-ml2bztfq3j1rjdnouo1-500-426-315-20140126160001@LaVanguardia-Web.gif",
+            "photo": "",
+            "left": {
+                "name": "No tengo tanta energía",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Si, es lo que necesitaba",
+                "next_step": 0,
+                "end": 1,
+                "category": "gym",
                 "key": "si"
             }
         }
