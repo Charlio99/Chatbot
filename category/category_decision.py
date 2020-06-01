@@ -10,7 +10,8 @@ from singletonBot import Bot
 
 CATEGORY = 6
 NEXT_DECISION = 4
-
+LAST_RECOMMENDATION = 8
+START = 0
 
 class Category_Decision:
     __instance = None
@@ -62,7 +63,7 @@ def evaluate_category(m):
             user_id.node = category.node
             correct = True
             users.storeStep(user_id, NEXT_DECISION)
-            #PlacesController.getInstance().recomendation('bar')
+            show_last_recommendations(category.name, m)
             bot.send_message(cid, users.get_node(cid).question, reply_markup=category_decision.get_option()[category.node])
             break
 
@@ -93,3 +94,12 @@ def check_similarity_percentage(text, option):
         return True
 
     return False
+
+
+def show_last_recommendations(category, m):
+
+    category_name = Categories.getInstance().get_name_category(category)
+    if category_name is not None:
+        recommendation_array = PlacesController.getInstance().recomendation(category_name, m.chat.id)
+    pass
+

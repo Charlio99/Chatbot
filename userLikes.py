@@ -377,3 +377,7 @@ def end_message(m, user_id):
 def command_default(m):
     # this is the standard reply to a normal message
     bot.send_message(m.chat.id, "No entiendo \"" + m.text + "\"\nPuede que la página de ayuda te sirva /ayuda")
+
+
+def cancel_action(m):
+    users.storeStep(users.getUserById(m.chat.id), START)

@@ -36,11 +36,11 @@ class PlacesController:
         user.went.add(p, properties={'Date': neotime.DateTime.now()})
         self.graph.push(user)
 
-    def recomendation(self, subcategory):
+    def recomendation(self, subcategory, user_id):
         results = []
-        for user in list(User.match(self.graph).where(chatId=2)):
+        for user in list(User.match(self.graph).where(chatId=user_id)):
             for went in sorted(user.went._related_objects, key=lambda element: element[1]['Date'], reverse=True):
-                if went[0].category._related_objects[0][1]['subcategory'] == subcategory:
+                if went[0].category._related_objects[0][0].categoryName == subcategory:
                     sublist = []
                     sublist.append(went[0])
                     sublist.append(went[1])
