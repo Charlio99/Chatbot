@@ -313,8 +313,11 @@ def next_recommendation(m, user_id):
     result = nearby_places(user_id.get_latitude(), user_id.get_longitude(), cat)
 
     if result is None:
-        bot.send_message(m.chat.id, "Lo siento, cerca de tu localización no encuentro un "+Places.getInstance().
-                         get_place_name(cat))
+        bot.send_message(m.chat.id, "Lo siento, cerca de tu localización no encuentro ningún/ninguna "
+                         + Places.getInstance().get_place_name(cat))
+        bot.send_animation(m.chat.id, "https://media.tenor.com/images/a1804436e7606fc88ff8a69c9b0bf65c/tenor.gif",
+                           duration=None, caption=None, reply_to_message_id=None, reply_markup=None, parse_mode=None,
+                           disable_notification=None, timeout=None)
 
     else :
         loc = result[counter].get('geometry').get('location')
