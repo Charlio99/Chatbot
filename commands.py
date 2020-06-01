@@ -45,6 +45,8 @@ def command_settings(m):
 def command_settings(m):
     from userLikes import cancel_action
     cancel_action(m)
+    bot.send_message(m.chat.id, 'Cancelación exitosa.\n'
+                                'Si quieres que te recomiende algo simplemente di: recomiéndame algo')
 
 
 # filter on a specific message

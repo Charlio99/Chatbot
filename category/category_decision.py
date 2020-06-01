@@ -63,7 +63,7 @@ def evaluate_category(m):
             user_id.node = category.node
             correct = True
             users.storeStep(user_id, NEXT_DECISION)
-            show_last_recommendations(category.name, m)
+            #show_last_recommendations(category.name, m)
             bot.send_message(cid, users.get_node(cid).question, reply_markup=category_decision.get_option()[category.node])
             break
 
@@ -99,7 +99,30 @@ def check_similarity_percentage(text, option):
 def show_last_recommendations(category, m):
 
     category_name = Categories.getInstance().get_name_category(category)
-    if category_name is not None:
-        recommendation_array = PlacesController.getInstance().recomendation(category_name, m.chat.id)
-    pass
+    if category_name is None:
+        return
+
+    recommendation_array = PlacesController.getInstance().recomendation(category_name, m.chat.id)
+
+    if len(recommendation_array) <= 0:
+        return 0
+
+    bot.send_message(m.chat.id, "Las últimas veces fuiste a los siguientes sitios:", parse_mode="Markdown")
+
+    options = ['Ninguno']
+
+    for recommendation in recommendation_array:
+        pass
+        #bot.send_message(m.chat.id, recommendation[0].placeName + "que está en la dirección:\n _" + address + "_", parse_mode="Markdown")
+        options.append(recommendation[0].placeName)
+        #last_recommendations.append(Recommendation(name, ))
+
+    #name, latitude, longitude, address, category, cat, user_id
+
+    category_decision.recommendation.add(options)
+
+    bot.send_message(m.chat.id, "¿Te gusta volver a alguno de estos sitios? 👍 😉",
+                     reply_markup=category_decision.recommendation, parse_mode="Markdown")
+    #user_id.set_step(LAST_RECOMMENDATION)
+
 

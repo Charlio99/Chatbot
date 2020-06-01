@@ -27,14 +27,20 @@ class PlacesController:
             p.placeName = placename
 
         cat = Category.match(self.graph, categoryname).first()
-        l = Location()
-        l.latitude = latiutude
-        l.longitude = longitude
+
+        try:
+            l = p.locatedIn._related_objects[0][0]
+        except IndexError:
+            l = Location()
+            l.latitude = latiutude
+            l.longitude = longitude
+
         p.locatedIn.add(l, properties={'AdressName': adressName})
         p.category.add(cat, properties={'subcategory': subcategoryName})
         self.graph.push(p)
         user.went.add(p, properties={'Date': neotime.DateTime.now()})
         self.graph.push(user)
+
 
     def recomendation(self, subcategory, user_id):
         results = []
