@@ -7,7 +7,7 @@ from telebot import types
 
 from Graph.node import Response
 from Graph.readGraph import Decision
-from category_decision import Category_Decision, check_similarity_percentage, choose_category
+from category.category_decision import Category_Decision, check_similarity_percentage, choose_category
 from singletonBot import Bot
 
 START = 0

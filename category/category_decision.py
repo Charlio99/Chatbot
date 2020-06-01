@@ -3,7 +3,7 @@ from difflib import SequenceMatcher
 
 from telebot import types
 
-from category import Categories
+from category.category import Categories
 from singletonBot import Bot
 
 CATEGORY = 6
@@ -45,7 +45,7 @@ category_decision = Category_Decision.getInstance()
 
 @bot.message_handler(func=lambda message: Bot.getInstance().users.get(message.chat.id).get_step() == CATEGORY,
                      content_types=['text'])
-def choose_category(m):
+def evaluate_category(m):
     cid = m.chat.id
     user_id = Bot.getInstance().users.get(cid)
     bot.send_chat_action(cid, 'typing')

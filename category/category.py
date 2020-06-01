@@ -1,8 +1,9 @@
-NODE_FOOD = 0
-NODE_STORE = 0
-NODE_ENTERTAINMENT = 0
-NODE_HEALTH = 0
-NODE_TOURISM = 0
+NODE_FOOD = 2
+NODE_STORE = 2
+NODE_ENTERTAINMENT = 2
+NODE_HEALTH = 2
+NODE_TOURISM = 2
+NODE_NO_SE = 0
 
 
 class Category:
@@ -30,6 +31,7 @@ class Categories:
         self.activities.append(Category('Entertainment', '🎞 🏋 🎳', NODE_ENTERTAINMENT))
         self.activities.append(Category('Health', '🧖‍ ️🏞', NODE_HEALTH))
         self.activities.append(Category('Tourism', '🗺', NODE_TOURISM))
+        self.activities.append(Category("I don't know", '🤷‍♂️', NODE_NO_SE))
         pass
 
     def get_node(self, name):
