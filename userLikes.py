@@ -8,6 +8,7 @@ from telebot import types
 
 from Graph.node import Response
 from Graph.readGraph import Decision
+from category_decision import Category_Decision, check_similarity_percentage
 from singletonBot import Bot
 
 START = 0
@@ -22,7 +23,18 @@ counter = 0
 
 class UserLikes:
 
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        if UserLikes.__instance is None:
+            UserLikes()
+        return UserLikes.__instance
+
     def __init__(self):  # Declare the constructor with or without parameters
+
+        UserLikes.__instance = self
+
         self.option = []
 
         self.yes_no_select = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -31,6 +43,7 @@ class UserLikes:
         for aux in list(Decision.getInstance().graph.nodes):
             self.option.insert(aux, types.ReplyKeyboardMarkup(one_time_keyboard=True))
 
+        self.category_decision = Category_Decision()
         self.location = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.replay_all_keyboard_makeup()
         Bot.getInstance().setHideBoard(types)
@@ -45,7 +58,7 @@ class UserLikes:
         self.location.row(types.KeyboardButton(text='Enviar mi ubicación', request_location=True))
 
 
-userLikes = UserLikes()
+userLikes = UserLikes.getInstance()
 bot = Bot.getInstance().bot
 
 
@@ -237,19 +250,6 @@ def chosen_option(text, option, key):
         for response in Response.get_instance().get_negative():
             if check_similarity_percentage(text, response):
                 return True
-
-    return False
-
-
-def check_similarity_percentage(text, option):
-    if text is None:
-        return False
-
-    if SequenceMatcher(None, text.lower(), option.lower()).ratio() >= 0.8:
-        return True
-
-    if option.lower() in text.lower():
-        return True
 
     return False
 
