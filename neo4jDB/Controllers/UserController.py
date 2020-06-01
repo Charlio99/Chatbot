@@ -42,7 +42,7 @@ class UserController:
         try:
             loc = user.lives._related_objects[0][0]
         except IndexError:
-                loc = Location()
+            loc = Location()
         return loc
 
     def getLocationByUserClass(self, user):
@@ -67,8 +67,14 @@ class UserController:
         self.graph.push(user)
 
     def save_location(self, user, lat, long):
-        loc = Location()
-        loc.longitude = long
-        loc.latitude = lat
-        user.lives.add(loc)
-        self.graph.push(user)
+        exists = self.getInstance().getUserLocationByUserID(user.chatId)
+        if exists.latitude is None or exists.longitude is None:
+            loc = Location()
+            loc.longitude = long
+            loc.latitude = lat
+            user.lives.add(loc)
+            self.graph.push(user)
+        else:
+            exists.latitude = lat
+            exists.longitude = long
+            self.graph.push(exists)

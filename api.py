@@ -25,8 +25,10 @@ def nearby_places(lat, long, category, radius=None):
     result = gmaps.places_nearby(location=(lat, long), radius=radius, open_now=True, type=category,
                                      rank_by=rank_by)
     if result is not None:
-        loc = result.get('results')[0].get('geometry').get('location')
-        location = (loc.get('lat'), loc.get('lng'))
-        return location
+        if len(result.get('results')) > 0:
+            loc = result.get('results')[0].get('geometry').get('location')
+            location = (loc.get('lat'), loc.get('lng'))
+            return result.get('results')
+        return None
     else:
         return None

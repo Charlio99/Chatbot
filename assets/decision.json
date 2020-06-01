@@ -44,25 +44,24 @@
 
         {
             "num": 2,
-            "question": "¿Te apetece relajarte o hacer una actividad?",
+            "question": "¿Te apetece hacer una actividad tranquila?",
             "photo": "https://www.intur.com/uploads/media/default/0001/02/5b49b691a4908a8fe3286ccb70d62e12c29439da.png",
             "gif": "",
             "left": {
-                "name": "Si me relajo me duermo",
+                "name": "No, quiero moviemiento",
                 "next_step": 4,
                 "end": 0,
                 "category": "",
-                "key": "actividad"
+                "key": "no"
             },
             "right": {
-                "name": "No me iría mal relajarme",
+                "name": "No me iría mal descansar",
                 "next_step": 3,
                 "end": 0,
                 "category": "",
-                "key": "relajarme"
+                "key": "si"
             }
         },
-
         {
             "num": 3,
             "question": "¿Quieres ver una película o una serie?",
@@ -72,7 +71,7 @@
                 "name": "Muy buena idea",
                 "next_step": 0,
                 "end": 1,
-                "category": "movie_theater",
+                "category": "netflix",
                 "key": "si"
             },
             "right": {
@@ -83,7 +82,6 @@
                 "key": "no"
             }
         },
-
         {
             "num": 4,
             "question": "¿Y cocinar, es una muy buena forma de entretenerte?\nTengo un amigo que se llama Chefbot que te puede ayudar",
@@ -158,8 +156,8 @@
                 "key": "no"
             },
             "right": {
-                "name": "Obvio, ¿para que está el dinero?",
-                "next_step": 11,
+                "name": "Me es indiferente",
+                "next_step": 13,
                 "end": 0,
                 "category": "",
                 "key": "si"
@@ -207,7 +205,7 @@
         },
         {
             "num": 10,
-            "question": "¡Ya se lo que puedes hacer!\nUN PINCINC \uD83E\uDD29\nPiensalo, es un plan en el exterior, con comida casera (sin gastar), tranquilo ....\n¿No es perfecto?",
+            "question": "¡Ya se lo que puedes hacer!\nUn picnic \uD83E\uDD29\nPiensalo, es un plan en el exterior, con comida casera (sin gastar), tranquilo ....\n¿No es perfecto?",
             "photo": "https://static.wixstatic.com/media/7b9a77_b8f71c5a299044a4b11302cbaa4c15dd~mv2.jpg/v1/fill/w_1000,h_667,al_c,q_90,usm_0.66_1.00_0.01/7b9a77_b8f71c5a299044a4b11302cbaa4c15dd~mv2.jpg",
             "gif": "",
             "left": {
@@ -247,19 +245,19 @@
         },
         {
             "num": 12,
-            "question": "¿Te apetece ir a algún sitio cultural?",
-            "photo": "https://www.observatoriturisme.barcelona/sites/default/files/styles/noticies_detall/public/2506.jpg?itok=nzfitKnb",
-            "gif": "",
+            "question": "¿Quieres darte un capricho e ir a comprarte algo?",
+            "photo": "",
+            "gif": "https://www.lavanguardia.com/r/GODO/LV/p0/WebSite/2013/11/22/Recortada/996-2588-oct-09-2013-17-55-469-355-20131122153635@LaVanguardia-Web.gif",
             "left": {
-                "name": "No me apetece",
-                "next_step": 13,
+                "name": "No quiero",
+                "next_step": 14,
                 "end": 0,
                 "category": "",
                 "key": "no"
             },
             "right": {
-                "name": "Me gusta mucho la idea",
-                "next_step": 15,
+                "name": "¿Que me propones?",
+                "next_step": 22,
                 "end": 0,
                 "category": "",
                 "key": "si"
@@ -267,26 +265,46 @@
         },
         {
             "num": 13,
-            "question": "Por casualidad... ¿No será de noche no?",
-            "photo": "",
+            "question": "¿Te apetece cuidar tu curpo?",
+            "photo": "https://centroalba.com/wp-content/uploads/2018/02/cuidar-tu-cuerpo-970x570.jpg",
             "gif": "",
             "left": {
-                "name": "No, es de día",
-                "next_step": 8,
+                "name": "No me apetece",
+                "next_step": 11,
                 "end": 0,
                 "category": "",
                 "key": "no"
             },
             "right": {
-                "name": "Si que lo es",
-                "next_step": 14,
-                "end":0,
+                "name": "Me gusta mucho la idea",
+                "next_step": 45,
+                "end": 0,
                 "category": "",
                 "key": "si"
             }
         },
         {
             "num": 14,
+            "question": "¡YA SE QUE ES LO QUE QUIERES! ¿Quieres que te busque alguna atracción turística?",
+            "photo": "https://www.vuelaviajes.com/wp-content/2019/10/parque-Guell-en-Barcelona.jpg",
+            "gif": "",
+            "left": {
+                "name": "Mejor que no",
+                "next_step": 28,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "¿Qué me propones?",
+                "next_step": 0,
+                "end": 1,
+                "category": "tourist_attraction",
+                "key": "si"
+            }
+        },
+        {
+            "num": 15,
             "question": "¡Como no se me ha ocurrido antes \uD83D\uDE31!\nUn bar musical con los amigos es un plan increible\n¿A ti que te parece?",
             "photo": "https://media-cdn.tripadvisor.com/media/photo-s/0b/c9/38/f9/jymmy-s-bar-musical.jpg",
             "gif": "",
@@ -306,13 +324,273 @@
             }
         },
         {
-            "num": 15,
-            "question": "¿Te aptece ir a un museo?",
+            "num": 16,
+            "question": "¿Te apetece cocinar, o prefieres que te cocinen?\nTengo un amigo que se llama Chefbot que te puede ayudar\nSi es lo que quieres es cocinar tú.",
+            "photo": "",
+            "gif": "",
+            "left": {
+                "name": "Cocinar no es mi fuerte",
+                "next_step": 17,
+                "end": 0,
+                "category": "",
+                "key": "fuera"
+            },
+            "right": {
+                "name": "Cocinar yo",
+                "next_step": 0,
+                "end": 1,
+                "category": "chefbot",
+                "key": "cocinar"
+            }
+        },
+        {
+            "num": 17,
+            "question": "¿Te apetecería ir a una cafetería?",
+            "gif": "",
+            "photo": "https://dosg.net/wp-content/uploads/2018/03/cafeteria.jpg",
+            "left": {
+                "name": "Sí, me parece una muy buena idea",
+                "next_step": 0,
+                "end": 1,
+                "category": "cafe",
+                "key": "si"
+            },
+            "right": {
+                "name": "Quiero algo con mas peso",
+                "next_step": 18,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 18,
+            "question": "¿Te apetecería ir a una pastelería?",
+            "gif": "https://media.tenor.com/images/53dd8d468e2c7ab7856fd426f4c13268/tenor.gif",
+            "photo": "",
+            "left": {
+                "name": "Sí, me parece una muy buena idea",
+                "next_step": 0,
+                "end": 1,
+                "category": "bakery",
+                "key": "si"
+            },
+            "right": {
+                "name": "No me apetece nada dulce",
+                "next_step": 19,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 19,
+            "question": "No me puedes decir que un restaurante no te llama la atención...",
+            "gif": "https://i.pinimg.com/originals/d5/ec/9c/d5ec9c42cade6c696ef244cc33efedd3.gif",
+            "photo": "",
+            "left": {
+                "name": "Mmmm me gusta",
+                "next_step": 0,
+                "end": 1,
+                "category": "restaurant",
+                "key": "si"
+            },
+            "right": {
+                "name": "No me apetece",
+                "next_step": 21,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 20,
+            "question": "¿Que me dices de un bar?",
+            "gif": "",
+            "photo": "",
+            "left": {
+                "name": "Me parece muy bien",
+                "next_step": 0,
+                "end": 1,
+                "category": "bar",
+                "key": "si"
+            },
+            "right": {
+                "name": "Sigue sin gustarme",
+                "next_step": 21,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 21,
+            "question": "Se me están acabando las ideas...\n¿Y si vas a un takeaway?",
+            "gif": "",
+            "photo": "https://www.profesionalhoreca.com/wp-content/uploads/2019/11/Profesionalhoreca-eat2go-2019.jpg",
+            "left": {
+                "name": "Me gusta",
+                "next_step": 0,
+                "end": 1,
+                "category": "bar",
+                "key": "si"
+            },
+            "right": {
+                "name": "No es lo que quiero hacer ahora",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 22,
+            "question": "¿Tienes algo en mente que quieras comprar?",
+            "gif": "https://media1.tenor.com/images/af082cd37febd88e3cafcbcea3c3fca9/tenor.gif?itemid=11098413",
+            "photo": "",
+            "left": {
+                "name": "Creo que sí",
+                "next_step": 23,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            },
+            "right": {
+                "name": "No, dame ideas",
+                "next_step": 26,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 23,
+            "question": "¿Te apetece comprar ropa?",
+            "gif": "",
+            "photo": "",
+            "left": {
+                "name": "Sí, me gusta la idea",
+                "next_step": 24,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            },
+            "right": {
+                "name": "No me apetece",
+                "next_step": 26,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 24,
+            "question": "¿Te faltan zapatos?",
+            "gif": "",
+            "photo": "https://us.123rf.com/450wm/fiphoto/fiphoto1411/fiphoto141100543/35288680-interior-brillante-y-de-moda-de-la-tienda-de-zapatos-en-el-centro-comercial-moderno.jpg?ver=6",
+            "left": {
+                "name": "La verdad es que si",
+                "next_step": 0,
+                "end": 1,
+                "category": "shoe_store",
+                "key": "si"
+            },
+            "right": {
+                "name": "No, tengo suficientes",
+                "next_step": 25,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 25,
+            "question": "¿Quieres ir a una tienda de ropa?\nA mi me entretiene ver ropa y probarmela.",
+            "gif": "",
+            "photo": "",
+            "left": {
+                "name": "Me encanta",
+                "next_step": 0,
+                "end": 1,
+                "category": "clothing_store",
+                "key": "si"
+            },
+            "right": {
+                "name": "No quiero",
+                "next_step": 26,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 26,
+            "question": "¿Que me dices de las joyas y accesorios?",
+            "gif": "https://media1.tenor.com/images/97838e561ae1d083ca8234631f81acfb/tenor.gif?itemid=7274907",
+            "photo": "",
+            "left": {
+                "name": "Allí voy",
+                "next_step": 0,
+                "end": 1,
+                "category": "jewelry_store",
+                "key": "si"
+            },
+            "right": {
+                "name": "Rotundamente NO",
+                "next_step": 27,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 27,
+            "question": "Se me están acabando las ideas...\nNo me puedes decir que no a comprar un buen libro\uD83E\uDD29",
+            "gif": "",
+            "photo": "https://madridsecreto.co/wp-content/uploads/2019/01/Madrid-Secreto-Librerias-23.jpg",
+            "left": {
+                "name": "Que buena idea Pilus",
+                "next_step": 0,
+                "end": 1,
+                "category": "book_store",
+                "key": "si"
+            },
+            "right": {
+                "name": "No es lo que tenía en mente",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 28,
+            "question": "¿Queires visitar algún lugar cultural?",
+            "gif": "",
+            "photo": "https://2.bp.blogspot.com/-JjPIRQ-yd0M/Uuod048HsUI/AAAAAAAAUCs/vk_20T575HI/s1600/La+Sagrada+Familia+en+Barcelona.jpg",
+            "left": {
+                "name": "Sí, me aptece",
+                "next_step": 29,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            },
+            "right": {
+                "name": "No es lo que tenía en mente",
+                "next_step": 31,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 29,
+            "question": "¿Te apetece ir a un museo?",
             "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-o2SB7o-g4iXgVktbC7OF35hPLSPWiB6jhPlYuxvRYZ9lrRfA&usqp=CAU",
             "gif": "",
             "left": {
-                "name": "No es lo que tenía en mente",
-                "next_step": 16,
+                "name": "No me veo",
+                "next_step": 30,
                 "end": 0,
                 "category": "",
                 "key": "no"
@@ -326,13 +604,193 @@
             }
         },
         {
-            "num": 16,
-            "question": "¿Que me dices de ir al cine?",
+            "num": 30,
+            "question": "Museo no....\n¿Y una galería de arte?\nEn Barcelona hay de muy bonitas",
+            "photo": "https://www.escueladesarts.com/wp-content/uploads/galerias-de-arte.jpg",
+            "gif": "",
+            "left": {
+                "name": "No es lo que me apetece hacer",
+                "next_step": 31,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me gusta como piensas",
+                "next_step": 0,
+                "end": 1,
+                "category": "art_gallery",
+                "key": "si"
+            }
+        },
+        {
+            "num": 31,
+            "question": "¿Quieres hacer una actividad movida \uD83E\uDD73?",
+            "photo": "",
+            "gif": "",
+            "left": {
+                "name": "Estoy cansad@",
+                "next_step": 35,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me iría bien moverme",
+                "next_step": 32,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            }
+        },
+        {
+            "num": 32,
+            "question": "¿Sabes lo que siempe me apetece hacer?\nBOLOS\n¿A quien no le gusta ir a la bolera?\uD83C\uDFB3\n",
+            "photo": "",
+            "gif": "https://i.pinimg.com/originals/7f/b3/a0/7fb3a00db88d9d824c5505fd5a020490.gif",
+            "left": {
+                "name": "Me da palo",
+                "next_step": 33,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me encanta \uD83D\uDE0D",
+                "next_step": 0,
+                "end": 1,
+                "category": "bowling_alley",
+                "key": "si"
+            }
+        },
+        {
+            "num": 33,
+            "question": "¿Te ves patinando, yendo en bici o corriendo?",
+            "photo": "https://quierocuidarme.dkvsalud.es/sites/default/files/styles/vivelasalud_ficha_825x464/public/imagen/2018-08/patinar_0.jpg?h=38fc0f45&itok=bWzlWUYI",
+            "gif": "",
+            "left": {
+                "name": "No mucho",
+                "next_step": 34,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Siii",
+                "next_step": 0,
+                "end": 1,
+                "category": "park",
+                "key": "si"
+            }
+        },
+        {
+            "num": 34,
+            "question": "¿Quieres ir a dar un paseo?",
+            "photo": "https://bierzoo.es/wp-content/uploads/2015/05/paseo-perros.jpg",
+            "gif": "",
+            "left": {
+                "name": "No me gusta por donde estas yendo",
+                "next_step": 35,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me encanta",
+                "next_step": 0,
+                "end": 1,
+                "category": "park",
+                "key": "si"
+            }
+        },
+        {
+            "num": 35,
+            "question": "¿Cuánto dinero te quieres gastar?",
+            "photo": "",
+            "gif": "",
+            "left": {
+                "name": "No mucho",
+                "next_step": 39,
+                "end": 0,
+                "category": "",
+                "key": "poco"
+            },
+            "right": {
+                "name": "indiferente",
+                "next_step": 36,
+                "end": 0,
+                "category": "",
+                "key": "mucho"
+            }
+        },
+        {
+            "num": 36,
+            "question": "¿Te gusta el futbol?",
+            "photo": "https://concepto.de/wp-content/uploads/2015/02/futbol-1-e1550783405750.jpg",
+            "gif": "",
+            "left": {
+                "name": "No",
+                "next_step": 38,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Sí",
+                "next_step": 37,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            }
+        },
+        {
+            "num": 37,
+            "question": "¿Te apetece ir a un estadio?",
+            "photo": "https://cdnmundo1.img.sputniknews.com/img/109118/60/1091186030_0:94:3612:2048_1000x541_80_0_0_aedf4d4e19638e6f6eda966814ba53c7.jpg",
+            "gif": "",
+            "left": {
+                "name": "No es lo que quiero hacer",
+                "next_step": 38,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "¡Que buena idea!",
+                "next_step": 0,
+                "end": 1,
+                "category": "stadium",
+                "key": "si"
+            }
+        },
+        {
+            "num": 38,
+            "question": "Ya se lo que puede hacer.\nEs un poco atrevido... pero creo que te gustará.\nIR A UN CASINO",
+            "photo": "https://cmsstorage.rationalcdn.com/assets/psc/assets/common/images/games/roulette/thumb.jpg",
+            "gif": "",
+            "left": {
+                "name": "No me conoces",
+                "next_step": 39,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Has dado en el clavo",
+                "next_step": 0,
+                "end": 1,
+                "category": "casino",
+                "key": "si"
+            }
+        },
+        {
+            "num": 39,
+            "question": "¿Te gustaría ir al cine?\nSeguro que hay alguna película que te guste.",
             "photo": "https://www.verdict.co.uk/wp-content/uploads/2017/10/shutterstock_384996514.jpg",
             "gif": "",
             "left": {
-                "name": "Paso",
-                "next_step": 13,
+                "name": "No",
+                "next_step": 40,
                 "end": 0,
                 "category": "",
                 "key": "no"
@@ -346,62 +804,382 @@
             }
         },
         {
-            "num": 17,
-            "question": "¿Eres más de restaurante o de fast food?",
+            "num": 40,
+            "question": "¿Te gustan los animales?",
             "photo": "",
             "gif": "",
             "left": {
-                "name": "Fast Food, vaya pregunta",
-                "next_step": 19,
-                "end": 0,
-                "category": "",
-                "key": "fast food"
-            },
-            "right": {
-                "name": "Un buen restaurante",
-                "next_step": 18,
-                "end": 0,
-                "category": "",
-                "key": "restaurante"
-            }
-        },
-        {
-            "num": 18,
-            "question": "¿Te apetece ir a un restaurante?",
-            "photo": "https://s3-eu-west-1.amazonaws.com/gr-cms/media/filer_public/cc/ec/ccecba57-fc3a-4b94-911a-966ab4265c40/1.jpg",
-            "gif": "",
-            "left": {
-                "name": "No mucho...",
-                "next_step": 12,
+                "name": "No mucho",
+                "next_step": 43,
                 "end": 0,
                 "category": "",
                 "key": "no"
             },
             "right": {
-                "name": "Claro",
-                "next_step": 0,
-                "end": 1,
-                "category": "restaurant",
+                "name": "Me encantan",
+                "next_step": 41,
+                "end": 0,
+                "category": "",
                 "key": "si"
             }
         },
         {
-            "num": 19,
-            "question": "¿Te apetece ir a un fast food?",
-            "photo": "",
-            "gif": "https://66.media.tumblr.com/aaaf92972d77b37c52d9130575b0bc4b/tumblr_papx1trfmL1vxg1nfo3_500.gifv",
+            "num": 41,
+            "question": "¿Te apetece ir al zoo?",
+            "photo": "https://como-reclamar.com/wp-content/uploads/2018/11/ZOO-Barcelona-800x400.jpg",
+            "gif": "",
             "left": {
-                "name": "No mucho...",
-                "next_step": 12,
+                "name": "No",
+                "next_step": 42,
                 "end": 0,
                 "category": "",
                 "key": "no"
             },
             "right": {
-                "name": "Claro",
+                "name": "Me gusta",
                 "next_step": 0,
                 "end": 1,
-                "category": "meal_takeaway",
+                "category": "zoo",
+                "key": "si"
+            }
+        },
+        {
+            "num": 42,
+            "question": "El zoo no...\n¿Qué me dices del aquarium?",
+            "photo": "https://cdn.civitatis.com/espana/barcelona/galeria/tunel-transparente-aquarium.jpg",
+            "gif": "",
+            "left": {
+                "name": "Me aburre",
+                "next_step": 43,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me encantan",
+                "next_step": 0,
+                "end": 1,
+                "category": "aquarium",
+                "key": "si"
+            }
+        },
+        {
+            "num": 43,
+            "question": "Si es de noche pordías ir a un bar \uD83C\uDF79 \uD83C\uDF7B.\n¿Cómo no se me ha ocurrido antes \uD83D\uDE31?\nUn bar musical con los amigos es un plan increible\n¿A ti que te parece?",
+            "photo": "https://media-cdn.tripadvisor.com/media/photo-s/0b/c9/38/f9/jymmy-s-bar-musical.jpg",
+            "gif": "",
+            "left": {
+                "name": "No me apetece",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Ahora mismo voy",
+                "next_step": 0,
+                "end": 1,
+                "category": "night_club",
+                "key": "si"
+            }
+        },
+        {
+            "num": 44,
+            "question": "¿Quieres ver una película o una serie?",
+            "photo": "",
+            "gif": "https://www.yoamoloszapatos.com/wp-content/uploads/2018/02/giphy-7-18.gif",
+            "left": {
+                "name": "Muy buena idea",
+                "next_step": 0,
+                "end": 1,
+                "category": "netflix",
+                "key": "si"
+            },
+            "right": {
+                "name": "No se yo ...",
+                "next_step": 45,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+        {
+            "num": 45,
+            "question": "¿Te apetece relajar-te?",
+            "photo": "",
+            "gif": "https://media.giphy.com/media/cwCBshoHs4nbW/giphy.gif",
+            "left": {
+                "name": "Tengo demasiada energía",
+                "next_step": 49,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Sí, quiero quiero que me mimen",
+                "next_step": 46,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            }
+        },
+        {
+            "num": 46,
+            "question": "¿Quieres ir a una peluquería?\nMe encanta cuando me hacen el masaje en la cabeza.\uD83E\uDD24\nTambién te puedes hacer una maincura o pedicura",
+            "photo": "https://st1.thehealthsite.com/wp-content/uploads/2015/07/sulfate-free-shampoo.jpg",
+            "gif": "",
+            "left": {
+                "name": "No quiero",
+                "next_step": 47,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Que buena idea",
+                "next_step": 0,
+                "end": 1,
+                "category": "hair_care",
+                "key": "si"
+            }
+        },
+        {
+            "num": 47,
+            "question": "Pensaba que te iba a convencer con la peluquería...\uD83D\uDE16\nA ver que piense...\n¡UN SALÓN DE BELLEZA!",
+            "photo": "https://www.salonsdirect.com/blog/wp-content/uploads/2017/08/Beauty-salon-marketing-towards-men.jpg",
+            "gif": "",
+            "left": {
+                "name": "Mmmm no se yo...",
+                "next_step": 48,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me encanta",
+                "next_step": 0,
+                "end": 1,
+                "category": "beauty_salon",
+                "key": "si"
+            }
+        },
+        {
+            "num": 48,
+            "question": "¡CÓMO NO SE ME HABÍA OCURRIDO?\n¿Qué te parece un spa?",
+            "photo": "https://www.hotelspaniwa.com/wp-content/uploads/2015/04/spa01-1024x683.jpg",
+            "gif": "",
+            "left": {
+                "name": "Mmmm no se yo...",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me encanta",
+                "next_step": 0,
+                "end": 1,
+                "category": "spa",
+                "key": "si"
+            }
+        },
+        {
+            "num": 49,
+            "question": "¿Y cocinar, es una muy buena forma de entretenerte?\nTengo un amigo que se llama Chefbot que te puede ayudar",
+            "gif": "https://thumbs.gfycat.com/ExhaustedSickIcelandgull-size_restricted.gif",
+            "photo": "",
+            "left": {
+                "name": "Cocinar no es mi fuerte",
+                "next_step": 50,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Venga me has convecido",
+                "next_step": 0,
+                "end": 1,
+                "category": "chefbot",
+                "key": "si"
+            }
+        },
+        {
+            "num": 50,
+            "question": "¿Cuánta energia tienes?",
+            "gif": "",
+            "photo": "",
+            "left": {
+                "name": "Poca",
+                "next_step": 51,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Mucha",
+                "next_step": 52,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            }
+        },
+        {
+            "num": 51,
+            "question": "¿Te apetece ir a dar un paseo por algún parque?",
+            "gif": "",
+            "photo": "https://kh7.es/wp-content/uploads/2013/06/salir-pasear.jpg",
+            "left": {
+                "name": "La verdad es que no",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Si, puede estar bien",
+                "next_step": 0,
+                "end": 1,
+                "category": "park",
+                "key": "si"
+            }
+        },
+        {
+            "num": 52,
+            "question": "¿Quieres ir al gimnasio?",
+            "gif": "https://www.lavanguardia.com/r/GODO/LV/p0/WebSite/2014/01/26/Recortada/12994-23753-tumblr-ml2bztfq3j1rjdnouo1-500-426-315-20140126160001@LaVanguardia-Web.gif",
+            "photo": "",
+            "left": {
+                "name": "No tengo tanta energía",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Si, es lo que necesitaba",
+                "next_step": 0,
+                "end": 1,
+                "category": "gym",
+                "key": "si"
+            }
+        },
+        {
+            "num": 53,
+            "question": "¿Queires visitar algún lugar cultural?",
+            "gif": "",
+            "photo": "https://2.bp.blogspot.com/-JjPIRQ-yd0M/Uuod048HsUI/AAAAAAAAUCs/vk_20T575HI/s1600/La+Sagrada+Familia+en+Barcelona.jpg",
+            "left": {
+                "name": "Sí, me aptece",
+                "next_step": 54,
+                "end": 0,
+                "category": "",
+                "key": "si"
+            },
+            "right": {
+                "name": "No es lo que tenía en mente",
+                "next_step": 56,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            }
+        },
+         {
+            "num": 54,
+            "question": "¿Te apetece ir a un museo?",
+            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-o2SB7o-g4iXgVktbC7OF35hPLSPWiB6jhPlYuxvRYZ9lrRfA&usqp=CAU",
+            "gif": "",
+            "left": {
+                "name": "No me veo",
+                "next_step": 55,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Sí, muy buena idea",
+                "next_step": 0,
+                "end": 1,
+                "category": "museum",
+                "key": "si"
+            }
+        },
+        {
+            "num": 55,
+            "question": "Museo no....\n¿Y una galería de arte?\nEn Barcelona hay de muy bonitas",
+            "photo": "https://www.escueladesarts.com/wp-content/uploads/galerias-de-arte.jpg",
+            "gif": "",
+            "left": {
+                "name": "No es lo que me apetece hacer",
+                "next_step": 56,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me gusta como piensas",
+                "next_step": 0,
+                "end": 1,
+                "category": "art_gallery",
+                "key": "si"
+            }
+        },
+        {
+            "num": 56,
+            "question": "¿Te apetece ir a dar un paseo por algún parque?",
+            "gif": "",
+            "photo": "https://kh7.es/wp-content/uploads/2013/06/salir-pasear.jpg",
+            "left": {
+                "name": "La verdad es que no",
+                "next_step": 57,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Si, puede estar bien",
+                "next_step": 0,
+                "end": 1,
+                "category": "park",
+                "key": "si"
+            }
+        },
+        {
+            "num": 57,
+            "question": "¿Te apetece ir al zoo?",
+            "photo": "https://como-reclamar.com/wp-content/uploads/2018/11/ZOO-Barcelona-800x400.jpg",
+            "gif": "",
+            "left": {
+                "name": "No mucho",
+                "next_step": 58,
+                "end": 0,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "Me apetece",
+                "next_step": 0,
+                "end": 1,
+                "category": "zoo",
+                "key": "si"
+            }
+        },
+        {
+            "num": 58,
+            "question": "¡YA SE QUE ES LO QUE QUIERES! ¿Quieres que te busque alguna atracción turística?",
+            "photo": "https://www.vuelaviajes.com/wp-content/2019/10/parque-Guell-en-Barcelona.jpg",
+            "gif": "",
+            "left": {
+                "name": "Mejor que no",
+                "next_step": 0,
+                "end": -1,
+                "category": "",
+                "key": "no"
+            },
+            "right": {
+                "name": "¿Qué me propones?",
+                "next_step": 0,
+                "end": 1,
+                "category": "tourist_attraction",
                 "key": "si"
             }
         }

@@ -46,5 +46,5 @@ def command_help(m):
     for key in commandClass.commands:  # generate help text out of the commands dictionary defined at the top
         help_text += "/" + key + ": "
         help_text += commandClass.commands[key] + "\n"
-    help_text += "Si quieres que te recomiende algo simplemente di: _recomiendame algo_"
+    help_text += "Si quieres que te recomiende algo simplemente di: _recomiéndame algo_"
     bot.send_message(cid, help_text, parse_mode="Markdown")  # send the generated help page

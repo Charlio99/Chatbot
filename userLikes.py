@@ -1,4 +1,5 @@
 import time
+
 from api import nearby_places
 from difflib import SequenceMatcher
 
@@ -7,6 +8,8 @@ from telebot import types
 from Graph.node import Response
 from Graph.readGraph import Decision
 from neo4jDB.Controllers.UserController import UserController
+from category.category_decision import Category_Decision, check_similarity_percentage, choose_category
+from places import Places
 from singletonBot import Bot
 
 START = 0
@@ -14,34 +17,68 @@ LOCATION = 1
 NEW_LOCATION = 2
 ALONE_FRIENDS = 3
 NEXT_DECISION = 4
+RECOMMENDATIONS = 5
+CATEGORY = 6
+
+# Stickers
+PEPE_CLAP = 'CAACAgQAAxkBAAIBYl7U8kAqKtLeONW1sOIXsGq6vDMyAAJMAQACqCEhBmMqtFaxxhbIGQQ'
+CHEF = 'CAACAgIAAxkBAAIBvV7U9YzwilBbM6k3LNfTmQxwcJKaAALfAAMw1J0REW2Q6CUm530ZBA'
+
+cat = ''
+counter = 0
 
 
 class UserLikes:
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        if UserLikes.__instance is None:
+            UserLikes()
+        return UserLikes.__instance
 
     def __init__(self):  # Declare the constructor with or without parameters
+
+        UserLikes.__instance = self
+
         self.option = []
 
         self.yes_no_select = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+        self.recommendation_select = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 
         for aux in list(Decision.getInstance().graph.nodes):
             self.option.insert(aux, types.ReplyKeyboardMarkup(one_time_keyboard=True))
 
         self.location = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.replay_all_keyboard_makeup()
+
+        Category_Decision.getInstance().set_option(self.option)
+
         Bot.getInstance().setHideBoard(types)
 
     def replay_all_keyboard_makeup(self):
 
         self.yes_no_select.add('Si', 'No')
+        self.recommendation_select.add('Me gusta 😍')
+        self.recommendation_select.add('Prueba con otro 🔄')
+        self.recommendation_select.add('Cancelar ❌')
         for node_graph in list(Decision.getInstance().graph.nodes):
             node = Decision.getInstance().graph.nodes[node_graph]['node']
-            self.option[node_graph].add(node.get_left_name(), node.get_right_name())
+            self.option[node_graph].add(node.get_left_name())
+            self.option[node_graph].add(node.get_right_name())
         self.location.row(types.KeyboardButton(text='Enviar mi ubicación', request_location=True))
 
 
-userLikes = UserLikes()
+userLikes = UserLikes.getInstance()
 bot = Bot.getInstance().bot
 users = UserController.getInstance()
+
+
+@bot.message_handler(
+    func=lambda message: True, content_types=['sticker'])
+def get_sticker_id(m):
+    cid = m.chat.id
+    print(m.sticker.file_id)
 
 
 def settings(m):
@@ -189,6 +226,71 @@ def configure_new_location(m):
         bot.send_message(cid, "Por favor, pulsa solo \"Si\" o \"No\"")
 
 
+@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == RECOMMENDATIONS,
+                     content_types=['text'])
+def recommendations_yes_or_no(m):
+    cid = m.chat.id
+    user_id = Bot.getInstance().users.get(cid)
+    text = m.text
+    bot.send_chat_action(cid, 'typing')
+    time.sleep(1.5)
+
+    if text == 'Me gusta 😍':
+        end_message(m, user_id)
+    elif text == 'Prueba con otro 🔄':
+        bot.send_message(cid, "Vamos a ver...", reply_markup=Bot.getInstance().hideBoard)
+        bot.send_chat_action(cid, 'typing')
+        time.sleep(1)
+        next_recommendation(m, user_id)
+        user_id.set_step(RECOMMENDATIONS)
+    elif text == 'Cancelar ❌':
+        command_text_bye(m)
+    else:
+        bot.send_message(cid, "Por favor, utiliza solo los botones")
+
+
+# filter on a specific message
+@bot.message_handler(
+    func=lambda message: users.getUserById(message.chat.id).step == START and 0.8 <= SequenceMatcher(
+        None, message.text, "ayuda").ratio(),
+    content_types=['text'])
+def command_text_help(m):
+    bot.send_message(m.chat.id, "Para ver la página de ayuda puedes usar /ayuda")
+
+
+# filter on a specific message
+@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == START and
+                                          (check_similarity_percentage(message.text, "adiós") or
+                                           check_similarity_percentage(message.text, "cancelar")),
+                     content_types=['text'])
+def command_text_bye(m):
+    time.sleep(2)
+    bot.send_message(m.chat.id, "Adiós, nos vemos pronto", reply_markup=Bot.getInstance().hideBoard)
+    bot.send_animation(m.chat.id, 'https://reygif.com/media/pocahontas-saludo-83409.gif', duration=None, caption=None,
+                       reply_to_message_id=None, reply_markup=None, parse_mode=None, disable_notification=None,
+                       timeout=None)
+
+    user_id = Bot.getInstance().users.get(m.chat.id)
+    user_id.set_step(START)
+    user_id.set_node(START)
+
+
+# filter on a specific message
+@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == START and check_similarity_percentage(message.text, "recomiendame algo"),
+                     content_types=['text'])
+def command_text_recommend(m):
+    cid = m.chat.id
+    user_id = Bot.getInstance().users.get(cid)
+    bot.send_chat_action(cid, 'typing')
+    time.sleep(1.5)
+    if user_id.get_longitude is None or user_id.get_latitude is None:
+        bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
+                              "Para hacerlo usa el comando /configurar")
+    else:
+        # bot.send_message(cid, user_id.get_node().question, reply_markup=userLikes.option[user_id.get_node().num])
+        choose_category(m)
+
+
 # default handler for every other text
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def command_default(m):
@@ -197,7 +299,7 @@ def command_default(m):
 
 
 def what_now(m):
-    bot.send_message(m.chat.id, "¿Que quieres hacer ahora?\n(Prueba con: _recomiendame algo_)", parse_mode="Markdown")
+    bot.send_message(m.chat.id, "¿Que quieres hacer ahora?\n(Prueba con: _recomiéndame algo_)", parse_mode="Markdown")
 
 
 def chosen_option(text, option, key):
@@ -220,38 +322,33 @@ def chosen_option(text, option, key):
     return False
 
 
-def check_similarity_percentage(text, option):
-    if text is None:
-        return False
-
-    if SequenceMatcher(None, text.lower(), option.lower()).ratio() >= 0.8:
-        return True
-
-    if option.lower() in text.lower():
-        return True
-
-    return False
-
-
 def show_decision(m, decision, user_id):
     cid = m.chat.id
     if decision.end == 1:
         category = decision.category
         if category is not None:
-            if category != 'chefbot':
-                loc = users.getUserLocationByUserID(cid)
-                (lat, lon) = nearby_places(loc.latitude, loc.longitude, category)
-                bot.send_location(cid, lat, lon)
-            elif category == 'chefbot':
-                bot.send_message(cid, "@NoteolvidesBot 👨‍🍳", parse_mode="Markdown")
+            if category == 'chefbot':
+                bot.send_message(m.chat.id, "@NoteolvidesBot 👨‍🍳", parse_mode="Markdown")
+                bot.send_sticker(m.chat.id, CHEF, reply_markup=Bot.getInstance().hideBoard)
+                time.sleep(1)
+                end_message(m, user_id)
+            elif category == 'netflix':
+                bot.send_message(m.chat.id, "Aquí puedes ver los últimos lanzamientos de Netflix:\n"
+                                            "_https://www.netflix.com/browse/new-releases_", parse_mode="Markdown",
+                                 reply_markup=Bot.getInstance().hideBoard)
+                end_message(m, user_id)
+            else:
+                global cat
+                cat = category
+                next_recommendation(m, user_id)
 
-        bot.send_message(cid, "Me alegra haberte ayudado")
-        bot.send_message(cid, "🥰", parse_mode="Markdown")
-        users.storeStep(user_id, START)
+        bot.send_message(m.chat.id, "Me alegra haberte ayudado")
+        bot.send_message(m.chat.id, "🥰", parse_mode="Markdown")
+        user_id.set_step(START)
 
     elif decision.end == -1:
-        bot.send_message(cid, "Lo siento, no se me ocurren más planes")
-        bot.send_message(cid, "😧", parse_mode="Markdown")
+        bot.send_message(m.chat.id, "Lo siento, no se me ocurren más planes")
+        bot.send_message(m.chat.id, "😧", parse_mode="Markdown", reply_markup=Bot.getInstance().hideBoard)
         users.storeStep(user_id, START)
 
     else:
@@ -265,3 +362,36 @@ def show_decision(m, decision, user_id):
         if users.get_node(cid).gif is not None:
             bot.send_animation(cid, users.get_node(cid).gif, duration=None, caption=None, reply_to_message_id=None,
                                reply_markup=None, parse_mode=None, disable_notification=None, timeout=None)
+
+
+def next_recommendation(m, user_id):
+    global cat, counter
+    loc = users.getUserLocationByUserID(m.chat.id)
+    result = nearby_places(loc.latitude, loc.longitude, cat)
+
+    if result is None:
+        bot.send_message(m.chat.id, "Lo siento, cerca de tu localización no encuentro ningún/ninguna "
+                         + Places.getInstance().get_place_name(cat))
+        bot.send_animation(m.chat.id, "https://media.tenor.com/images/a1804436e7606fc88ff8a69c9b0bf65c/tenor.gif",
+                           duration=None, caption=None, reply_to_message_id=None, reply_markup=None, parse_mode=None,
+                           disable_notification=None, timeout=None)
+
+    else:
+        loc = result[counter].get('geometry').get('location')
+        name = result[counter].get('name')
+        address = result[counter].get('vicinity')
+        bot.send_location(m.chat.id, loc.get('lat'), loc.get('lng'))
+        bot.send_message(m.chat.id, "He encontrado este " + Places.getInstance().get_place_name(cat) + " cerca de ti, "
+                        "¿Qué te parece?\n*" + name + "*\nDirección: _" + address + "_",
+                         reply_markup=userLikes.recommendation_select, parse_mode="Markdown")
+        counter += 1
+        users.storeStep(user_id, RECOMMENDATIONS)
+
+
+def end_message(m, user_id):
+    global cat, counter
+    bot.send_message(m.chat.id, "Espero haberte ayudado")
+    bot.send_sticker(m.chat.id, PEPE_CLAP, reply_markup=Bot.getInstance().hideBoard)
+    cat = ''
+    counter = 0
+    users.storeStep(user_id, START)
