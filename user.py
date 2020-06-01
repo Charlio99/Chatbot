@@ -25,6 +25,7 @@ class User:
         return self.step
 
     def set_step(self, step):
+        self.step = step
 
     def get_latitude(self):
         return self.latitude
