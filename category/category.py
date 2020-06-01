@@ -1,6 +1,6 @@
 NODE_FOOD = 16
 NODE_STORE = 22
-NODE_ENTERTAINMENT = 2
+NODE_ENTERTAINMENT = 28
 NODE_HEALTH = 2
 NODE_TOURISM = 2
 NODE_NO_SE = 0
@@ -30,7 +30,7 @@ class Categories:
         self.activities.append(Category('Comida', '🥪', NODE_FOOD))
         self.activities.append(Category('Tienda', '🛍', NODE_STORE))
         self.activities.append(Category('Entretenimiento', '🎞 🏋 🎳', NODE_ENTERTAINMENT))
-        self.activities.append(Category('Salud', '🧖‍ ️🏞', NODE_HEALTH))
+        self.activities.append(Category('Salud', '🧖‍️ 🏞', NODE_HEALTH))
         self.activities.append(Category('Turismo', '🗺', NODE_TOURISM))
         self.activities.append(Category("No lo se", '🤷‍♂️', NODE_NO_SE))
         pass
