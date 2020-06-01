@@ -1,4 +1,5 @@
 import time
+from api import nearby_places
 from difflib import SequenceMatcher
 
 from telebot import types
@@ -7,6 +8,7 @@ from Graph.node import Response
 from Graph.readGraph import Decision
 from neo4jDB.Controllers.UserController import UserController
 from singletonBot import Bot
+
 
 START = 0
 LOCATION = 1
@@ -51,7 +53,7 @@ def command_settings(m):
     loc = users.getUserLocationByUserID(cid)
 
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
+    time.sleep(1)
 
     if loc.latitude is None or loc.longitude is None:
         bot.send_message(cid, "Para poder ofrecerte resultados el bot necesita saber tu ubicación.\n"
@@ -70,7 +72,7 @@ def command_settings(m):
     func=lambda message: users.getUserById(message.chat.id).step == START and
                          check_similarity_percentage(message.text, "hola"), content_types=['text'])
 def command_text_hi(m):
-    time.sleep(2)
+    time.sleep(1)
     bot.send_message(m.chat.id, "¡Hola!")
     bot.send_animation(m.chat.id, 'https://i.pinimg.com/originals/2d/a5/cc/2da5cccdaa10e142846390f3851feb46.gif',
                        duration=None, caption=None, reply_to_message_id=None, reply_markup=None, parse_mode=None,
@@ -166,7 +168,7 @@ def configure_location(m):
 def configure_location_text(m):
     cid = m.chat.id
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
+    time.sleep(1)
     markup = types.ForceReply(selective=False)
     bot.send_message(cid, "Ubicación no válida, intentalo de nuevo.", reply_markup=markup)
 
@@ -178,7 +180,7 @@ def configure_new_location(m):
     user_id = users.getUserById(cid)
     text = m.text
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
+    time.sleep(1)
     if text == 'Si':
         bot.send_message(cid, "A continuación te aparecerá un botón para enviar la ubicación",
                          reply_markup=userLikes.location)
@@ -209,12 +211,12 @@ def chosen_option(text, option, key):
         return True
 
     if key == 'si':
-        for response in Response.getInstance().get_affirmative():
+        for response in Response.get_instance().get_affirmative():
             if check_similarity_percentage(text, response):
                 return True
 
     elif key == 'no':
-        for response in Response.getInstance().get_negative():
+        for response in Response.get_instance().get_negative():
             if check_similarity_percentage(text, response):
                 return True
 
@@ -237,16 +239,24 @@ def check_similarity_percentage(text, option):
 def show_decision(m, decision, user_id):
     cid = m.chat.id
     if decision.end == 1:
-        bot.send_message(cid, "Me alegra haberte ayudado", parse_mode="Markdown")
+        category = decision.category
+        if category is not None:
+            if category != 'chefbot':
+                loc = users.getUserLocationByUserID(cid)
+                (lat, lon) = nearby_places(loc.latitude, loc.longitude, category)
+                bot.send_location(cid, lat, lon)
+            elif category == 'chefbot':
+                bot.send_message(cid, "@NoteolvidesBot 👨‍🍳", parse_mode="Markdown")
+
+        bot.send_message(cid, "Me alegra haberte ayudado")
         bot.send_message(cid, "🥰", parse_mode="Markdown")
         users.storeStep(user_id, START)
 
     elif decision.end == -1:
-        bot.send_message(cid, "Lo siento, no se me ocurre mas planes, yo de ti me iría a dormir",
-                         parse_mode="Markdown")
+        bot.send_message(cid, "Lo siento, no se me ocurren más planes")
         bot.send_message(cid, "😧", parse_mode="Markdown")
         users.storeStep(user_id, START)
-
+        
     else:
         users.save_node(user_id, decision.next_step)
 

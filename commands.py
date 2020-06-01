@@ -24,7 +24,7 @@ def command_start(m):
     if UserController.getInstance().checkUserByIdIfExists(cid):  # if user hasn't used the "/start" command yet:
         UserController.getInstance().storeUser(cid, m.chat.first_name, 0)
         bot.send_message(cid, "¡Hola! Soy Pilus, un bot recomendador de planes")
-        command_help(m)
+        # command_help(m)
         bot.send_message(cid, "Antes de nada, vamos a configurar tu perfil para perfeccionar mis recomendaciones")
         from userLikes import command_settings
         command_settings(m)

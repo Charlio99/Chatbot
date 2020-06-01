@@ -7,6 +7,7 @@ class User:
         self.chatId = cid
         self.step = step
         self.cp = cp
+
         self.latitude = latitude
         self.longitude = longitude
         self.aux_node = aux_node
@@ -24,13 +25,6 @@ class User:
         return self.step
 
     def set_step(self, step):
-        self.step = step
-
-    def get_postal_code(self):
-        return self.cp
-
-    def set_postal_code(self, cp):
-        self.cp = cp
 
     def get_latitude(self):
         return self.latitude
