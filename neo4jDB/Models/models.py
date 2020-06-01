@@ -6,7 +6,8 @@ class User(GraphObject):
 
     name = Property()
     chatId = Property()
-    last_step = Property()
+    step = Property()
+    node = Property()
 
     lives = RelatedTo("Location", "LIVES")
     likes = RelatedTo("Category", "LIKES")
