@@ -1,13 +1,11 @@
-from Graph.readGraph import Decision
 from commands import Commands
 from neo4jDB.DumpDatabaseFile import DumpDatabaseFile
 from singletonBot import Bot
+from userLikes import UserLikes
 
-graph = Decision.getInstance()
-graph.read_json()
-
+userLikes = UserLikes.getInstance()
 Commands()
 bot = Bot.getInstance().bot
 dump = DumpDatabaseFile()
-dump.dumpDatabaseMenu()
+# dump.dumpDatabaseMenu()
 bot.polling()

@@ -22,12 +22,11 @@ def places_nearby(
 
 def nearby_places(lat, long, category, radius=None):
     rank_by = 'distance'
-    result = gmaps.places_nearby(location=(lat, long), radius=radius, open_now=True, type=category,
+    # open_now should be set to True in a production environment, for testing purposes during COVID19 we set it to False
+    result = gmaps.places_nearby(location=(lat, long), radius=radius, open_now=False, type=category,
                                      rank_by=rank_by)
     if result is not None:
         if len(result.get('results')) > 0:
-            loc = result.get('results')[0].get('geometry').get('location')
-            location = (loc.get('lat'), loc.get('lng'))
             return result.get('results')
         return None
     else:

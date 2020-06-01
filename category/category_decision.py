@@ -51,17 +51,17 @@ users = UserController.getInstance()
                      content_types=['text'])
 def evaluate_category(m):
     cid = m.chat.id
-    user_id = Bot.getInstance().users.get(cid)
+    user_id = users.getUserById(cid)
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
+    time.sleep(1)
     correct = False
 
     for category in Categories.getInstance().get_activities():
         if check_similarity_percentage(m.text, category.name):
-            user_id.set_node(category.node)
+            user_id.node = category.node
             correct = True
-            user_id.set_step(NEXT_DECISION)
-            bot.send_message(cid, user_id.get_node().question, reply_markup=category_decision.get_option()[category.node])
+            users.storeStep(user_id, NEXT_DECISION)
+            bot.send_message(cid, users.get_node(cid).question, reply_markup=category_decision.get_option()[category.node])
             break
 
     if correct is False:
@@ -71,13 +71,13 @@ def evaluate_category(m):
 
 def choose_category(m):
     cid = m.chat.id
-    user_id = Bot.getInstance().users.get(cid)
+    user_id = users.getUserById(cid)
 
     bot.send_chat_action(cid, 'typing')
-    time.sleep(1.5)
+    time.sleep(1)
 
     bot.send_message(m.chat.id, "¿Cuál de estas categorias te atrae más?", reply_markup=category_decision.activity)
-    user_id.set_step(CATEGORY)
+    users.storeStep(user_id, CATEGORY)
 
 
 def check_similarity_percentage(text, option):
