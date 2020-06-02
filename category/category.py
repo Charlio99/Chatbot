@@ -19,7 +19,7 @@ class Categories:
     __instance = None
 
     @staticmethod
-    def getInstance():
+    def get_instance():
         if Categories.__instance is None:
             Categories()
         return Categories.__instance

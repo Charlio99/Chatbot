@@ -1,15 +1,15 @@
-from py2neo import Graph, NodeMatcher
+from py2neo import NodeMatcher
 
-from graphh.read_graph import Decision
+from graph.read_graph import Decision
 from db.connection import Connection
-from db.modelss.models import User, Location
+from db.model.models import User, Location
 
 
 class UserController:
     __instance = None
 
     @staticmethod
-    def getInstance():
+    def get_instance():
         """ Static access method. """
         if UserController.__instance is None:
             UserController()
@@ -20,9 +20,9 @@ class UserController:
         self.nodes = NodeMatcher(self.graph)
         UserController.__instance = self
 
-    def storeUser(self, cid, name, step, node=0):
+    def store_user(self, cid, name, step, node=0):
         """
-        Stores the user given a user.py class
+        Stores the user
         :param node:
         :param step:
         :param cid:
@@ -31,43 +31,40 @@ class UserController:
         """
         p = User()
         p.name = name
-        p.chatId = cid
+        p.chat_id = cid
         p.step = step
         p.node = node
         self.graph.push(p)
         return p
 
-    def getUserLocationByUserID(self, chatId):
-        user = User.match(self.graph, chatId).first()
+    def get_user_location_by_user_id(self, chat_id):
+        user = User.match(self.graph, chat_id).first()
         try:
             loc = user.lives._related_objects[0][0]
         except IndexError:
             loc = Location()
         return loc
 
-    def getLocationByUserClass(self, user):
-        return user.lives.related_class
+    def get_user_by_id(self, chat_id):
+        return User.match(self.graph, chat_id).first()
 
-    def getUserById(self, chatId):
-        return User.match(self.graph, chatId).first()
+    def check_user_by_id_if_exists(self, chat_id):
+        return User.match(self.graph, chat_id).first() is None
 
-    def checkUserByIdIfExists(self, chatId):
-        return User.match(self.graph, chatId).first() is None
-
-    def storeStep(self, user, step):
+    def store_step(self, user, step):
         user.step = step
         self.graph.push(user)
 
-    def get_node(self, cid):
-        node = self.getInstance().getUserById(cid).node
-        return Decision.getInstance().graph.nodes[node]['node']
+    def get_node(self, chat_id):
+        node = self.get_instance().getUserById(chat_id).node
+        return Decision.get_instance().graph.nodes[node]['node']
 
     def save_node(self, user, node):
         user.node = node
         self.graph.push(user)
 
     def save_location(self, user, lat, long):
-        exists = self.getInstance().getUserLocationByUserID(user.chatId)
+        exists = self.get_instance().getUserLocationByUserID(user.chat_id)
         if exists.latitude is None or exists.longitude is None:
             loc = Location()
             loc.longitude = long

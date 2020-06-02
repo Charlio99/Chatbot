@@ -1,7 +1,7 @@
 import time
 from difflib import SequenceMatcher
 
-from db.controllerss.user_controller import UserController
+from db.controller.user_controller import UserController
 from singleton_bot import Bot
 
 
@@ -17,16 +17,16 @@ class Commands:
 
 
 commandClass = Commands()
-bot = Bot.getInstance().bot
-users = UserController.getInstance()
+bot = Bot.get_instance().bot
+users = UserController.get_instance()
 
 
 # handle the "/start" command
 @bot.message_handler(commands=['start'])
 def command_start(m):
     cid = m.chat.id
-    if UserController.getInstance().checkUserByIdIfExists(cid):  # if user hasn't used the "/start" command yet:
-        UserController.getInstance().storeUser(cid, m.chat.first_name, 0)
+    if UserController.get_instance().check_user_by_id_if_exists(cid):  # if user hasn't used the "/start" command yet:
+        UserController.get_instance().store_user(cid, m.chat.first_name, 0)
         bot.send_message(cid, "¡Hola! Soy Pilus, un bot recomendador de planes")
         bot.send_message(cid, "Antes de nada, vamos a configurar tu perfil para perfeccionar mis recomendaciones")
         command_settings(m)
@@ -40,9 +40,10 @@ def command_settings(m):
     from user_likes import settings
     settings(m)
 
-# config page
+
+# cancel command
 @bot.message_handler(commands=['cancelar'])
-def command_settings_cancelation(m):
+def command_cancel(m):
     from user_likes import cancel_action
     cancel_action(m)
     bot.send_message(m.chat.id, 'Cancelación exitosa.\n'
@@ -51,22 +52,22 @@ def command_settings_cancelation(m):
 
 # filter on a specific message
 @bot.message_handler(
-    func=lambda message: users.getUserById(message.chat.id).step == 0 and check_similarity_percentage(message.text, "recomiendame algo"),
-    content_types=['text'])
+    func=lambda message: users.get_user_by_id(message.chat.id).step == 0 and
+                         check_similarity_percentage(message.text, "recomiendame algo"), content_types=['text'])
 def command_text_recommend(m):
     cid = m.chat.id
 
     bot.send_chat_action(cid, 'typing')
     time.sleep(0.5)
 
-    loc = users.getUserLocationByUserID(cid)
+    loc = users.get_user_location_by_user_id(cid)
 
     if loc.latitude is None or loc.longitude is None:
 
         bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
                               "Para hacerlo usa el comando /configurar")
     else:
-        from category.category_decision import choose_category
+        from category.categorydecision import choose_category
         choose_category(m)
 
 
@@ -93,5 +94,3 @@ def check_similarity_percentage(text, option):
         return True
 
     return False
-
-

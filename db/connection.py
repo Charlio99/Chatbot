@@ -11,8 +11,6 @@ class Connection:
             Connection()
         return Connection.__instance
 
-    """Constructor"""
-
     def __init__(self):
         """ Virtually private constructor. """
         self._driver = None

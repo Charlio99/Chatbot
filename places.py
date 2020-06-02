@@ -52,7 +52,7 @@ class Places:
     __instance = None
 
     @staticmethod
-    def getInstance():
+    def get_instance():
         if Places.__instance is None:
             Places()
         return Places.__instance

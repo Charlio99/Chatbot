@@ -4,8 +4,8 @@ from difflib import SequenceMatcher
 from telebot import types
 
 from category.category import Categories
-from db.controllerss.places_controller import PlacesController
-from db.controllerss.user_controller import UserController
+from db.controller.places_controller import PlacesController
+from db.controller.user_controller import UserController
 from singleton_bot import Bot
 
 CATEGORY = 6
@@ -14,18 +14,18 @@ LAST_RECOMMENDATION = 8
 START = 0
 
 
-class Category_Decision:
+class CategoryDecision:
     __instance = None
 
     @staticmethod
-    def getInstance():
-        if Category_Decision.__instance is None:
-            Category_Decision()
-        return Category_Decision.__instance
+    def get_instance():
+        if CategoryDecision.__instance is None:
+            CategoryDecision()
+        return CategoryDecision.__instance
 
     def __init__(self):  # Declare the constructor with or without parameters
-        Category_Decision.__instance = self
-        activities = Categories.getInstance().get_activities().copy()
+        CategoryDecision.__instance = self
+        activities = Categories.get_instance().get_activities().copy()
         self.recommendation = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         self.recommendation.add('Voy a repetir', 'Quiero hacer algo diferente')
         self.activity = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -47,29 +47,30 @@ class Category_Decision:
         return self.option
 
 
-bot = Bot.getInstance().bot
-category_decision = Category_Decision.getInstance()
-users = UserController.getInstance()
+bot = Bot.get_instance().bot
+category_decision = CategoryDecision.get_instance()
+users = UserController.get_instance()
 category_name = ''
 
-@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == CATEGORY,
+
+@bot.message_handler(func=lambda message: users.get_user_by_id(message.chat.id).step == CATEGORY,
                      content_types=['text'])
 def evaluate_category(m):
     global category_name
     cid = m.chat.id
-    user_id = users.getUserById(cid)
+    user_id = users.get_user_by_id(cid)
     bot.send_chat_action(cid, 'typing')
     time.sleep(1)
     correct = False
 
-    for category in Categories.getInstance().get_activities():
+    for category in Categories.get_instance().get_activities():
         if check_similarity_percentage(m.text, category.name):
             user_id.node = category.node
             correct = True
-            users.storeStep(user_id, NEXT_DECISION)
+            users.store_step(user_id, NEXT_DECISION)
             category_name = category.name
             if show_last_recommendations(category.name, m) is False:
-                bot.send_message(cid, users.get_node(cid).question, reply_markup=Category_Decision.getInstance().
+                bot.send_message(cid, users.get_node(cid).question, reply_markup=CategoryDecision.get_instance().
                                  option[users.get_node(cid).num])
             break
 
@@ -77,7 +78,8 @@ def evaluate_category(m):
         bot.send_message(m.chat.id, "Escoje entre las categorías que te ofrezco",
                          reply_markup=category_decision.activity)
 
-@bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == LAST_RECOMMENDATION,
+
+@bot.message_handler(func=lambda message: users.get_user_by_id(message.chat.id).step == LAST_RECOMMENDATION,
                      content_types=['text'])
 def evaluate_last_recommendation(m):
     global category_name
@@ -86,16 +88,16 @@ def evaluate_last_recommendation(m):
     bot.send_chat_action(cid, 'typing')
     time.sleep(1.5)
     text = m.text
-    user_id = users.getUserById(m.chat.id)
+    user_id = users.get_user_by_id(m.chat.id)
 
     if text == 'Voy a repetir':
         from user_likes import end_message
         end_message(m, user_id)
 
     elif text == 'Quiero hacer algo diferente':
-        users.storeStep(user_id, NEXT_DECISION)
+        users.store_step(user_id, NEXT_DECISION)
         bot.send_message(cid, 'Perfecto ❤️')
-        bot.send_message(cid, users.get_node(cid).question, reply_markup=Category_Decision.getInstance().
+        bot.send_message(cid, users.get_node(cid).question, reply_markup=CategoryDecision.get_instance().
                          option[users.get_node(cid).num])
 
     else:
@@ -104,13 +106,13 @@ def evaluate_last_recommendation(m):
 
 def choose_category(m):
     cid = m.chat.id
-    user_id = users.getUserById(cid)
+    user_id = users.get_user_by_id(cid)
 
     bot.send_chat_action(cid, 'typing')
     time.sleep(1)
 
     bot.send_message(m.chat.id, "¿Cuál de estas categorias te atrae más?", reply_markup=category_decision.activity)
-    users.storeStep(user_id, CATEGORY)
+    users.store_step(user_id, CATEGORY)
 
 
 def check_similarity_percentage(text, option):
@@ -127,8 +129,7 @@ def check_similarity_percentage(text, option):
 
 
 def show_last_recommendations(category, m):
-
-    name = Categories.getInstance().get_name_category(category)
+    name = Categories.get_instance().get_name_category(category)
 
     if name is None:
         return False
@@ -147,7 +148,5 @@ def show_last_recommendations(category, m):
     bot.send_message(m.chat.id, "¿Te gustaría volver a alguno de estos sitios? 👍 😉",
                      reply_markup=category_decision.recommendation, parse_mode="Markdown")
 
-    user_id = users.getUserById(m.chat.id)
-    users.storeStep(user_id, LAST_RECOMMENDATION)
-
-
+    user_id = users.get_user_by_id(m.chat.id)
+    users.store_step(user_id, LAST_RECOMMENDATION)

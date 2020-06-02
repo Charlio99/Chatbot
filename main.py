@@ -5,7 +5,7 @@ from user_likes import UserLikes
 
 userLikes = UserLikes.getInstance()
 Commands()
-bot = Bot.getInstance().bot
+bot = Bot.get_instance().bot
 dump = DumpDatabaseFile()
-# dump.dumpDatabaseMenu()
+# dump.dump_database_menu()
 bot.polling()

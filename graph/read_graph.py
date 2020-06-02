@@ -1,14 +1,14 @@
 import json
 import networkx as nx
 
-from graphh.node import NodeGraph
+from graph.node import NodeGraph
 
 
 class Decision:
     __instance = None
 
     @staticmethod
-    def getInstance():
+    def get_instance():
 
         if Decision.__instance is None:
             Decision()

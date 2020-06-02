@@ -6,7 +6,7 @@ class Bot:
     TOKEN = '1187131516:AAFM9NyvopcDLFOEbvDW73K7thN3r7jph3M'
 
     @staticmethod
-    def getInstance():
+    def get_instance():
         """ Static access method. """
         if Bot.__instance is None:
             Bot()
@@ -19,13 +19,9 @@ class Bot:
 
         else:
             Bot.__instance = self
-
             self.bot = telebot.TeleBot(Bot.TOKEN)
             self.bot.set_update_listener(listener)
             self.users = {}  # register listener
-
-    def setHideBoard(self, types):
-        self.hideBoard = types.ReplyKeyboardRemove()  # if sent as reply_markup, will hide the keyboard
 
 
 # only used for console output now

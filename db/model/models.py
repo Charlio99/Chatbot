@@ -5,7 +5,7 @@ class User(GraphObject):
     __primarykey__ = "chatId"
 
     name = Property()
-    chatId = Property()
+    chat_id = Property()
     step = Property()
     node = Property()
 
