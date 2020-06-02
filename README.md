@@ -19,7 +19,7 @@ $ pip install -r requirements.txt
 
 **Execució de l'aplicació**
 ```sh
-$ python3 main.py
+$ python main.py
 ```
 
 
