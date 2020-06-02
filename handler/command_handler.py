@@ -52,23 +52,30 @@ def command_cancel(m):
 
 # filter on a specific message
 @bot.message_handler(
-    func=lambda message: users.get_user_by_id(message.chat.id).step == 0 and
-                         check_similarity_percentage(message.text, "recomiendame algo"), content_types=['text'])
+    func=lambda message: check_similarity_percentage(message.text, "recomiendame algo"),
+    content_types=['text'])
 def command_text_recommend(m):
+    recommend(m)
+
+
+def recommend(m):
     cid = m.chat.id
+    if users.check_user_by_id_if_exists(cid) is False:
+        if users.get_user_by_id(cid).step == 0:
 
-    bot.send_chat_action(cid, 'typing')
-    time.sleep(0.5)
+            bot.send_chat_action(cid, 'typing')
+            time.sleep(0.5)
 
-    loc = users.get_user_location_by_user_id(cid)
+            loc = users.get_user_location_by_user_id(cid)
 
-    if loc.latitude is None or loc.longitude is None:
+            if loc.latitude is None or loc.longitude is None:
 
-        bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
-                              "Para hacerlo usa el comando /configurar")
-    else:
-        from category.category_decision import choose_category
-        choose_category(m)
+                bot.send_message(cid,
+                                 "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
+                                 "Para hacerlo usa el comando /configurar")
+            else:
+                from category.category_decision import choose_category
+                choose_category(m)
 
 
 # help page

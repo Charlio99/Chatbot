@@ -31,7 +31,7 @@ class UserController:
         """
         p = User()
         p.name = name
-        p.chat_id = cid
+        p.chatId = cid
         p.step = step
         p.node = node
         self.graph.push(p)
@@ -64,7 +64,7 @@ class UserController:
         self.graph.push(user)
 
     def save_location(self, user, lat, long):
-        exists = self.get_instance().get_user_location_by_user_id(user.chat_id)
+        exists = self.get_instance().get_user_location_by_user_id(user.chatId)
         if exists.latitude is None or exists.longitude is None:
             loc = Location()
             loc.longitude = long
