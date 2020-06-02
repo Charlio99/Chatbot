@@ -1,7 +1,7 @@
 from py2neo import Graph
 
-from db.Connection import Connection
-from db.Models.models import Category
+from db.connection import Connection
+from db.modelss.models import Category
 
 
 class DumpDatabaseFile:

@@ -1,7 +1,7 @@
 import json
 import networkx as nx
 
-from Graph.node import NodeGraph
+from graphh.node import NodeGraph
 
 
 class Decision:

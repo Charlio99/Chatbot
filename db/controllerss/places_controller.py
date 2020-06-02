@@ -1,7 +1,7 @@
 from py2neo import NodeMatcher, datetime
 
-from db.Connection import Connection
-from db.Models.models import Place, Category, Location, User
+from db.connection import Connection
+from db.modelss.models import Place, Category, Location, User
 
 
 class PlacesController:

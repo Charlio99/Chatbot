@@ -1,8 +1,8 @@
 from py2neo import Graph, NodeMatcher
 
-from Graph.readGraph import Decision
-from db.Connection import Connection
-from db.Models.models import User, Location
+from graphh.read_graph import Decision
+from db.connection import Connection
+from db.modelss.models import User, Location
 
 
 class UserController:
