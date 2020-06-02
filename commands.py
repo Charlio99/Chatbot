@@ -1,8 +1,8 @@
 import time
 from difflib import SequenceMatcher
 
-from neo4jDB.Controllers.UserController import UserController
-from singletonBot import Bot
+from db.controllerss.user_controller import UserController
+from singleton_bot import Bot
 
 
 class Commands:
@@ -37,13 +37,13 @@ def command_start(m):
 # config page
 @bot.message_handler(commands=['configurar'])
 def command_settings(m):
-    from userLikes import settings
+    from user_likes import settings
     settings(m)
 
 # config page
 @bot.message_handler(commands=['cancelar'])
 def command_settings_cancelation(m):
-    from userLikes import cancel_action
+    from user_likes import cancel_action
     cancel_action(m)
     bot.send_message(m.chat.id, 'Cancelación exitosa.\n'
                                 'Si quieres que te recomiende algo simplemente di: recomiéndame algo')

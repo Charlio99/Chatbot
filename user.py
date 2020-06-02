@@ -1,4 +1,4 @@
-from Graph.readGraph import Decision
+from graphh.read_graph import Decision
 
 
 class User:

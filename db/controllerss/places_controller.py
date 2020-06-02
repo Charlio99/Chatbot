@@ -1,14 +1,14 @@
 from py2neo import NodeMatcher, datetime
 
-from neo4jDB.Connection import Connection
-from neo4jDB.Models.models import Place, Category, Location, User
+from db.Connection import Connection
+from db.Models.models import Place, Category, Location, User
 
 
 class PlacesController:
     __instance = None
 
     @staticmethod
-    def getInstance():
+    def get_instance():
         """ Static access method. """
         if PlacesController.__instance is None:
             PlacesController()
@@ -19,28 +19,28 @@ class PlacesController:
         self.nodes = NodeMatcher(self.graph)
         PlacesController.__instance = self
 
-    def createPlace(self, placename, latiutude, longitude, adressName, categoryname, subcategoryName, user):
-        p = Place.match(self.graph, placename).first()
+    def create_place(self, place_name, latitude, longitude, address_name, category_name, subcategory_name, user):
+        p = Place.match(self.graph, place_name).first()
         if p is None:
             p = Place()
-            p.placeName = placename
+            p.placeName = place_name
 
-        cat = Category.match(self.graph, categoryname).first()
+        cat = Category.match(self.graph, category_name).first()
 
         try:
-            l = p.locatedIn._related_objects[0][0]
+            loc = p.locatedIn._related_objects[0][0]
         except IndexError:
-            l = Location()
-            l.latitude = latiutude
-            l.longitude = longitude
+            loc = Location()
+            loc.latitude = latitude
+            loc.longitude = longitude
 
-        p.locatedIn.add(l, properties={'AdressName': adressName})
-        p.category.add(cat, properties={'subcategory': subcategoryName})
+        p.locatedIn.add(loc, properties={'AdressName': address_name})
+        p.category.add(cat, properties={'subcategory': subcategory_name})
         self.graph.push(p)
         user.went.add(p, properties={'Date': datetime.now()})
         self.graph.push(user)
 
-    def recomendation(self, subcategory, user_id):
+    def recommendation(self, subcategory, user_id):
         results = []
         for user in list(User.match(self.graph).where(chatId=user_id)):
             for went in sorted(user.went._related_objects, key=lambda element: element[1]['Date'], reverse=True):
@@ -52,5 +52,5 @@ class PlacesController:
 
         return results[:3]
 
-    def getPlaceByName(self, placename):
-        return Place.match(self.graph, placename).first()
+    def get_place_by_name(self, place_name):
+        return Place.match(self.graph, place_name).first()

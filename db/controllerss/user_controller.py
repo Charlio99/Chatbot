@@ -1,8 +1,8 @@
 from py2neo import Graph, NodeMatcher
 
 from Graph.readGraph import Decision
-from neo4jDB.Connection import Connection
-from neo4jDB.Models.models import User, Location
+from db.Connection import Connection
+from db.Models.models import User, Location
 
 
 class UserController:

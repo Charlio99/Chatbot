@@ -5,13 +5,13 @@ from difflib import SequenceMatcher
 
 from telebot import types
 
-from Graph.node import Response
-from Graph.readGraph import Decision
-from neo4jDB.Controllers.PlacesController import PlacesController
-from neo4jDB.Controllers.UserController import UserController
+from graphh.node import Response
+from graphh.read_graph import Decision
+from db.controllerss.places_controller import PlacesController
+from db.controllerss.user_controller import UserController
 from category.category_decision import Category_Decision, check_similarity_percentage, choose_category
 from places import Places
-from singletonBot import Bot
+from singleton_bot import Bot
 
 START = 0
 LOCATION = 1
@@ -229,7 +229,7 @@ def recommendations_yes_or_no(m):
         categories = Places.getInstance().get_category(cat)
 
         for category in categories:
-            PlacesController.getInstance().createPlace(name, latitude, longitude, address, category, cat, user_id)
+            PlacesController.get_instance().create_place(name, latitude, longitude, address, category, cat, user_id)
 
     elif text == 'Prueba con otro 🔄':
         bot.send_message(cid, "Vamos a ver...", reply_markup=Bot.getInstance().hideBoard)

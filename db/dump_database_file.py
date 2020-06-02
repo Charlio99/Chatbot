@@ -1,7 +1,7 @@
 from py2neo import Graph
 
-from neo4jDB.Connection import Connection
-from neo4jDB.Models.models import Category
+from db.Connection import Connection
+from db.Models.models import Category
 
 
 class DumpDatabaseFile:

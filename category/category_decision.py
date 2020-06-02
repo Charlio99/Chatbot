@@ -4,9 +4,9 @@ from difflib import SequenceMatcher
 from telebot import types
 
 from category.category import Categories
-from neo4jDB.Controllers.PlacesController import PlacesController
-from neo4jDB.Controllers.UserController import UserController
-from singletonBot import Bot
+from db.controllerss.places_controller import PlacesController
+from db.controllerss.user_controller import UserController
+from singleton_bot import Bot
 
 CATEGORY = 6
 NEXT_DECISION = 4
@@ -89,7 +89,7 @@ def evaluate_last_recommendation(m):
     user_id = users.getUserById(m.chat.id)
 
     if text == 'Voy a repetir':
-        from userLikes import end_message
+        from user_likes import end_message
         end_message(m, user_id)
 
     elif text == 'Quiero hacer algo diferente':
@@ -133,7 +133,7 @@ def show_last_recommendations(category, m):
     if name is None:
         return False
 
-    recommendation_array = PlacesController.getInstance().recomendation(name, m.chat.id)
+    recommendation_array = PlacesController.get_instance().recommendation(name, m.chat.id)
 
     if len(recommendation_array) <= 0:
         return False
