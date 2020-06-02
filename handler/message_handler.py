@@ -9,7 +9,7 @@ from graph.node import Response
 from graph.read_graph import Decision
 from db.controller.places_controller import PlacesController
 from db.controller.user_controller import UserController
-from category.categorydecision import CategoryDecision, check_similarity_percentage, choose_category
+from category.category_decision import CategoryDecision, check_similarity_percentage, choose_category
 from places import Places
 from singleton_bot import Bot
 

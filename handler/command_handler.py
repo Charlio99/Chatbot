@@ -67,7 +67,7 @@ def command_text_recommend(m):
         bot.send_message(cid, "Para poder usar las recomendaciones primero tienes que configurar tu código postal.\n"
                               "Para hacerlo usa el comando /configurar")
     else:
-        from category.categorydecision import choose_category
+        from category.category_decision import choose_category
         choose_category(m)
 
 
