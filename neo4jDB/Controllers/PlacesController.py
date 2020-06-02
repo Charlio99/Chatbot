@@ -1,5 +1,4 @@
-import neotime
-from py2neo import NodeMatcher
+from py2neo import NodeMatcher, datetime
 
 from neo4jDB.Connection import Connection
 from neo4jDB.Models.models import Place, Category, Location, User
@@ -38,7 +37,7 @@ class PlacesController:
         p.locatedIn.add(l, properties={'AdressName': adressName})
         p.category.add(cat, properties={'subcategory': subcategoryName})
         self.graph.push(p)
-        user.went.add(p, properties={'Date': neotime.DateTime.now()})
+        user.went.add(p, properties={'Date': datetime.now()})
         self.graph.push(user)
 
     def recomendation(self, subcategory, user_id):
