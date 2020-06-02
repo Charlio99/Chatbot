@@ -16,7 +16,7 @@ class Commands:
         pass
 
 
-commandClass = Commands()
+command_handler = Commands()
 bot = Bot.get_instance().bot
 users = UserController.get_instance()
 
@@ -37,14 +37,14 @@ def command_start(m):
 # config page
 @bot.message_handler(commands=['configurar'])
 def command_settings(m):
-    from user_likes import settings
+    from handler.message_handler import settings
     settings(m)
 
 
 # cancel command
 @bot.message_handler(commands=['cancelar'])
 def command_cancel(m):
-    from user_likes import cancel_action
+    from handler.message_handler import cancel_action
     cancel_action(m)
     bot.send_message(m.chat.id, 'Cancelación exitosa.\n'
                                 'Si quieres que te recomiende algo simplemente di: recomiéndame algo')
@@ -76,9 +76,9 @@ def command_text_recommend(m):
 def command_help(m):
     cid = m.chat.id
     help_text = "Los comandos disponibles son los siguientes: \n"
-    for key in commandClass.commands:  # generate help text out of the commands dictionary defined at the top
+    for key in command_handler.commands:  # generate help text out of the commands dictionary defined at the top
         help_text += "/" + key + ": "
-        help_text += commandClass.commands[key] + "\n"
+        help_text += command_handler.commands[key] + "\n"
     help_text += "Si quieres que te recomiende algo simplemente di: _recomiéndame algo_"
     bot.send_message(cid, help_text, parse_mode="Markdown")  # send the generated help page
 

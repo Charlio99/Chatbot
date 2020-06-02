@@ -91,7 +91,7 @@ def evaluate_last_recommendation(m):
     user_id = users.get_user_by_id(m.chat.id)
 
     if text == 'Voy a repetir':
-        from user_likes import end_message
+        from handler.message_handler import end_message
         end_message(m, user_id)
 
     elif text == 'Quiero hacer algo diferente':
@@ -142,7 +142,7 @@ def show_last_recommendations(category, m):
     bot.send_message(m.chat.id, "Las últimas veces fuiste a los siguientes sitios:", parse_mode="Markdown")
 
     for recommendation in recommendation_array:
-        bot.send_message(m.chat.id, recommendation[0].placeName + "que está en la dirección:\n_" +
+        bot.send_message(m.chat.id, recommendation[0].placeName + " que está en la dirección:\n_" +
                          recommendation[0].locatedIn._related_objects[0][1]['AdressName'] + "_", parse_mode="Markdown")
 
     bot.send_message(m.chat.id, "¿Te gustaría volver a alguno de estos sitios? 👍 😉",

@@ -20,7 +20,7 @@ class Connection:
             self.graph = Graph("bolt://byted.duckdns.org:3333", auth=('neo4j', "covid19"))
             Connection.__instance = self
 
-    def getConnection(self):
+    def get_connection(self):
         return self.graph
 
     def close(self):

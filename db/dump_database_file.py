@@ -10,7 +10,7 @@ class DumpDatabaseFile:
     """
 
     def __init__(self):
-        self.graph = Connection.get_instance().getConnection()
+        self.graph = Connection.get_instance().get_connection()
 
     def dump_database_menu(self):
         condition = False

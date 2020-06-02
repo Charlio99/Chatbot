@@ -1,9 +1,9 @@
-from commands import Commands
+from handler.command_handler import Commands
 from db.dump_database_file import DumpDatabaseFile
 from singleton_bot import Bot
-from user_likes import UserLikes
+from handler.message_handler import UserLikes
 
-userLikes = UserLikes.getInstance()
+user_likes = UserLikes.get_instance()
 Commands()
 bot = Bot.get_instance().bot
 dump = DumpDatabaseFile()

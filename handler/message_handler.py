@@ -25,6 +25,7 @@ CATEGORY = 6
 PEPE_CLAP = 'CAACAgQAAxkBAAIBYl7U8kAqKtLeONW1sOIXsGq6vDMyAAJMAQACqCEhBmMqtFaxxhbIGQQ'
 PEPE_CRY = 'CAACAgIAAxkBAAIDkV7VWkNQWAGHRyUWeR38JVRuYanQAAJYAQACierlB4x5Q0a9uaZGGQQ'
 CHEF = 'CAACAgIAAxkBAAIBvV7U9YzwilBbM6k3LNfTmQxwcJKaAALfAAMw1J0REW2Q6CUm530ZBA'
+CHICKEN_WALKING = 'CAACAgIAAxkBAAIX7F7WNt0lPJ-KNlgNrITlPZw9OXBWAAJJAQACECECEFGP_DvfMqtJGgQ'
 
 cat = ''
 counter = 0
@@ -38,7 +39,7 @@ class UserLikes:
     __instance = None
 
     @staticmethod
-    def getInstance():
+    def get_instance():
         if UserLikes.__instance is None:
             UserLikes()
         return UserLikes.__instance
@@ -74,7 +75,7 @@ class UserLikes:
         self.location.row(types.KeyboardButton(text='Enviar mi ubicación', request_location=True))
 
 
-userLikes = UserLikes.getInstance()
+user_likes = UserLikes.get_instance()
 bot = Bot.get_instance().bot
 users = UserController.get_instance()
 
@@ -96,13 +97,13 @@ def settings(m):
 
     if loc.latitude is None or loc.longitude is None:
         bot.send_message(cid, "Para poder ofrecerte resultados el bot necesita saber tu ubicación.\n"
-                              "A continuación te aparecerá un botón para enviarla", reply_markup=userLikes.location)
+                              "A continuación te aparecerá un botón para enviarla", reply_markup=user_likes.location)
         users.store_step(user_id, LOCATION)
     else:
         bot.send_message(cid, "Tu ubicación actual es: ")
         bot.send_location(cid, loc.latitude, loc.longitude,
                           reply_markup=types.ReplyKeyboardRemove())
-        bot.send_message(cid, "\n¿Quieres cambiarla?", reply_markup=userLikes.yes_no_select)
+        bot.send_message(cid, "\n¿Quieres cambiarla?", reply_markup=user_likes.yes_no_select)
         users.store_step(user_id, NEW_LOCATION)
 
 
@@ -130,9 +131,8 @@ def command_text_help(m):
 
 # filter on a specific message
 @bot.message_handler(
-    func=lambda message: users.get_user_by_id(message.chat.id).step == START and check_similarity_percentage(message.text,
-                                                                                                          "adiós"),
-    content_types=['text'])
+    func=lambda message: users.get_user_by_id(message.chat.id).step == START and
+                         check_similarity_percentage(message.text, "adiós"), content_types=['text'])
 def command_text_hi(m):
     time.sleep(0.5)
     bot.send_message(m.chat.id, "Adiós, nos vemos pronto")
@@ -201,7 +201,7 @@ def configure_new_location(m):
     time.sleep(0.5)
     if text == 'Si':
         bot.send_message(cid, "A continuación te aparecerá un botón para enviar la ubicación",
-                         reply_markup=userLikes.location)
+                         reply_markup=user_likes.location)
         users.store_step(user_id, LOCATION)
     elif text == 'No':
         bot.send_message(cid, "¡De acuerdo!", reply_markup=types.ReplyKeyboardRemove())
@@ -306,6 +306,16 @@ def show_decision(m, decision, user_id):
                                             "_https://www.netflix.com/browse/new-releases_", parse_mode="Markdown",
                                  reply_markup=types.ReplyKeyboardRemove())
                 end_message(m, user_id)
+            elif category == 'videogames':
+                bot.send_message(m.chat.id, "Aquí puedes ver los videojuegos más populares de 2020:\n"
+                                            "_https://www.ranker.com/list/most-popular-video-games-today/ranker-games_", parse_mode="Markdown",
+                                 reply_markup=types.ReplyKeyboardRemove())
+                end_message(m, user_id)
+            elif category == 'walk':
+                bot.send_message(m.chat.id, "Disfruta del paseo!", parse_mode="Markdown",
+                                 reply_markup=types.ReplyKeyboardRemove())
+                bot.send_sticker(m.chat.id, CHICKEN_WALKING)
+                end_message(m, user_id)
             else:
                 global cat
                 cat = category
@@ -319,14 +329,14 @@ def show_decision(m, decision, user_id):
     else:
         users.save_node(user_id, decision.next_step)
 
-        bot.send_message(cid, users.get_node(cid).question, reply_markup=userLikes.option[users.get_node(cid).num])
-
         if users.get_node(cid).photo is not None:
-            bot.send_photo(cid, users.get_node(cid).photo, reply_markup=userLikes.option[users.get_node(cid).num])
+            bot.send_photo(cid, users.get_node(cid).photo, reply_markup=user_likes.option[users.get_node(cid).num])
 
         if users.get_node(cid).gif is not None:
             bot.send_animation(cid, users.get_node(cid).gif, duration=None, caption=None, reply_to_message_id=None,
                                reply_markup=None, parse_mode=None, disable_notification=None, timeout=None)
+
+        bot.send_message(cid, users.get_node(cid).question, reply_markup=user_likes.option[users.get_node(cid).num])
 
 
 def next_recommendation(m, user_id):
@@ -353,9 +363,10 @@ def next_recommendation(m, user_id):
         latitude = loc.get('lat')
         longitude = loc.get('lng')
         bot.send_location(m.chat.id, latitude, longitude)
-        bot.send_message(m.chat.id, "He encontrado este " + Places.get_instance().get_place_name(cat) + " cerca de ti, "
-                                                                                                       "¿Qué te parece?\n*" + name + "*\nDirección: _" + address + "_",
-                         reply_markup=userLikes.recommendation_select, parse_mode="Markdown")
+        bot.send_message(m.chat.id, "He encontrado este " + Places.get_instance().get_place_name(cat)
+                         + " cerca de ti, ¿Qué te parece?\n*" + name
+                         + "*\nDirección: _" + address + "_",
+                         reply_markup=user_likes.recommendation_select, parse_mode="Markdown")
         counter += 1
         users.store_step(user_id, RECOMMENDATIONS)
 

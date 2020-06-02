@@ -15,7 +15,7 @@ class PlacesController:
         return PlacesController.__instance
 
     def __init__(self):
-        self.graph = Connection.get_instance().getConnection()
+        self.graph = Connection.get_instance().get_connection()
         self.nodes = NodeMatcher(self.graph)
         PlacesController.__instance = self
 

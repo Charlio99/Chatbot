@@ -16,7 +16,7 @@ class UserController:
         return UserController.__instance
 
     def __init__(self):
-        self.graph = Connection.get_instance().getConnection()
+        self.graph = Connection.get_instance().get_connection()
         self.nodes = NodeMatcher(self.graph)
         UserController.__instance = self
 
@@ -56,7 +56,7 @@ class UserController:
         self.graph.push(user)
 
     def get_node(self, chat_id):
-        node = self.get_instance().getUserById(chat_id).node
+        node = self.get_instance().get_user_by_id(chat_id).node
         return Decision.get_instance().graph.nodes[node]['node']
 
     def save_node(self, user, node):
@@ -64,7 +64,7 @@ class UserController:
         self.graph.push(user)
 
     def save_location(self, user, lat, long):
-        exists = self.get_instance().getUserLocationByUserID(user.chat_id)
+        exists = self.get_instance().get_user_location_by_user_id(user.chat_id)
         if exists.latitude is None or exists.longitude is None:
             loc = Location()
             loc.longitude = long
