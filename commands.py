@@ -42,7 +42,7 @@ def command_settings(m):
 
 # config page
 @bot.message_handler(commands=['cancelar'])
-def command_settings(m):
+def command_settings_cancelation(m):
     from userLikes import cancel_action
     cancel_action(m)
     bot.send_message(m.chat.id, 'Cancelación exitosa.\n'
