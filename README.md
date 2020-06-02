@@ -1,8 +1,38 @@
-- Abans de executar el bot cal tenir unes llibreries de python 3, es poden instalar executant la comanda dins el directori del programa: pip install -r requirements.txt
+# Pilus
 
-- Una vegada fet això només cal executar main.py i anar al bot de telegram: @PilusBot
+Pilus es un bot de Telegram que ofereix recomenacions de coses que fer o llocs on anar tenint en compte la localització de l'usuari i els seus gustos.
 
-NOTA: Si reinicieu el programa cal sempre fer /start ja que ara mateix no es guarden les dades de l'usuari a una base de dades al tancar el programa,
-sino donarà un error i entrarà en bucle.
+### Serveis externs que fa servir Pilus
+  - Google Places API
+  - Telegram Bot API
 
-Posteriorment s'implementarà aquesta funcionalitat i no caldrà fer /start cada vegada que reiniciem el bot i per tant ja no hi haurà l'error.
+### Execució
+
+Pilus necessita [Python 3.7](https://www.python.org/downloads/release/python-370/) i [pip](https://pypi.org/project/pip/) per poder executar-se.
+
+Primer de tot entrarem a la carpeta del codi del projecte i executarem les seguents comandes:
+
+**Instalació de dependències**
+```sh
+$ pip install -r requirements.txt
+```
+
+**Execució de l'aplicació**
+```sh
+$ python3 main.py
+```
+
+
+### APIs
+
+| API | Link |
+| ------ | ------ |
+| Google Places API | https://cloud.google.com/maps-platform/places/ |
+| Telegram Bot API | https://core.telegram.org/bots/api |
+
+
+### Group members
+
+Eric Vallsmadella Crespo
+Mar Galiana Fernández
+Carlos Mora Clavero
