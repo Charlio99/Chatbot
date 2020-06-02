@@ -7,6 +7,7 @@ from telebot import types
 
 from Graph.node import Response
 from Graph.readGraph import Decision
+from neo4jDB.Controllers.PlacesController import PlacesController
 from neo4jDB.Controllers.UserController import UserController
 from category.category_decision import Category_Decision, check_similarity_percentage, choose_category
 from places import Places
@@ -27,6 +28,10 @@ CHEF = 'CAACAgIAAxkBAAIBvV7U9YzwilBbM6k3LNfTmQxwcJKaAALfAAMw1J0REW2Q6CUm530ZBA'
 
 cat = ''
 counter = 0
+name = ''
+address = ''
+latitude = ''
+longitude = ''
 
 
 class UserLikes:
@@ -210,6 +215,7 @@ def configure_new_location(m):
 @bot.message_handler(func=lambda message: users.getUserById(message.chat.id).step == RECOMMENDATIONS,
                      content_types=['text'])
 def recommendations_yes_or_no(m):
+    global cat, name, address, latitude, longitude
     cid = m.chat.id
     user_id = users.getUserById(cid)
 
@@ -219,6 +225,12 @@ def recommendations_yes_or_no(m):
 
     if text == 'Me gusta 😍':
         end_message(m, user_id)
+
+        categories = Places.getInstance().get_category(cat)
+
+        for category in categories:
+            PlacesController.getInstance().createPlace(name, latitude, longitude, address, category, cat, user_id)
+
     elif text == 'Prueba con otro 🔄':
         bot.send_message(cid, "Vamos a ver...", reply_markup=Bot.getInstance().hideBoard)
         bot.send_chat_action(cid, 'typing')
@@ -320,7 +332,7 @@ def show_decision(m, decision, user_id):
 
 
 def next_recommendation(m, user_id):
-    global cat, counter
+    global cat, counter, name, address, latitude, longitude
     loc = users.getUserLocationByUserID(m.chat.id)
     result = nearby_places(loc.latitude, loc.longitude, cat)
 
@@ -340,7 +352,9 @@ def next_recommendation(m, user_id):
         loc = result[counter].get('geometry').get('location')
         name = result[counter].get('name')
         address = result[counter].get('vicinity')
-        bot.send_location(m.chat.id, loc.get('lat'), loc.get('lng'))
+        latitude = loc.get('lat')
+        longitude = loc.get('lng')
+        bot.send_location(m.chat.id, latitude, longitude)
         bot.send_message(m.chat.id, "He encontrado este " + Places.getInstance().get_place_name(cat) + " cerca de ti, "
                                                                                                        "¿Qué te parece?\n*" + name + "*\nDirección: _" + address + "_",
                          reply_markup=userLikes.recommendation_select, parse_mode="Markdown")
@@ -352,7 +366,6 @@ def end_message(m, user_id):
     global cat, counter
     bot.send_message(m.chat.id, "Espero haberte ayudado")
     bot.send_sticker(m.chat.id, PEPE_CLAP, reply_markup=Bot.getInstance().hideBoard)
-    cat = ''
     counter = 0
     users.storeStep(user_id, START)
 
@@ -362,3 +375,7 @@ def end_message(m, user_id):
 def command_default(m):
     # this is the standard reply to a normal message
     bot.send_message(m.chat.id, "No entiendo \"" + m.text + "\"\nPuede que la página de ayuda te sirva /ayuda")
+
+
+def cancel_action(m):
+    users.storeStep(users.getUserById(m.chat.id), START)

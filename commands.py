@@ -8,7 +8,8 @@ from singletonBot import Bot
 class Commands:
     commands = {  # command description used in the "help" command
         'start': 'Inicia el bot y ajusta tu información',
-        'ayuda': 'Informacion sobre los comandos disponibles'
+        'ayuda': 'Informacion sobre los comandos disponibles',
+        'cancelar': 'Volver al inicio de las preguntas'
     }
 
     def __init__(self):
@@ -38,6 +39,14 @@ def command_start(m):
 def command_settings(m):
     from userLikes import settings
     settings(m)
+
+# config page
+@bot.message_handler(commands=['cancelar'])
+def command_settings_cancelation(m):
+    from userLikes import cancel_action
+    cancel_action(m)
+    bot.send_message(m.chat.id, 'Cancelación exitosa.\n'
+                                'Si quieres que te recomiende algo simplemente di: recomiéndame algo')
 
 
 # filter on a specific message

@@ -33,6 +33,13 @@ class Categories:
         self.activities.append(Category('Salud', '🧖‍️ 🏞', NODE_HEALTH))
         self.activities.append(Category('Turismo', '🗺', NODE_TOURISM))
         self.activities.append(Category("No lo se", '🤷‍♂️', NODE_NO_SE))
+        self.name_es = {
+            'Tienda': 'Store',
+            'Comida': 'Food',
+            'Entretenimiento': 'Entertainment',
+            'Salud': 'Health',
+            'Turismo': 'Tourism'
+        }
         pass
 
     def get_node(self, name):
@@ -45,3 +52,9 @@ class Categories:
 
     def get_activities(self):
         return self.activities
+
+    def get_name_category(self, name):
+        if name in self.name_es:
+            return self.name_es[name]
+
+        return None
