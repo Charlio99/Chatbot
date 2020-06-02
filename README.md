@@ -34,5 +34,7 @@ $ python3 main.py
 ### Group members
 
 Eric Vallsmadella Crespo
+
 Mar Galiana Fernández
+
 Carlos Mora Clavero
