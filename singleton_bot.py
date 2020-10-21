@@ -3,7 +3,7 @@ import telebot
 
 class Bot:
     __instance = None
-    TOKEN = '1187131516:AAFM9NyvopcDLFOEbvDW73K7thN3r7jph3M'
+    TOKEN = ''
 
     @staticmethod
     def get_instance():
