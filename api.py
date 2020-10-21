@@ -1,6 +1,6 @@
 import googlemaps
 
-gmaps = googlemaps.Client(key='AIzaSyDnzTNT7BFpAy-7E1aaCJrwxYFkhaBKCgo')
+gmaps = googlemaps.Client(key='')
 
 
 def nearby_places(lat, long, category, radius=None):
