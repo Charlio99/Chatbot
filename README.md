@@ -22,17 +22,6 @@ $ pip install -r requirements.txt
 $ python main.py
 ```
 
-### Visualització de les dades en graf
-
-Aneu a la direcció: http://byted.duckdns.org:3334
-
-A _Connect URL_ heu de posar: bolt://byted.duckdns.org:3333
-
-Usuari: neo4j
-
-Contrasenya: covid19
-
-
 ### APIs
 
 | API | Link |
@@ -41,7 +30,7 @@ Contrasenya: covid19
 | Telegram Bot API | https://core.telegram.org/bots/api |
 
 
-### Group members
+### Membres del grup
 
 Eric Vallsmadella Crespo
 
